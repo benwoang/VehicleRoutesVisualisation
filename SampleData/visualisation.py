@@ -313,11 +313,11 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
 
     # Set axis font.
     ax = plt.gca()
-    for tick in ax.get_xticklabels():
-        tick.set_fontname('Helvetica Neue')
-        # tick.set_fontweight('bold')
-    for tick in ax.get_yticklabels():
-        tick.set_fontname('Helvetica Neue')
+    # for tick in ax.get_xticklabels():
+    #     tick.set_fontname('Helvetica Neue')
+    #     # tick.set_fontweight('bold')
+    # for tick in ax.get_yticklabels():
+    #     tick.set_fontname('Helvetica Neue')
         # tick.set_fontweight('bold')
 
     # Set background color
@@ -370,7 +370,7 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
 
     # Draw timestep text.
     if t >= 0 and SHOW_TIMESTEP:
-        timestep_text = ax.text(88, -3.0, '', horizontalalignment='right', fontfamily='Helvetica Neue')
+        timestep_text = ax.text(88, -3.0, '', horizontalalignment='right')#, fontfamily='Helvetica Neue')
 
     # Draw obstacles.
     for y in range(map_height):
@@ -409,8 +409,8 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                            zorder=10001,
                            fontsize=AGENT_NUMBER_SIZE,
                            horizontalalignment='center',
-                           verticalalignment='center',
-                           fontfamily='Helvetica Neue')
+                           verticalalignment='center')
+                        #    fontfamily='Helvetica Neue')
             agent_name_objects.append(text)
 
     # Draw tasks.
@@ -439,8 +439,8 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                                     zorder=task + 0.5,
                                     fontsize=TASK_NUMBER_SIZE,
                                     horizontalalignment='center',
-                                    verticalalignment='center',
-                                    fontfamily='Helvetica Neue')
+                                    verticalalignment='center')
+                                    # fontfamily='Helvetica Neue')
                     task_objects.append(object)
             else:
                 # Delivery
@@ -463,8 +463,8 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                                     zorder=task + 0.5,
                                     fontsize=TASK_NUMBER_SIZE,
                                     horizontalalignment='center',
-                                    verticalalignment='center',
-                                    fontfamily='Helvetica Neue')
+                                    verticalalignment='center')
+                                    # fontfamily='Helvetica Neue')
                     task_objects.append(object)
 
     # Draw everything else.
@@ -502,7 +502,7 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                                                         alpha=PATH_ALPHA)))
 
             # Save image.
-            fig.savefig(f'/tmp/{prefix}_{t * TIME_RESOLUTION + substep:06d}.png', dpi=DPI, bbox_inches='tight', facecolor='white', transparent=False)
+            fig.savefig(f'{OUTPUT_DIR}img/{prefix}_{t * TIME_RESOLUTION + substep:06d}.png', dpi=DPI, bbox_inches='tight', facecolor='white', transparent=False)
 
             # Delete path objects.
             for object in path_objects:
