@@ -1,3 +1,7 @@
+#Custom
+VehicleRoutes/
+
+#Pre-Built
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
