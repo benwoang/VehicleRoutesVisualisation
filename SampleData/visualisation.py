@@ -605,7 +605,7 @@ if __name__ == '__main__':
     with Pool(processes=NUM_PROCESSES) as pool:
         pool.map(LambdaFunction((map, map_width, map_height, routes, paths, tasks)), range(makespan))
         pool.close()
-        pool.join()
+        pool.jo in()
 
     create_video(makespan)
     print('')
