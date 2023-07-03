@@ -173,13 +173,13 @@ class Ui_MainWindow(object):
         y = 0
         for line in lines[l:]:
             row = []
-            for (x, c) in enumerate(line):
+            for (x, c) in enumerate(line):  
                 row.append(c == '.')
             y += 1
             map.append(row)
 
         map2 = np.array(map).transpose()
-        return map2x``
+        return map2
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
