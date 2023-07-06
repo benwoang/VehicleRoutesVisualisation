@@ -543,7 +543,7 @@ def create_video(makespan):
         os.remove(video_file)
 
     # Create video.
-    subprocess.run(f'ffmpeg -framerate {VIDEO_FPS} -pattern_type glob -i \'/tmp/{prefix}_0*.png\' -c:v libx264 -crf 18 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" {OUTPUT_DIR}/{video_file}',
+    subprocess.run(f'ffmpeg -framerate {VIDEO_FPS} -pattern_type glob -i \'/src/{prefix}_0*.png\' -c:v libx264 -crf 18 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" {OUTPUT_DIR}/{video_file}',
                    shell=True)
 
     # process = (ffmpeg
@@ -578,7 +578,7 @@ def create_video(makespan):
 
     # Delete images.
     for i in range(makespan * TIME_RESOLUTION):
-        os.remove(f'/tmp/{prefix}_{i:06d}.png')
+        os.remove(f'/src/{prefix}_{i:06d}.png')
 
 class LambdaFunction(object):
     def __init__(self, inputs):
