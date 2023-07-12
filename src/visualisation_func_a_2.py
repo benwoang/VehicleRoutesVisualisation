@@ -181,7 +181,7 @@ prefix = 'warehouse_optimal'
 # prefix = 'temp'
 
 # ----------------------------------------------------------------------------------------------------------------------
-
+import timeit
 from pprint import pprint
 import re
 import numpy as np
@@ -314,7 +314,8 @@ def get_tasks(routes, paths):
     return tasks
 
 def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
-
+    print("____TIMESTEP____ "+str(t))
+    initial_dt = timeit.default_timer();
     num_tasks = len(tasks)
 
     # Don't show plots.
@@ -390,6 +391,10 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
     if t >= 0 and SHOW_TIMESTEP:
         timestep_text = ax.text(88, -3.0, '', horizontalalignment='right')#, fontfamily='Helvetica Neue')
 
+    initial_time = timeit.default_timer() - initial_dt;
+    print("INITIAL TIME: "+str(initial_time))
+
+    obstacles_s = timeit.default_timer();
     # Draw obstacles.
     for y in range(map_height):
         x_begin = 0
@@ -404,7 +409,11 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                 x_begin = x_end + 1
             else:
                 x_begin += 1
+    obstacles_time = timeit.default_timer()-obstacles_s;
+    print("OBSTACLES TIME: "+str(obstacles_time))
 
+
+    agent_s = timeit.default_timer();
     # Draw agents.
     agent_objects = []
     agent_name_objects = []
@@ -430,7 +439,12 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                            verticalalignment='center')
                         #    fontfamily='Helvetica Neue')
             agent_name_objects.append(text)
+    
+    agent_time = timeit.default_timer()-agent_s;
+    print("agent TIME: "+str(agent_time))
 
+
+    task_s = timeit.default_timer();
     # Draw tasks.
     task_objects = []
     for task, (completion_time, (x,y), agent) in tasks.items():
@@ -484,7 +498,11 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                                     verticalalignment='center')
                                     # fontfamily='Helvetica Neue')
                     task_objects.append(object)
+    task_time = timeit.default_timer()-task_s;
+    print("Task_Time:"+str(task_time))
 
+
+    path_s = timeit.default_timer()
     # Draw everything else.
     if t >= 0:
         for substep in range(TIME_RESOLUTION):
@@ -528,14 +546,19 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
     else:
         # Save image.
         fig.savefig(f'{OUTPUT_DIR}/{prefix}_initial.png', dpi=DPI, bbox_inches='tight', facecolor='white', transparent=False)
+    path_time = timeit.default_timer()-path_s;
+    print("PATH_Time:"+str(path_time))
 
+
+    exit_s = timeit.default_timer();
     # Delete tasks.
     for object in task_objects:
         object.remove()
 
     # Close figure.
     plt.close()
-
+    exit_time = timeit.default_timer()-exit_s;
+    print("EXIT: "+str(exit_time))
 def create_video(makespan):
 
     # image_paths = [f'{OUTPUT_DIR}/mapd_{t}_{substep}.png' for t in range(makespan) for substep in range(TIME_RESOLUTION)]
@@ -616,14 +639,14 @@ if __name__ == '__main__':
     draw_timestep(-1, map, map_width, map_height, routes, paths, tasks)
 
     # 1 thread
-    # for t in range(makespan):
-    #     LambdaFunction((map, map_width, map_height, routes, paths, tasks))(t)
+    for t in range(makespan):
+        LambdaFunction((map, map_width, map_height, routes, paths, tasks))(t)
     # animation = FuncAnimation(fig,)
     # Multi-thread
-    with Pool(processes=NUM_PROCESSES) as pool:
-        pool.map(LambdaFunction((map, map_width, map_height, routes, paths, tasks)), range(makespan))
-        pool.close()
-        pool.join()
+    # with Pool(processes=NUM_PROCESSES) as pool:
+    #     pool.map(LambdaFunction((map, map_width, map_height, routes, paths, tasks)), range(makespan))
+    #     pool.close()
+    #     pool.join()
 
     # create_video(makespan)
     print('')

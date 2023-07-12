@@ -1,18 +1,10 @@
 map_file = '31x79-w5.map'
-txt = '''
+txt2 = '''
 Paths from solution with objective value 3093.0000
-                                           0         1         2         3         4         5         6         7         8         9        10        11        12        13        14        15        16        17        18        19        20        21        22        23        24        25        26        27        28        29        30        31        32        33        34        35        36        37        38        39        40        41        42        43        44        45        46        47        48        49        50        51        52        53        54        55        56        57        58        59        60        61        62        63        64        65        66        67        68        69        70        71        72        73        74        75        76        77        78        79        80        81        82        83        84        85        86        87        88        89        90        91        92        93        94        95        96        97        98        99       100       101       102       103       104       105       106       107       108       109       110       111       112       113       114       115       116       117       118       119       120       121       122       123       124       125       126       127       128       129       130       131       132       133       134       135       136       137       138       139       140       141       142       143       144       145       146       147       148       149       150       151       152       153       154       155       156       157       158       159       160       161       162       163       164       165       166       167       168       169       170       171       172       173       174       175       176       177       178       179       180       181       182       183       184       185       186       187       188       189       190       191       192       193       194       195       196       197       198       199       200       201       202       203       204       205       206       207       208       209       210       211       212       213       214       215       216       217       218       219       220       221       222       223       224       225       226       227       228       229       230       231       232       233       234       235       236       237       238       239       240       241       242       243       244       245       246       247       248       249       250       251       252       253       254       255       256       257       258       259       260       261       262       263
-    Agent  0, Val: 1.0000, Route:    100 (0)      1 (2)      2 (4)   100 (8)
-                            Path:     (67,7)    (68,7)    (69,7)    (70,7)    (71,7)    (72,7)    (73,7)    (74,7)    (75,7)
+                                            0         1         2         3         4         5         6         7         8         9        10        11        12        13        14        15        16        17        18        19        20        21        22        23        24        25        26        27        28        29        30        31        32        33        34        35        36        37        38        39        40        41        42        43        44        45        46        47        48        49        50        51        52        53        54        55        56        57        58        59        60        61        62        63        64        65        66        67        68        69        70        71        72        73        74        75        76        77        78        79        80        81        82        83        84        85        86        87        88        89        90        91        92        93        94        95        96        97        98        99       100       101       102       103       104       105       106       107       108       109       110       111       112       113       114       115       116       117       118       119       120       121       122       123       124       125       126       127       128       129       130       131       132       133       134       135       136       137       138       139       140       141       142       143       144       145       146       147       148       149       150       151       152       153       154       155       156       157       158       159       160       161       162       163       164       165       166       167       168       169       170       171       172       173       174       175       176       177       178       179       180       181       182       183       184       185       186       187       188       189       190       191       192       193       194       195       196       197       198       199       200       201       202       203       204       205       206       207       208       209       210       211       212       213       214       215       216       217       218       219       220       221       222       223       224       225       226       227       228       229       230       231       232       233       234       235       236       237       238       239       240       241       242       243       244       245       246       247       248       249       250       251       252       253       254       255       256       257       258       259       260       261       262       263
+    Agent   0, Val: 1.0000, Route:    100 (0)   1 (20)   2 (82)   3 (82)   5 (85)  4 (103)  6 (119) 100 (126)
+                             Path:      (4,8)     (4,7)     (4,6)     (4,5)     (4,4)     (4,3)     (4,2)     (4,1)     (4,2)     (4,1)     (4,2)     (4,3)     (4,4)     (5,4)     (6,4)     (7,4)     (8,4)     (9,4)    (10,4)    (11,4)    (11,4)    (12,4)    (12,5)    (12,6)    (12,7)    (13,7)    (14,7)    (15,7)    (16,7)    (17,7)    (18,7)    (19,7)    (20,7)    (21,7)    (22,7)    (23,7)    (24,7)    (25,7)    (26,7)    (26,8)    (26,9)   (26,10)   (26,11)   (26,12)   (26,13)   (26,14)   (26,15)   (26,16)   (26,17)   (26,18)   (26,19)   (26,20)   (26,21)   (26,22)   (27,22)   (28,22)   (29,22)   (30,22)   (31,22)   (32,22)   (33,22)   (34,22)   (35,22)   (36,22)   (37,22)   (38,22)   (39,22)   (40,22)   (41,22)   (42,22)   (43,22)   (44,22)   (45,22)   (46,22)   (47,22)   (47,23)   (47,24)   (47,25)   (48,25)   (49,25)   (50,25)   (51,25)   (52,25)   (51,25)   (50,25)   (49,25)   (50,25)   (51,25)   (52,25)   (53,25)   (54,25)   (54,26)   (54,27)   (54,28)   (55,28)   (56,28)   (57,28)   (58,28)   (59,28)   (60,28)   (61,28)   (62,28)   (63,28)   (64,28)   (65,28)   (66,28)   (67,28)   (68,28)   (69,28)   (70,28)   (71,28)   (72,28)   (73,28)   (74,28)   (75,28)   (75,29)   (76,29)   (77,29)   (78,29)   (79,29)   (79,28)   (78,28)   (77,28)   (76,28)   (75,28)   (74,28)   (73,28)
 '''
-# txt = '''
-# Paths from solution with objective value 3093.0000
-#                                             0         1         2         3         4         5         6         7         8         9        10        11        12        13        14        15        16        17        18        19        20        21        22        23        24        25        26        27        28        29        30        31        32        33        34        35        36        37        38        39        40        41        42        43        44        45        46        47        48        49        50        51        52        53        54        55        56        57        58        59        60        61        62        63        64        65        66        67        68        69        70        71        72        73        74        75        76        77        78        79        80        81        82        83        84        85        86        87        88        89        90        91        92        93        94        95        96        97        98        99       100       101       102       103       104       105       106       107       108       109       110       111       112       113       114       115       116       117       118       119       120       121       122       123       124       125       126       127       128       129       130       131       132       133       134       135       136       137       138       139       140       141       142       143       144       145       146       147       148       149       150       151       152       153       154       155       156       157       158       159       160       161       162       163       164       165       166       167       168       169       170       171       172       173       174       175       176       177       178       179       180       181       182       183       184       185       186       187       188       189       190       191       192       193       194       195       196       197       198       199       200       201       202       203       204       205       206       207       208       209       210       211       212       213       214       215       216       217       218       219       220       221       222       223       224       225       226       227       228       229       230       231       232       233       234       235       236       237       238       239       240       241       242       243       244       245       246       247       248       249       250       251       252       253       254       255       256       257       258       259       260       261       262       263
-#     Agent   0, Val: 1.0000, Route:    100 (0)   1 (20)   2 (82)   3 (82)   5 (85)  4 (103)  6 (119) 100 (126)
-#                              Path:      (4,8)     (4,7)     (4,6)     (4,5)     (4,4)     (4,3)     (4,2)     (4,1)     (4,2)     (4,1)     (4,2)     (4,3)     (4,4)     (5,4)     (6,4)     (7,4)     (8,4)     (9,4)    (10,4)    (11,4)    (11,4)    (12,4)    (12,5)    (12,6)    (12,7)    (13,7)    (14,7)    (15,7)    (16,7)    (17,7)    (18,7)    (19,7)    (20,7)    (21,7)    (22,7)    (23,7)    (24,7)    (25,7)    (26,7)    (26,8)    (26,9)   (26,10)   (26,11)   (26,12)   (26,13)   (26,14)   (26,15)   (26,16)   (26,17)   (26,18)   (26,19)   (26,20)   (26,21)   (26,22)   (27,22)   (28,22)   (29,22)   (30,22)   (31,22)   (32,22)   (33,22)   (34,22)   (35,22)   (36,22)   (37,22)   (38,22)   (39,22)   (40,22)   (41,22)   (42,22)   (43,22)   (44,22)   (45,22)   (46,22)   (47,22)   (47,23)   (47,24)   (47,25)   (48,25)   (49,25)   (50,25)   (51,25)   (52,25)   (51,25)   (50,25)   (49,25)   (50,25)   (51,25)   (52,25)   (53,25)   (54,25)   (54,26)   (54,27)   (54,28)   (55,28)   (56,28)   (57,28)   (58,28)   (59,28)   (60,28)   (61,28)   (62,28)   (63,28)   (64,28)   (65,28)   (66,28)   (67,28)   (68,28)   (69,28)   (70,28)   (71,28)   (72,28)   (73,28)   (74,28)   (75,28)   (75,29)   (76,29)   (77,29)   (78,29)   (79,29)   (79,28)   (78,28)   (77,28)   (76,28)   (75,28)   (74,28)   (73,28)
-#     Agent  1, Val: 1.0000, Route:    100 (0)  7(2) 8(4) 100 (8)
-#                             Path:     (67,7)    (68,7)    (69,7)    (70,7)    (71,7)    (72,7)    (73,7)    (74,7)    (75,7)
-# '''
 offset = 1
 prefix = 'warehouse_optimal'
 # map_file = '31x79-w5.map'
@@ -57,7 +49,7 @@ prefix = 'warehouse_optimal'
 # ----------------------------------------------------------------------------------------------------------------------
 
 map_file = '31x79-w5.map'
-txt_temp = '''
+txt = '''
 Paths from solution with objective value 3093.0000
                                             0         1         2         3         4         5         6         7         8         9        10        11        12        13        14        15        16        17        18        19        20        21        22        23        24        25        26        27        28        29        30        31        32        33        34        35        36        37        38        39        40        41        42        43        44        45        46        47        48        49        50        51        52        53        54        55        56        57        58        59        60        61        62        63        64        65        66        67        68        69        70        71        72        73        74        75        76        77        78        79        80        81        82        83        84        85        86        87        88        89        90        91        92        93        94        95        96        97        98        99       100       101       102       103       104       105       106       107       108       109       110       111       112       113       114       115       116       117       118       119       120       121       122       123       124       125       126       127       128       129       130       131       132       133       134       135       136       137       138       139       140       141       142       143       144       145       146       147       148       149       150       151       152       153       154       155       156       157       158       159       160       161       162       163       164       165       166       167       168       169       170       171       172       173       174       175       176       177       178       179       180       181       182       183       184       185       186       187       188       189       190       191       192       193       194       195       196       197       198       199       200       201       202       203       204       205       206       207       208       209       210       211       212       213       214       215       216       217       218       219       220       221       222       223       224       225       226       227       228       229       230       231       232       233       234       235       236       237       238       239       240       241       242       243       244       245       246       247       248       249       250       251       252       253       254       255       256       257       258       259       260       261       262       263
     Agent   0, Val: 1.0000, Route:    100 (0)   24 (20)   74 (82)   28 (82)   78 (85)  36 (103)  86 (119) 100 (126)
@@ -194,7 +186,8 @@ import subprocess
 from multiprocessing import Pool
 import os
 from glob import glob
-from matplotlib.animation import FuncAnimation
+
+import timeit
 
 COLORS = [
     '#F85647', # red
@@ -236,7 +229,7 @@ TASK_ALPHA = 1.0
 PATH_WIDTH = 0.8
 PATH_ALPHA = 0.8
 TIME_RESOLUTION = 10
-DPI = 300
+DPI = 600
 VIDEO_FPS = 4 * TIME_RESOLUTION
 FIG_SIZE = 4
 OUTPUT_DIR = './'
@@ -314,12 +307,13 @@ def get_tasks(routes, paths):
     return tasks
 
 def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
+    initial_dt = timeit.default_timer();
 
     num_tasks = len(tasks)
 
     # Don't show plots.
     plt.ioff()
-    matplotlib.use('TkAgg')
+    matplotlib.use('Agg')
 
     # Create empty plot.
     aspect = map_width / map_height
@@ -389,7 +383,11 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
     # Draw timestep text.
     if t >= 0 and SHOW_TIMESTEP:
         timestep_text = ax.text(88, -3.0, '', horizontalalignment='right')#, fontfamily='Helvetica Neue')
+    
+    initial_time = timeit.default_timer() - initial_dt;
+    print("INITIAL TIME: "+str(initial_time))
 
+    obstacles_s = timeit.default_timer();
     # Draw obstacles.
     for y in range(map_height):
         x_begin = 0
@@ -405,6 +403,10 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
             else:
                 x_begin += 1
 
+    obstacles_time = timeit.default_timer()-obstacles_s;
+    print("OBSTACLES TIME: "+str(obstacles_time))
+
+    agent_s = timeit.default_timer();
     # Draw agents.
     agent_objects = []
     agent_name_objects = []
@@ -430,7 +432,12 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                            verticalalignment='center')
                         #    fontfamily='Helvetica Neue')
             agent_name_objects.append(text)
+    agent_time = timeit.default_timer()-agent_s;
+    print("agent TIME: "+str(agent_time))
 
+
+
+    task_s = timeit.default_timer();
     # Draw tasks.
     task_objects = []
     for task, (completion_time, (x,y), agent) in tasks.items():
@@ -485,6 +492,10 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                                     # fontfamily='Helvetica Neue')
                     task_objects.append(object)
 
+    task_time = timeit.default_timer()-task_s;
+    print("Task_Time:"+str(task_time))
+
+
     # Draw everything else.
     if t >= 0:
         for substep in range(TIME_RESOLUTION):
@@ -526,15 +537,21 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
             for object in path_objects:
                 object.remove()
     else:
+        save_s = timeit.default_timer();
         # Save image.
         fig.savefig(f'{OUTPUT_DIR}/{prefix}_initial.png', dpi=DPI, bbox_inches='tight', facecolor='white', transparent=False)
 
+        save_time = timeit.default_timer()-save_s;
+
+    exit_s = timeit.default_timer();
     # Delete tasks.
     for object in task_objects:
         object.remove()
 
     # Close figure.
     plt.close()
+    exit_time = timeit.default_timer()-exit_s;
+    print("EXIT: "+str(exit_time))
 
 def create_video(makespan):
 
@@ -552,7 +569,7 @@ def create_video(makespan):
         os.remove(video_file)
 
     # Create video.
-    subprocess.run(f'ffmpeg -framerate {VIDEO_FPS} -pattern_type glob -i \'img/{prefix}_%6d.png\' -c:v libx264 -crf 18 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" {OUTPUT_DIR}/{video_file}',
+    subprocess.run(f'ffmpeg -framerate {VIDEO_FPS} -pattern_type glob -i \'/tmp/{prefix}_0*.png\' -c:v libx264 -crf 18 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" {OUTPUT_DIR}/{video_file}',
                    shell=True)
 
     # process = (ffmpeg
@@ -587,7 +604,7 @@ def create_video(makespan):
 
     # Delete images.
     for i in range(makespan * TIME_RESOLUTION):
-        os.remove(f'./img/{prefix}_{i:06d}.png')
+        os.remove(f'/tmp/{prefix}_{i:06d}.png')
 
 class LambdaFunction(object):
     def __init__(self, inputs):
@@ -596,14 +613,26 @@ class LambdaFunction(object):
         draw_timestep(t, *self.inputs)
 
 if __name__ == '__main__':
-
+    read_s = timeit.default_timer();
     map = read_map(map_file)
+    read_time = timeit.default_timer()-read_s;
+    print("READ MAP: "+str(read_time))
+
     map_width = map.shape[0]
     map_height = map.shape[1]
 
+    read_r_s = timeit.default_timer();
     routes, paths = read_routes_and_paths(txt)
+    read_r_time = timeit.default_timer() - read_r_s;
+    print("READ ROUTES: "+str(read_r_time))
+
     makespan = max(len(path) for path in paths)
+
+    read_t_s = timeit.default_timer();
     tasks = get_tasks(routes, paths)
+    read_t_time = timeit.default_timer()-read_t_s;
+    print("READ TASKS: "+str(read_t_time))
+
     print(f'Agents: {len(routes)}')
     print(f'Pickup-delivery pairs: {int(len(tasks) / 2)}')
     print(f'Makespan: {makespan}')
@@ -613,18 +642,19 @@ if __name__ == '__main__':
         os.mkdir(OUTPUT_DIR)
 
     # Draw initial instance
+
     draw_timestep(-1, map, map_width, map_height, routes, paths, tasks)
 
     # 1 thread
     # for t in range(makespan):
     #     LambdaFunction((map, map_width, map_height, routes, paths, tasks))(t)
-    # animation = FuncAnimation(fig,)
+
     # Multi-thread
     with Pool(processes=NUM_PROCESSES) as pool:
         pool.map(LambdaFunction((map, map_width, map_height, routes, paths, tasks)), range(makespan))
         pool.close()
         pool.join()
 
-    # create_video(makespan)
+    create_video(makespan)
     print('')
     print("test commit")
