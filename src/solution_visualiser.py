@@ -1,18 +1,15 @@
-import re
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from solution import Solution
 
 
 class SolutionVisualiser:
     BACKGROUND_COLOR = "#FAFAFA"
     FIG_SIZE = 4
 
-    def __init__(self, file_path=None) -> None:
-        self.offset = 1
-        self.routes, self.paths = self.read_routes_and_paths(file_path)
-        self.makespan = max(len(path) for path in self.paths)
-        self.tasks = self.get_tasks()
+    def __init__(self, solution_file_path) -> None:
+        self.solution = Solution(solution_file_path)
         self.animation = FuncAnimation(
             self.fig,
             self.update,
@@ -21,57 +18,6 @@ class SolutionVisualiser:
             interval=100,
             blit=True,
         )
-
-    def load_solution_file(self):
-        pass
-
-    def read_routes_and_paths(self, txt):
-        lines = self.__escape_ansi(txt).split("\n")
-
-        routes = [line for line in lines if "Route:" in line]
-        routes = [re.findall(r"(\d+) \((\d+)\)", route) for route in routes]
-        routes = [[(int(r), int(t)) for r, t in route] for route in routes]
-
-        paths = [line for line in lines if "Path:" in line]
-        paths = [re.findall(r"\((\d+),(\d+)\)", path) for path in paths]
-        paths = [
-            [(int(x) - self.offset, int(y) - self.offset) for x, y in path]
-            for path in paths
-        ]
-
-        assert len(routes) == len(paths)
-
-        # Post-process to remove paths going backwards and forwards
-        excluded_times = {(a, t) for a, route in enumerate(routes) for (_, t) in route}
-        makespan = max(route[-1][1] for route in routes)
-        used_vertices = set()
-        for a, path in enumerate(paths):
-            length = len(path)
-            for t in range(makespan):
-                used_vertices.add((a, t, path[min(length - 1, t)]))
-        for a, path in enumerate(paths):
-            for t in range(len(path) - 2):
-                if (a, t + 1) not in excluded_times:
-                    if path[t] != path[t + 1] and path[t] == path[t + 2]:
-                        xxx = [
-                            (a2, t2, v2)
-                            for (a2, t2, v2) in used_vertices
-                            if (t2, v2) == (t + 1, path[t])
-                        ]
-                        if len(xxx) > 0:
-                            print(f"Not modifying agent {a} time {t + 1}")
-                        else:
-                            path[t + 1] = path[t]
-                            print(f"Modifying agent {a} time {t + 1}")
-
-        return routes, paths
-
-    def get_tasks(self):
-        tasks = {}
-        for agent_no, (route, path) in enumerate(zip(self.routes, self.paths)):
-            for r, t in route[1:-1]:  # uses route in between first and last items
-                tasks[r] = (t, path[t], agent_no)
-        return tasks
 
     def setup_plot(self):
         # Don't show plots.
@@ -137,11 +83,6 @@ class SolutionVisualiser:
         self.setup_plot()
         return self.setup_artists()
 
-    def __escape_ansi(self, line):
-        ansi_escape = re.compile("(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]")
-        return ansi_escape.sub("", line)
-
 
 if __name__ == "__main__":
-    file_path = "./SampleData/solution.txt"
-    solution = SolutionVisualiser(file_path=file_path)
+    solution = SolutionVisualiser("solution.txt")
