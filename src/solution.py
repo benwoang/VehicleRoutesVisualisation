@@ -21,7 +21,8 @@ class Solution:
             file_content = f.read()
 
         chunks = re.findall(r"^.+=[^=]+\n", file_content, flags=re.MULTILINE)
-        chunks = [chunk.replace("\n", "") for chunk in chunks]
+        # chunks = [chunk.replace("\n", "") for chunk in chunks]
+        chunks = [chunk[:-1] for chunk in chunks if chunk[3:] != "'''"]
         chunks = [chunk.split(" = ", 1) for chunk in chunks]
         chunks = [chunk[1].replace("'", "") for chunk in chunks]
 
