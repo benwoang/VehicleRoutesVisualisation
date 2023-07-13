@@ -64,7 +64,7 @@ class SolutionVisualiser:
 
         # Don't show plots.
         plt.ioff()
-        matplotlib.use("TkAgg")
+        matplotlib.use("QtAgg")
 
         # Create empty plot.
         aspect = self.map_width / self.map_height
@@ -74,9 +74,9 @@ class SolutionVisualiser:
             self.fig,
             self.update,
             init_func=self.init,
-            frames=self.soln.makespan,
-            interval=100,
-            blit=False,
+            frames=[p / 10 for p in range(0, (self.soln.makespan * 10) + 1)],
+            interval=5,
+            blit=True,
         )
 
     def setup_plot(self):
@@ -128,6 +128,7 @@ class SolutionVisualiser:
 
     def setup_artists(self):
         # Build Obstacles
+        # self.obstacle_objects = []
         for y in range(self.map_height):
             x_begin = 0
             while x_begin < self.map_width:
@@ -137,6 +138,7 @@ class SolutionVisualiser:
                         if self.soln.map.map_content[x, y]:
                             x_end = x
                             break
+                    # object =
                     self.ax.add_patch(
                         Rectangle(
                             (x_begin, y),
@@ -147,6 +149,7 @@ class SolutionVisualiser:
                             edgecolor="none",
                         )
                     )
+                    # self.obstacle_objects.append(object)
                     x_begin = x_end + 1
                 else:
                     x_begin += 1
@@ -183,11 +186,14 @@ class SolutionVisualiser:
                 )
                 #    fontfamily='Helvetica Neue')
                 self.agent_name_objects.append(text)
-        return self.agent_objects, self.agent_name_objects
+
+        return self.agent_objects + self.agent_name_objects
+
+        # Draw tasks.
 
     def update(self, t):
         # Draw agents and paths.
-        path_objects = []
+        # path_objects = []
         for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
             # Get position.
             agent_time = t  # + substep / self.TIME_RESOLUTION
@@ -202,7 +208,7 @@ class SolutionVisualiser:
             self.agent_objects[a].set_xy((x + 0.13, y + 0.13))
             if self.SHOW_AGENT_NUMBER:
                 self.agent_name_objects[a].set_position((x + 0.49, y + 0.53))
-        return self.agent_objects, self.agent_name_objects
+        return self.agent_objects + self.agent_name_objects
 
     def init(self):
         self.setup_plot()
