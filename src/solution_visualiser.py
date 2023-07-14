@@ -69,7 +69,7 @@ class SolutionVisualiser:
 
         # Set axis font.
         self.ax = plt.gca()
-        self.ax.set_axisbelow(True)
+        # self.ax.set_axisbelow(True)
 
         # Hide outside map.
         plt.tight_layout(pad=1.0)
@@ -101,6 +101,19 @@ class SolutionVisualiser:
             ticks=[i + 0.5 for i in range(0, y_max, y_step)],
             ticklabels=range(0, y_max, y_step),
         )
+
+        # title_text = self.ax.text(
+        #     -11.5,
+        #     -3.0,
+        #     "Branch-and-cut-and-price for multi-agent pickup and delivery",
+        #     horizontalalignment="left",
+        # )
+        # author_text = self.ax.text(
+        #     -11.5,
+        #     -1.3,
+        #     "Edward Lam <edward.lam@monash.edu>",
+        #     horizontalalignment="left",
+        # )
 
         # Hide ticks
         self.ax.tick_params(
@@ -338,6 +351,8 @@ class SolutionVisualiser:
         for a, b, c in self.task_tuple_objects:
             test.append(b)
             test.append(c)
+
+        ## Set TIme Tuples
         return (
             self.agent_objects
             + self.agent_name_objects
@@ -346,6 +361,7 @@ class SolutionVisualiser:
         )
 
     def update(self, t):
+        x_22 = timeit.default_timer()
         # Draw agents and paths.
         # path_objects = []
         for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
@@ -439,15 +455,25 @@ class SolutionVisualiser:
         #             )
         #             # fontfamily='Helvetica Neue')
         #             self.task_name_objects.append(object)
+
+        # Update Tests
         test = []
         less_time = True
-        i = 0
-        while i < len(self.task_tuple_objects):
-            if t < self.task_tuple_objects[i][0]:
-                test.append(self.task_tuple_objects[i][1])
-                test.append(self.task_tuple_objects[i][2])
-            i += 1
+        # i = 0
+        # while i < len(self.task_tuple_objects):
+        #     if t < self.task_tuple_objects[i][0]:
+        #         test.append(self.task_tuple_objects[i][1])
+        #         test.append(self.task_tuple_objects[i][2])
+        #     i += 1
 
+        j = len(self.task_tuple_objects) - 1
+
+        while j >= 0 and self.task_tuple_objects[j][0] > t:
+            test.append(self.task_tuple_objects[j][1])
+            test.append(self.task_tuple_objects[j][2])
+            j -= 1
+
+        print(timeit.default_timer() - x_22)
         return self.agent_objects + self.agent_name_objects + test
 
     def init(self):
@@ -488,7 +514,7 @@ if __name__ == "__main__":
     ## Generating Animation
     agent_s = timeit.default_timer()
     # solution = SolutionVisualiser("solution.txt")
-    solution = SolutionVisualiser("solution_2.txt")
+    solution = SolutionVisualiser("solution.txt")
     # solution = SolutionVisualiser("solution_short_long.txt")
     agent_time = timeit.default_timer() - agent_s  # THis only mesaures update speed
     print("Animation Creation Time: ")
@@ -501,6 +527,5 @@ if __name__ == "__main__":
     # print(agent_time)
 
     ## Showing Animation
-
-    plt.grid(which="both")
+    # plt.grid(which="both")
     plt.show()
