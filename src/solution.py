@@ -72,26 +72,43 @@ class Solution:
 
     def get_tasks(self):
         # tasks = deque([])
-        tasks = {}
+        tasks = []
         # Both Routes and Paths are lined up for each agent
         for agent_no, (route, path) in enumerate(zip(self.routes, self.paths)):
-            count = 1  # Determine if it is a pickup or delivery
-            for route_number, time_int in route[
-                1:-1
-            ]:  # uses route in between first and last items
-                if time_int not in tasks:
-                    tasks[time_int] = [(route_number, path[time_int], agent_no)]
-                else:
-                    tasks[time_int].append((route_number, path[time_int], agent_no))
-                # tasks.append(
-                #     (
-                #         route_number,
-                #         time_int,
-                #         path[time_int],
-                #         agent_no,
-                #     )
-                # )
-                # route and task number are synonomous
+            ## LIST with TUPLES
+            for route_number, time_int in route[1:-1]:
+                tasks.append((time_int, route_number, path[time_int], agent_no))
+        tasks.sort(key=lambda task: task[0])  # , reverse=True)  # Sort by time
+
+        # tasks = {}
+        # # for loop uses route in between first and last items
+        # for route_number, time_int in route[1:-1]:
+        #     ## SETS - sort by route_number
+        #     # this also sorts the tasks into time slots
+        #     if time_int not in tasks:
+        #         tasks[time_int] = [(route_number, path[time_int], agent_no)]
+        #     else:
+        #         tasks[time_int].append((route_number, path[time_int], agent_no))
+
+        ## SETS - sort by time
+        # for agent_no, (route, path) in enumerate(zip(self.routes, self.paths)):
+        #     for route_number, time_int in route[1:-1]:
+        #         # this also sorts the tasks into time slots
+        #         if time_int not in tasks:
+        #             tasks[time_int] = [(route_number, path[time_int], agent_no)]
+        #         else:
+        #             tasks[time_int].append((route_number, path[time_int], agent_no))
+
+        ##DEQUES
+        # tasks.append(
+        #     (
+        #         route_number,
+        #         time_int,
+        #         path[time_int],
+        #         agent_no,
+        #     )
+        # )
+        # route and task number are synonomous
         return tasks
 
     def __escape_ansi(self, line):

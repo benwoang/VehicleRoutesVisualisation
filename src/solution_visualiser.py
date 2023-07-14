@@ -8,6 +8,9 @@ from matplotlib.patches import Circle, Rectangle, RegularPolygon
 from solution import Solution
 from math import floor
 from cmath import pi
+
+import copy
+
 import timeit
 
 
@@ -56,11 +59,8 @@ class SolutionVisualiser:
             self.fig,
             self.update,
             init_func=self.init,
-            frames=[
-                time / self.TIME_RESOLUTION
-                for time in range(0, (self.soln.makespan * self.TIME_RESOLUTION) + 1)
-            ],
-            interval=10,
+            frames=self.time_generator(0),
+            interval=0,
             blit=True,
         )
 
@@ -117,19 +117,28 @@ class SolutionVisualiser:
         # Reverse vertical axis.
         self.ax.invert_yaxis()
 
+    def time_generator(self, t_start):
+        # t is in seconds wrt the solver data
+        return [
+            time / self.TIME_RESOLUTION
+            for time in range(
+                t_start * self.TIME_RESOLUTION,
+                (self.soln.makespan * self.TIME_RESOLUTION) + 1,
+            )
+        ]
+
     def setup_artists(self):
         # Build Obstacles
-        # self.obstacle_objects = []
+        # x_s = timeit.default_timer()
         for y in range(self.map_height):
             x_begin = 0
+            x_end = self.map_width
             while x_begin < self.map_width:
                 if not self.soln.map.map_content[x_begin, y]:
-                    x_end = self.map_width
                     for x in range(x_begin + 1, self.map_width):
                         if self.soln.map.map_content[x, y]:
                             x_end = x
                             break
-                    # object =
                     self.ax.add_patch(
                         Rectangle(
                             (x_begin, y),
@@ -140,11 +149,11 @@ class SolutionVisualiser:
                             edgecolor="none",
                         )
                     )
-                    # self.obstacle_objects.append(object)
                     x_begin = x_end + 1
                 else:
                     x_begin += 1
-
+        # print("init_func")
+        # print(timeit.default_timer() - x_s)
         # Draw agents.
         self.agent_objects = []
         self.agent_name_objects = []
@@ -179,84 +188,160 @@ class SolutionVisualiser:
                 self.agent_name_objects.append(text)
 
         # Draw tasks.
-        self.task_objects = []
-        # self.task_name_objects = []
-        for time_tasks in self.soln.tasks.items():
-            time_int = time_tasks[0]
-            for task_no, (x, y), agent in time_tasks[1]:
-                # Delivery task number will always be Pickup task number + Number of tasks / 2
-                if task_no < len(self.soln.tasks) / 2:
-                    # Pickup
-                    object = self.ax.add_patch(
-                        RegularPolygon(
-                            (x + 0.5, y + 0.56),
-                            numVertices=3,
-                            radius=0.35,
-                            orientation=pi,
-                            zorder=task_no,
-                            facecolor=COLORS[agent % len(COLORS)]
-                            if time_int >= 0
-                            else "white",
-                            edgecolor="black",
-                            linewidth=self.TASK_BORDER_WIDTH,
-                            alpha=self.TASK_ALPHA,
-                        )
+        # List
+        self.task_tuple_objects = []
+        for time_int, task_no, (x, y), agent_no in self.soln.tasks:
+            if task_no < len(self.soln.tasks) / 2:
+                # Pickup
+                task = self.ax.add_patch(
+                    RegularPolygon(
+                        (x + 0.5, y + 0.56),
+                        numVertices=3,
+                        radius=0.35,
+                        orientation=pi,
+                        zorder=task_no,
+                        facecolor=COLORS[agent_no % len(COLORS)]
+                        if time_int >= 0
+                        else "white",
+                        edgecolor="black",
+                        linewidth=self.TASK_BORDER_WIDTH,
+                        alpha=self.TASK_ALPHA,
                     )
-                    # self.task_objects.append(object)
+                )
+                # self.task_objects.append(object)
 
-                    if self.SHOW_REQUEST_NUMBER:
-                        label = f"{task_no}"
-                        object = self.ax.text(
-                            x + 0.49,
-                            y + 0.56,
-                            label,
-                            color="black",
-                            zorder=task_no + 0.5,
-                            fontsize=self.TASK_NUMBER_SIZE,
-                            horizontalalignment="center",
-                            verticalalignment="center",
-                        )
-                        # fontfamily='Helvetica Neue')
-                        # self.task_name_objects.append(object)
-
-                else:
-                    # Delivery
-                    object = self.ax.add_patch(
-                        RegularPolygon(
-                            (x + 0.5, y + 0.43),
-                            numVertices=3,
-                            radius=0.35,
-                            orientation=0,
-                            zorder=task_no,
-                            facecolor=COLORS[agent % len(COLORS)]
-                            if time_int >= 0
-                            else "white",
-                            edgecolor="black",
-                            linewidth=self.TASK_BORDER_WIDTH,
-                            alpha=self.TASK_ALPHA,
-                        )
+                if self.SHOW_REQUEST_NUMBER:
+                    label = f"{task_no}"
+                    task_text = self.ax.text(
+                        x + 0.49,
+                        y + 0.56,
+                        label,
+                        color="black",
+                        zorder=task_no + 0.5,
+                        fontsize=self.TASK_NUMBER_SIZE,
+                        horizontalalignment="center",
+                        verticalalignment="center",
                     )
-                    # self.task_objects.append(object)
+                    # fontfamily='Helvetica Neue')
+                # self.task_objects.append(object)
+                self.task_tuple_objects.append((time_int, task, task_text))
+            else:
+                # Delivery
+                task = self.ax.add_patch(
+                    RegularPolygon(
+                        (x + 0.5, y + 0.43),
+                        numVertices=3,
+                        radius=0.35,
+                        orientation=0,
+                        zorder=task_no,
+                        facecolor=COLORS[agent_no % len(COLORS)]
+                        if time_int >= 0
+                        else "white",
+                        edgecolor="black",
+                        linewidth=self.TASK_BORDER_WIDTH,
+                        alpha=self.TASK_ALPHA,
+                    )
+                )
+                # self.task_objects.append(object)
 
-                    if self.SHOW_REQUEST_NUMBER:
-                        label = f"{int(task_no - len(self.soln.tasks) / 2)}"
-                        object = self.ax.text(
-                            x + 0.49,
-                            y + 0.45,
-                            label,
-                            color="black",
-                            zorder=task_no + 0.5,
-                            fontsize=self.TASK_NUMBER_SIZE,
-                            horizontalalignment="center",
-                            verticalalignment="center",
-                        )
-                        # fontfamily='Helvetica Neue')
-                        # self.task_name_objects.append(object)
+                if self.SHOW_REQUEST_NUMBER:
+                    label = f"{int(task_no - len(self.soln.tasks) / 2)}"
+                    task_text = self.ax.text(
+                        x + 0.49,
+                        y + 0.45,
+                        label,
+                        color="black",
+                        zorder=task_no + 0.5,
+                        fontsize=self.TASK_NUMBER_SIZE,
+                        horizontalalignment="center",
+                        verticalalignment="center",
+                    )
+                    # fontfamily='Helvetica Neue')
+                self.task_tuple_objects.append((time_int, task, task_text))
 
+        # Sets
+        # # self.task_objects = []
+        # # self.task_name_objects = []
+        # for time_tasks in self.soln.tasks.items():
+        #     time_int = time_tasks[0]
+        #     for task_no, (x, y), agent in time_tasks[1]:
+        #         # Delivery task number will always be Pickup task number + Number of tasks / 2
+        #         if task_no < len(self.soln.tasks) / 2:
+        #             # Pickup
+        #             object = self.ax.add_patch(
+        #                 RegularPolygon(
+        #                     (x + 0.5, y + 0.56),
+        #                     numVertices=3,
+        #                     radius=0.35,
+        #                     orientation=pi,
+        #                     zorder=task_no,
+        #                     facecolor=COLORS[agent % len(COLORS)]
+        #                     if time_int >= 0
+        #                     else "white",
+        #                     edgecolor="black",
+        #                     linewidth=self.TASK_BORDER_WIDTH,
+        #                     alpha=self.TASK_ALPHA,
+        #                 )
+        #             )
+        #             # self.task_objects.append(object)
+
+        #             if self.SHOW_REQUEST_NUMBER:
+        #                 label = f"{task_no}"
+        #                 object = self.ax.text(
+        #                     x + 0.49,
+        #                     y + 0.56,
+        #                     label,
+        #                     color="black",
+        #                     zorder=task_no + 0.5,
+        #                     fontsize=self.TASK_NUMBER_SIZE,
+        #                     horizontalalignment="center",
+        #                     verticalalignment="center",
+        #                 )
+        #                 # fontfamily='Helvetica Neue')
+        #                 # self.task_name_objects.append(object)
+
+        #         else:
+        #             # Delivery
+        #             object = self.ax.add_patch(
+        #                 RegularPolygon(
+        #                     (x + 0.5, y + 0.43),
+        #                     numVertices=3,
+        #                     radius=0.35,
+        #                     orientation=0,
+        #                     zorder=task_no,
+        #                     facecolor=COLORS[agent % len(COLORS)]
+        #                     if time_int >= 0
+        #                     else "white",
+        #                     edgecolor="black",
+        #                     linewidth=self.TASK_BORDER_WIDTH,
+        #                     alpha=self.TASK_ALPHA,
+        #                 )
+        #             )
+        #             # self.task_objects.append(object)
+
+        #             if self.SHOW_REQUEST_NUMBER:
+        #                 label = f"{int(task_no - len(self.soln.tasks) / 2)}"
+        #                 object = self.ax.text(
+        #                     x + 0.49,
+        #                     y + 0.45,
+        #                     label,
+        #                     color="black",
+        #                     zorder=task_no + 0.5,
+        #                     fontsize=self.TASK_NUMBER_SIZE,
+        #                     horizontalalignment="center",
+        #                     verticalalignment="center",
+        #                 )
+        #                 # fontfamily='Helvetica Neue')
+        #                 # self.task_name_objects.append(object)
+        ## Set Time Tuples
+        test = []
+        for a, b, c in self.task_tuple_objects:
+            test.append(b)
+            test.append(c)
         return (
             self.agent_objects
             + self.agent_name_objects
-            # + self.task_objects
+            + test
             # + self.task_name_objects
         )
 
@@ -280,7 +365,7 @@ class SolutionVisualiser:
 
         # Tasks are only Removed during whole numbers
 
-        task_t = floor(t)
+        # task_t = floor(t)
         # for time_tasks in self.soln.tasks.items():
         # time_int = time_tasks[0]
 
@@ -354,7 +439,16 @@ class SolutionVisualiser:
         #             )
         #             # fontfamily='Helvetica Neue')
         #             self.task_name_objects.append(object)
-        return self.agent_objects + self.agent_name_objects
+        test = []
+        less_time = True
+        i = 0
+        while i < len(self.task_tuple_objects):
+            if t < self.task_tuple_objects[i][0]:
+                test.append(self.task_tuple_objects[i][1])
+                test.append(self.task_tuple_objects[i][2])
+            i += 1
+
+        return self.agent_objects + self.agent_name_objects + test
 
     def init(self):
         self.setup_plot()
@@ -383,20 +477,20 @@ if __name__ == "__main__":
         # '#F7921D', # BurntOrange
         # '#00B3B8', # BlueGreen
         # '#F69289', # Salmon
-        # '#C6DC67', # SpringGreen
-        # '#F49EC4', # Lavender
-        # '#EC008C', # Magenta
-        # '#008B72', # PineGreen
-        # '#99479B', # Purple
-        # '#0071BC', # RoyalBlue
-        # '#DA9D76', # Tan
+        "#C6DC67",  # SpringGreen
+        "#F49EC4",  # Lavender
+        "#EC008C",  # Magenta
+        "#008B72",  # PineGreen
+        "#99479B",  # Purple
+        "#0071BC",  # RoyalBlue
+        "#DA9D76",  # Tan
     ]
     ## Generating Animation
     agent_s = timeit.default_timer()
     # solution = SolutionVisualiser("solution.txt")
     solution = SolutionVisualiser("solution_2.txt")
     # solution = SolutionVisualiser("solution_short_long.txt")
-    agent_time = timeit.default_timer() - agent_s
+    agent_time = timeit.default_timer() - agent_s  # THis only mesaures update speed
     print("Animation Creation Time: ")
     print(agent_time)
 
