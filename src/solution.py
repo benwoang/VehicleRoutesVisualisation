@@ -1,5 +1,6 @@
 import re
 from map import Map
+from collections import deque
 
 
 class Solution:
@@ -70,10 +71,27 @@ class Solution:
         return routes, paths
 
     def get_tasks(self):
+        # tasks = deque([])
         tasks = {}
+        # Both Routes and Paths are lined up for each agent
         for agent_no, (route, path) in enumerate(zip(self.routes, self.paths)):
-            for r, t in route[1:-1]:  # uses route in between first and last items
-                tasks[r] = (t, path[t], agent_no)
+            count = 1  # Determine if it is a pickup or delivery
+            for route_number, time_int in route[
+                1:-1
+            ]:  # uses route in between first and last items
+                if time_int not in tasks:
+                    tasks[time_int] = [(route_number, path[time_int], agent_no)]
+                else:
+                    tasks[time_int].append((route_number, path[time_int], agent_no))
+                # tasks.append(
+                #     (
+                #         route_number,
+                #         time_int,
+                #         path[time_int],
+                #         agent_no,
+                #     )
+                # )
+                # route and task number are synonomous
         return tasks
 
     def __escape_ansi(self, line):
