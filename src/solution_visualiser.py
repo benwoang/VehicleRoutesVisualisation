@@ -4,6 +4,8 @@ import matplotlib.style as mplstyle
 from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Circle, Rectangle, RegularPolygon
 
+from collections import deque
+
 
 from solution import Solution
 from math import floor
@@ -27,7 +29,7 @@ class SolutionVisualiser:
     TIME_RESOLUTION = 10
     DPI = 600
     VIDEO_FPS = 4 * TIME_RESOLUTION
-    FIG_SIZE = 4
+    FIG_SIZE = 5
     OUTPUT_DIR = "./"
     NUM_PROCESSES = 6
 
@@ -347,21 +349,53 @@ class SolutionVisualiser:
         #                 # fontfamily='Helvetica Neue')
         #                 # self.task_name_objects.append(object)
         ## Set Time Tuples
-        test = []
+        test = []  # deque()
         for a, b, c in self.task_tuple_objects:
             test.append(b)
             test.append(c)
 
-        ## Set TIme Tuples
-        return (
-            self.agent_objects
-            + self.agent_name_objects
-            + test
-            # + self.task_name_objects
-        )
+        # Draw Initial Lines
+        self.path_objects = []
+        for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
+            self.path_objects.append(
+                self.ax.add_line(
+                    plt.Line2D(
+                        [xx + 0.5 for (xx, yy) in path],
+                        [yy + 0.5 for (xx, yy) in path],
+                        color=COLORS[a % len(COLORS)],
+                        zorder=-1,
+                        linewidth=self.PATH_WIDTH,
+                        alpha=self.PATH_ALPHA,
+                    )
+                )
+            )
+        return self.agent_objects + self.agent_name_objects + test + self.path_objects
 
     def update(self, t):
-        x_22 = timeit.default_timer()
+        updated_line_objects = []
+        rounded_time = floor(t)
+        offset_time = (t - rounded_time) / self.TIME_RESOLUTION
+        for agent in self.path_objects:
+            agent_copy = copy.copy(agent)
+            x_raw = agent_copy.get_xdata()
+            # Check if the line has any more lines
+            if t <= len(x_raw):
+                # Get all x, y values
+                x = x_raw[rounded_time:]
+                y = agent_copy.get_ydata()[rounded_time:]
+                # Check if you need to offset and only when there is more than 1 item left in array
+                if offset_time != 0 and len(x) > 1 and len(y) > 1:
+                    # time is not an integer adjust first array value
+                    # Check if only x or y changes if none change no need to adjust
+                    if x[0] != x[1]:
+                        x[0] = x[0] + offset_time
+                    elif y[0] != y[1]:
+                        y[0] = y[0] + offset_time
+                    agent_copy.set_xdata(x)
+                    agent_copy.set_ydata(y)
+                updated_line_objects.append(agent_copy)
+
+        # x_22 = timeit.default_timer()
         # Draw agents and paths.
         # path_objects = []
         for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
@@ -456,7 +490,7 @@ class SolutionVisualiser:
         #             # fontfamily='Helvetica Neue')
         #             self.task_name_objects.append(object)
 
-        # Update Tests
+        # Update Tasks
         test = []
         less_time = True
         # i = 0
@@ -473,8 +507,10 @@ class SolutionVisualiser:
             test.append(self.task_tuple_objects[j][2])
             j -= 1
 
-        print(timeit.default_timer() - x_22)
-        return self.agent_objects + self.agent_name_objects + test
+        # print(timeit.default_timer() - x_22)
+        return (
+            updated_line_objects + self.agent_objects + self.agent_name_objects + test
+        )
 
     def init(self):
         self.setup_plot()
