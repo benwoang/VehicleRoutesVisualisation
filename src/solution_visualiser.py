@@ -369,12 +369,14 @@ class SolutionVisualiser:
                     )
                 )
             )
+        # self.path_objects_copy = copy.deepcopy(self.path_objects)
+
         return self.agent_objects + self.agent_name_objects + test + self.path_objects
 
     def update(self, t):
         updated_line_objects = []
         rounded_time = floor(t)
-        offset_time = (t - rounded_time) / self.TIME_RESOLUTION
+        offset_time = t - rounded_time  # / self.TIME_RESOLUTION
         for agent in self.path_objects:
             agent_copy = copy.copy(agent)
             x_raw = agent_copy.get_xdata()
@@ -388,11 +390,19 @@ class SolutionVisualiser:
                     # time is not an integer adjust first array value
                     # Check if only x or y changes if none change no need to adjust
                     if x[0] != x[1]:
-                        x[0] = x[0] + offset_time
+                        if x[1] > x[0]:
+                            x[0] = x[0] + offset_time
+                        else:
+                            x[0] = x[0] - offset_time
                     elif y[0] != y[1]:
-                        y[0] = y[0] + offset_time
-                    agent_copy.set_xdata(x)
-                    agent_copy.set_ydata(y)
+                        if y[1] > y[0]:
+                            y[0] = y[0] + offset_time
+                        else:
+                            y[0] = y[0] - offset_time
+                # elif offset_time > 0 and len(x) > 1 and len(y) > 1:
+
+                agent_copy.set_xdata(x)
+                agent_copy.set_ydata(y)
                 updated_line_objects.append(agent_copy)
 
         # x_22 = timeit.default_timer()
@@ -508,6 +518,8 @@ class SolutionVisualiser:
             j -= 1
 
         # print(timeit.default_timer() - x_22)
+        # print("t = " + str(t) + "\n")
+        # print(updated_line_objects[1].get_xdata())
         return (
             updated_line_objects + self.agent_objects + self.agent_name_objects + test
         )
