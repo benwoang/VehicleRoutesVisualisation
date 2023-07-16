@@ -62,7 +62,7 @@ class SolutionVisualiser:
             self.update,
             init_func=self.init,
             frames=self.time_generator(0),
-            interval=0,
+            interval=20,
             blit=True,
         )
 
