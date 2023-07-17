@@ -4,7 +4,7 @@ from matplotlib.lines import Line2D
 from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Rectangle, RegularPolygon
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
-
+from functools import partial
 
 from solution import Solution
 from math import floor
@@ -51,7 +51,7 @@ class SolutionVisualiser(FigureCanvas):
         FigureCanvas.__init__(self, self.fig)
         self.animation = FuncAnimation(
             self.fig,
-            self.update,
+            func=self.update,
             init_func=self.init,
             frames=self.time_generator(0),
             interval=1.0,
@@ -375,8 +375,8 @@ class SolutionVisualiser(FigureCanvas):
 
         return self.agent_objects + self.agent_name_objects + test + self.path_objects
 
-    def update(self, t):
-        x_start_time = timeit.default_timer()
+    def update(self, t=0):
+        # x_start_time = timeit.default_timer()
         updated_line_objects = []
         rounded_time = floor(t)
         offset_time = t - rounded_time  # / self.TIME_RESOLUTION
@@ -519,7 +519,7 @@ class SolutionVisualiser(FigureCanvas):
             test.append(self.task_tuple_objects[j][2])
             j -= 1
 
-        print(timeit.default_timer() - x_start_time)
+        # print(timeit.default_timer() - x_start_time)
         # print("t = " + str(t) + "\n")
         # print(updated_line_objects[1].get_xdata())
         return (
