@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow, QVBoxLayout
-from solution_visualiser import SolutionVisualiser, COLORS
+from solution_visualiser import SolutionVisualiser
 
 
 class MainWindow(QMainWindow):

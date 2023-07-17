@@ -25,9 +25,9 @@ class SolutionVisualiser(FigureCanvas):
     TASK_ALPHA = 1.0
     PATH_WIDTH = 0.8
     PATH_ALPHA = 0.8
-    TIME_RESOLUTION = 5
-    DPI = 90
-    FIG_SIZE = 5
+    TIME_RESOLUTION = 10
+    DPI = 60
+    FIG_SIZE = 4
 
     def __init__(self, solution_file_path) -> None:
         self.soln = Solution(solution_file_path)
@@ -35,8 +35,8 @@ class SolutionVisualiser(FigureCanvas):
         self.map_width = self.soln.map.map_width
 
         # Plot Speed Up
-        # matplotlib.rcParams["path.simplify"] = True
-        # matplotlib.rcParams["path.simplify_threshold"] = 1
+        matplotlib.rcParams["path.simplify"] = True
+        matplotlib.rcParams["path.simplify_threshold"] = 1
         # mplstyle.use("fast")
 
         # Show plots.
@@ -54,7 +54,7 @@ class SolutionVisualiser(FigureCanvas):
             func=self.update,
             init_func=self.init,
             frames=self.time_generator(0),
-            interval=1.0,
+            interval=0,
             blit=True,
         )
 
@@ -202,7 +202,7 @@ class SolutionVisualiser(FigureCanvas):
                     RegularPolygon(
                         (x + 0.5, y + 0.56),
                         numVertices=3,
-                        radius=0.35,
+                        radius=0.5,
                         orientation=pi,
                         zorder=task_no,
                         facecolor=COLORS[agent_no % len(COLORS)]
@@ -235,7 +235,7 @@ class SolutionVisualiser(FigureCanvas):
                     RegularPolygon(
                         (x + 0.5, y + 0.43),
                         numVertices=3,
-                        radius=0.35,
+                        radius=0.5,
                         orientation=0,
                         zorder=task_no,
                         facecolor=COLORS[agent_no % len(COLORS)]
