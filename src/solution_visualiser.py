@@ -26,16 +26,9 @@ class SolutionVisualiser:
     TASK_ALPHA = 1.0
     PATH_WIDTH = 0.8
     PATH_ALPHA = 0.8
-    TIME_RESOLUTION = 10
-    DPI = 600
-    VIDEO_FPS = 4 * TIME_RESOLUTION
+    TIME_RESOLUTION = 5
+    DPI = 90
     FIG_SIZE = 5
-    OUTPUT_DIR = "./"
-    NUM_PROCESSES = 6
-
-    SHOW_TIMESTEP = False
-    SHOW_AGENT_NUMBER = True
-    SHOW_REQUEST_NUMBER = True
 
     def __init__(self, solution_file_path) -> None:
         self.soln = Solution(solution_file_path)
@@ -62,7 +55,7 @@ class SolutionVisualiser:
             self.update,
             init_func=self.init,
             frames=self.time_generator(0),
-            interval=20,
+            interval=1.0,
             blit=True,
         )
 
@@ -186,21 +179,19 @@ class SolutionVisualiser:
                 )
             )
             self.agent_objects.append(object)
-
-            if self.SHOW_AGENT_NUMBER:
-                x, y = (path[0][0] + 0.49, path[0][1] + 0.53)
-                text = self.ax.text(
-                    x,
-                    y,
-                    f"{a}",
-                    color="black",
-                    zorder=10001,
-                    fontsize=self.AGENT_NUMBER_SIZE,
-                    horizontalalignment="center",
-                    verticalalignment="center",
-                )
-                #    fontfamily='Helvetica Neue')
-                self.agent_name_objects.append(text)
+            x, y = (path[0][0] + 0.49, path[0][1] + 0.53)
+            text = self.ax.text(
+                x,
+                y,
+                f"{a}",
+                color="black",
+                zorder=10001,
+                fontsize=self.AGENT_NUMBER_SIZE,
+                horizontalalignment="center",
+                verticalalignment="center",
+            )
+            #    fontfamily='Helvetica Neue')
+            self.agent_name_objects.append(text)
 
         # Draw tasks.
         # List
@@ -225,19 +216,18 @@ class SolutionVisualiser:
                 )
                 # self.task_objects.append(object)
 
-                if self.SHOW_REQUEST_NUMBER:
-                    label = f"{task_no}"
-                    task_text = self.ax.text(
-                        x + 0.49,
-                        y + 0.56,
-                        label,
-                        color="black",
-                        zorder=task_no + 0.5,
-                        fontsize=self.TASK_NUMBER_SIZE,
-                        horizontalalignment="center",
-                        verticalalignment="center",
-                    )
-                    # fontfamily='Helvetica Neue')
+                label = f"{task_no}"
+                task_text = self.ax.text(
+                    x + 0.49,
+                    y + 0.56,
+                    label,
+                    color="black",
+                    zorder=task_no + 0.5,
+                    fontsize=self.TASK_NUMBER_SIZE,
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                )
+                # fontfamily='Helvetica Neue')
                 # self.task_objects.append(object)
                 self.task_tuple_objects.append((time_int, task, task_text))
             else:
@@ -259,19 +249,18 @@ class SolutionVisualiser:
                 )
                 # self.task_objects.append(object)
 
-                if self.SHOW_REQUEST_NUMBER:
-                    label = f"{int(task_no - len(self.soln.tasks) / 2)}"
-                    task_text = self.ax.text(
-                        x + 0.49,
-                        y + 0.45,
-                        label,
-                        color="black",
-                        zorder=task_no + 0.5,
-                        fontsize=self.TASK_NUMBER_SIZE,
-                        horizontalalignment="center",
-                        verticalalignment="center",
-                    )
-                    # fontfamily='Helvetica Neue')
+                label = f"{int(task_no - len(self.soln.tasks) / 2)}"
+                task_text = self.ax.text(
+                    x + 0.49,
+                    y + 0.45,
+                    label,
+                    color="black",
+                    zorder=task_no + 0.5,
+                    fontsize=self.TASK_NUMBER_SIZE,
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                )
+                # fontfamily='Helvetica Neue')
                 self.task_tuple_objects.append((time_int, task, task_text))
 
         # Sets
@@ -355,25 +344,40 @@ class SolutionVisualiser:
             test.append(c)
 
         # Draw Initial Lines
-        self.path_objects = []
-        for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
-            self.path_objects.append(
-                self.ax.add_line(
-                    plt.Line2D(
-                        [xx + 0.5 for (xx, yy) in path],
-                        [yy + 0.5 for (xx, yy) in path],
-                        color=COLORS[a % len(COLORS)],
-                        zorder=-1,
-                        linewidth=self.PATH_WIDTH,
-                        alpha=self.PATH_ALPHA,
-                    )
+        # self.path_objects = []
+        # for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
+        #     self.path_objects.append(
+        #         self.ax.add_line(
+        #             plt.Line2D(
+        #                 [xx + 0.5 for (xx, yy) in path],
+        #                 [yy + 0.5 for (xx, yy) in path],
+        #                 color=COLORS[a % len(COLORS)],
+        #                 zorder=-1,
+        #                 linewidth=self.PATH_WIDTH,
+        #                 alpha=self.PATH_ALPHA,
+        #             )
+        #         )
+        #     )
+
+        self.path_objects = [
+            self.ax.add_line(
+                plt.Line2D(
+                    [xx + 0.5 for (xx, yy) in path],
+                    [yy + 0.5 for (xx, yy) in path],
+                    color=COLORS[a % len(COLORS)],
+                    zorder=-1,
+                    linewidth=self.PATH_WIDTH,
+                    alpha=self.PATH_ALPHA,
                 )
             )
+            for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths))
+        ]
         # self.path_objects_copy = copy.deepcopy(self.path_objects)
 
         return self.agent_objects + self.agent_name_objects + test + self.path_objects
 
     def update(self, t):
+        x_start_time = timeit.default_timer()
         updated_line_objects = []
         rounded_time = floor(t)
         offset_time = t - rounded_time  # / self.TIME_RESOLUTION
@@ -420,8 +424,7 @@ class SolutionVisualiser:
 
             # Update position.
             self.agent_objects[a].set_xy((x + 0.13, y + 0.13))
-            if self.SHOW_AGENT_NUMBER:
-                self.agent_name_objects[a].set_position((x + 0.49, y + 0.53))
+            self.agent_name_objects[a].set_position((x + 0.49, y + 0.53))
 
         # Tasks are only Removed during whole numbers
 
@@ -517,7 +520,7 @@ class SolutionVisualiser:
             test.append(self.task_tuple_objects[j][2])
             j -= 1
 
-        # print(timeit.default_timer() - x_22)
+        print(timeit.default_timer() - x_start_time)
         # print("t = " + str(t) + "\n")
         # print(updated_line_objects[1].get_xdata())
         return (
