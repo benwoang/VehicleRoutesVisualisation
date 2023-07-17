@@ -1,10 +1,9 @@
 import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.style as mplstyle
+from matplotlib.figure import Figure
+from matplotlib.lines import Line2D
 from matplotlib.animation import FuncAnimation
-from matplotlib.patches import Circle, Rectangle, RegularPolygon
-
-from collections import deque
+from matplotlib.patches import Rectangle, RegularPolygon
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 
 
 from solution import Solution
@@ -16,7 +15,7 @@ import copy
 import timeit
 
 
-class SolutionVisualiser:
+class SolutionVisualiser(FigureCanvas):
     OBSTACLE_COLOR = "#D9D9D9"
     BACKGROUND_COLOR = "#FAFAFA"
     AGENT_NUMBER_SIZE = 6
@@ -40,16 +39,16 @@ class SolutionVisualiser:
         # matplotlib.rcParams["path.simplify_threshold"] = 1
         # mplstyle.use("fast")
 
-        # Don't show plots.
-        plt.ioff()
+        # Show plots.
         matplotlib.use(
             "QTAgg"
         )  # When using TkAgg FuncAnimtion interval must be larger than 0
 
         # Create empty plot.
         aspect = self.map_width / self.map_height
-        self.fig = plt.figure(figsize=(self.FIG_SIZE * aspect, self.FIG_SIZE))
+        self.fig = Figure(figsize=(self.FIG_SIZE * aspect, self.FIG_SIZE))
 
+        FigureCanvas.__init__(self, self.fig)
         self.animation = FuncAnimation(
             self.fig,
             self.update,
@@ -63,11 +62,11 @@ class SolutionVisualiser:
         self.fig.patch.set_facecolor(self.BACKGROUND_COLOR)
 
         # Set axis font.
-        self.ax = plt.gca()
+        self.ax = self.fig.gca()
         # self.ax.set_axisbelow(True)
 
         # Hide outside map.
-        plt.tight_layout(pad=1.0)
+        self.fig.tight_layout(pad=1.0)
 
         # Set background color
         self.ax.set_facecolor("white")
@@ -84,8 +83,8 @@ class SolutionVisualiser:
         # x_step = 1
         # y_step = 1
 
-        plt.xlim(x_min, x_max)
-        plt.ylim(y_min, y_max)
+        self.ax.set_xlim(x_min, x_max)
+        self.ax.set_ylim(y_min, y_max)
 
         # Shift axis to the middle of each coordinate.
         self.ax.xaxis.set(
@@ -348,7 +347,7 @@ class SolutionVisualiser:
         # for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
         #     self.path_objects.append(
         #         self.ax.add_line(
-        #             plt.Line2D(
+        #             Line2D(
         #                 [xx + 0.5 for (xx, yy) in path],
         #                 [yy + 0.5 for (xx, yy) in path],
         #                 color=COLORS[a % len(COLORS)],
@@ -361,7 +360,7 @@ class SolutionVisualiser:
 
         self.path_objects = [
             self.ax.add_line(
-                plt.Line2D(
+                Line2D(
                     [xx + 0.5 for (xx, yy) in path],
                     [yy + 0.5 for (xx, yy) in path],
                     color=COLORS[a % len(COLORS)],
@@ -532,36 +531,37 @@ class SolutionVisualiser:
         return self.setup_artists()
 
 
+COLORS = [
+    "#F85647",  # red
+    "#FEDC2C",  # yellow
+    "#50D546",  # green
+    "#5CB4FF",  # blue
+    "#C397FD",  # purple
+    "#F494C4",  # pink
+    "#57DBC2",  # mint
+    "#FF9F2C",  # orange
+    "#7FA4E9",  # violet
+    # '#F6968C', # salmon
+    "#B9DC67",  # lime
+    "#EAAF89",  # tan
+    # '#00B0F0', # ProcessBlue
+    # '#ED1B23', # Red
+    # '#FFDF42', # Goldenrod
+    # '#00A64F', # Green
+    # '#7977B8', # Periwinkle
+    # '#F7921D', # BurntOrange
+    # '#00B3B8', # BlueGreen
+    # '#F69289', # Salmon
+    "#C6DC67",  # SpringGreen
+    "#F49EC4",  # Lavender
+    "#EC008C",  # Magenta
+    "#008B72",  # PineGreen
+    "#99479B",  # Purple
+    "#0071BC",  # RoyalBlue
+    "#DA9D76",  # Tan
+]
+
 if __name__ == "__main__":
-    COLORS = [
-        "#F85647",  # red
-        "#FEDC2C",  # yellow
-        "#50D546",  # green
-        "#5CB4FF",  # blue
-        "#C397FD",  # purple
-        "#F494C4",  # pink
-        "#57DBC2",  # mint
-        "#FF9F2C",  # orange
-        "#7FA4E9",  # violet
-        # '#F6968C', # salmon
-        "#B9DC67",  # lime
-        "#EAAF89",  # tan
-        # '#00B0F0', # ProcessBlue
-        # '#ED1B23', # Red
-        # '#FFDF42', # Goldenrod
-        # '#00A64F', # Green
-        # '#7977B8', # Periwinkle
-        # '#F7921D', # BurntOrange
-        # '#00B3B8', # BlueGreen
-        # '#F69289', # Salmon
-        "#C6DC67",  # SpringGreen
-        "#F49EC4",  # Lavender
-        "#EC008C",  # Magenta
-        "#008B72",  # PineGreen
-        "#99479B",  # Purple
-        "#0071BC",  # RoyalBlue
-        "#DA9D76",  # Tan
-    ]
     ## Generating Animation
     agent_s = timeit.default_timer()
     # solution = SolutionVisualiser("solution.txt")
@@ -578,5 +578,5 @@ if __name__ == "__main__":
     # print(agent_time)
 
     ## Showing Animation
-    # plt.grid(which="both")
-    plt.show()
+    # grid(which="both")
+    # SolutionVisualiser.fig.show()
