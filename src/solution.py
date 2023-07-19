@@ -73,11 +73,13 @@ class Solution:
     def get_tasks(self):
         # tasks = deque([])
         tasks = []
-        # Both Routes and Paths are lined up for each agent
+        self.tasks_dict = {}
         for agent_no, (route, path) in enumerate(zip(self.routes, self.paths)):
+            # Both Routes and Paths are lined up for each agent
             ## LIST with TUPLES
             for route_number, time_int in route[1:-1]:
                 tasks.append((time_int, route_number, path[time_int], agent_no))
+
         tasks.sort(key=lambda task: task[0])  # , reverse=True)  # Sort by time
 
         # tasks = {}
