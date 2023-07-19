@@ -12,6 +12,7 @@ from cmath import pi
 
 import copy
 
+import time
 import timeit
 
 
@@ -26,7 +27,7 @@ class SolutionVisualiser(FigureCanvas):
     PATH_WIDTH = 0.8
     PATH_ALPHA = 0.8
     TIME_RESOLUTION = 10
-    DPI = 60
+    DPI = 40
     FIG_SIZE = 4
 
     def __init__(self, solution_file_path) -> None:
@@ -54,8 +55,9 @@ class SolutionVisualiser(FigureCanvas):
             func=self.update,
             init_func=self.init,
             frames=self.time_generator(0),
-            interval=0,
+            interval=1,
             blit=True,
+            cache_frame_data=False,
         )
 
     def setup_plot(self):
@@ -136,7 +138,6 @@ class SolutionVisualiser(FigureCanvas):
 
     def setup_artists(self):
         # Build Obstacles
-        # x_s = timeit.default_timer()
         for y in range(self.map_height):
             x_begin = 0
             x_end = self.map_width
@@ -159,8 +160,7 @@ class SolutionVisualiser(FigureCanvas):
                     x_begin = x_end + 1
                 else:
                     x_begin += 1
-        # print("init_func")
-        # print(timeit.default_timer() - x_s)
+
         # Draw agents.
         self.agent_objects = []
         self.agent_name_objects = []
@@ -263,101 +263,13 @@ class SolutionVisualiser(FigureCanvas):
                 self.task_tuple_objects.append((time_int, task, task_text))
 
         # Sets
-        # # self.task_objects = []
-        # # self.task_name_objects = []
-        # for time_tasks in self.soln.tasks.items():
-        #     time_int = time_tasks[0]
-        #     for task_no, (x, y), agent in time_tasks[1]:
-        #         # Delivery task number will always be Pickup task number + Number of tasks / 2
-        #         if task_no < len(self.soln.tasks) / 2:
-        #             # Pickup
-        #             object = self.ax.add_patch(
-        #                 RegularPolygon(
-        #                     (x + 0.5, y + 0.56),
-        #                     numVertices=3,
-        #                     radius=0.35,
-        #                     orientation=pi,
-        #                     zorder=task_no,
-        #                     facecolor=COLORS[agent % len(COLORS)]
-        #                     if time_int >= 0
-        #                     else "white",
-        #                     edgecolor="black",
-        #                     linewidth=self.TASK_BORDER_WIDTH,
-        #                     alpha=self.TASK_ALPHA,
-        #                 )
-        #             )
-        #             # self.task_objects.append(object)
-
-        #             if self.SHOW_REQUEST_NUMBER:
-        #                 label = f"{task_no}"
-        #                 object = self.ax.text(
-        #                     x + 0.49,
-        #                     y + 0.56,
-        #                     label,
-        #                     color="black",
-        #                     zorder=task_no + 0.5,
-        #                     fontsize=self.TASK_NUMBER_SIZE,
-        #                     horizontalalignment="center",
-        #                     verticalalignment="center",
-        #                 )
-        #                 # fontfamily='Helvetica Neue')
-        #                 # self.task_name_objects.append(object)
-
-        #         else:
-        #             # Delivery
-        #             object = self.ax.add_patch(
-        #                 RegularPolygon(
-        #                     (x + 0.5, y + 0.43),
-        #                     numVertices=3,
-        #                     radius=0.35,
-        #                     orientation=0,
-        #                     zorder=task_no,
-        #                     facecolor=COLORS[agent % len(COLORS)]
-        #                     if time_int >= 0
-        #                     else "white",
-        #                     edgecolor="black",
-        #                     linewidth=self.TASK_BORDER_WIDTH,
-        #                     alpha=self.TASK_ALPHA,
-        #                 )
-        #             )
-        #             # self.task_objects.append(object)
-
-        #             if self.SHOW_REQUEST_NUMBER:
-        #                 label = f"{int(task_no - len(self.soln.tasks) / 2)}"
-        #                 object = self.ax.text(
-        #                     x + 0.49,
-        #                     y + 0.45,
-        #                     label,
-        #                     color="black",
-        #                     zorder=task_no + 0.5,
-        #                     fontsize=self.TASK_NUMBER_SIZE,
-        #                     horizontalalignment="center",
-        #                     verticalalignment="center",
-        #                 )
-        #                 # fontfamily='Helvetica Neue')
-        #                 # self.task_name_objects.append(object)
         ## Set Time Tuples
-        test = []  # deque()
+        test = []
         for a, b, c in self.task_tuple_objects:
             test.append(b)
             test.append(c)
 
         # Draw Initial Lines
-        # self.path_objects = []
-        # for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
-        #     self.path_objects.append(
-        #         self.ax.add_line(
-        #             Line2D(
-        #                 [xx + 0.5 for (xx, yy) in path],
-        #                 [yy + 0.5 for (xx, yy) in path],
-        #                 color=COLORS[a % len(COLORS)],
-        #                 zorder=-1,
-        #                 linewidth=self.PATH_WIDTH,
-        #                 alpha=self.PATH_ALPHA,
-        #             )
-        #         )
-        #     )
-
         self.path_objects = [
             self.ax.add_line(
                 Line2D(
@@ -376,7 +288,8 @@ class SolutionVisualiser(FigureCanvas):
         return self.agent_objects + self.agent_name_objects + test + self.path_objects
 
     def update(self, t=0):
-        # x_start_time = timeit.default_timer()
+        x_start_time = timeit.default_timer()
+        # Draw Paths
         updated_line_objects = []
         rounded_time = floor(t)
         offset_time = t - rounded_time  # / self.TIME_RESOLUTION
@@ -408,9 +321,7 @@ class SolutionVisualiser(FigureCanvas):
                 agent_copy.set_ydata(y)
                 updated_line_objects.append(agent_copy)
 
-        # x_22 = timeit.default_timer()
-        # Draw agents and paths.
-        # path_objects = []
+        # Draw agents.
         for a, (route, path) in enumerate(zip(self.soln.routes, self.soln.paths)):
             # Get position.
             agent_time = t  # + substep / self.TIME_RESOLUTION
@@ -518,10 +429,11 @@ class SolutionVisualiser(FigureCanvas):
             test.append(self.task_tuple_objects[j][1])
             test.append(self.task_tuple_objects[j][2])
             j -= 1
+        x_time = timeit.default_timer() - x_start_time
+        if x_time < 0.0003:
+            time.sleep((0.0004 - x_time))
 
-        # print(timeit.default_timer() - x_start_time)
-        # print("t = " + str(t) + "\n")
-        # print(updated_line_objects[1].get_xdata())
+        time.sleep(2 ** (t * 0.0006) - 1)
         return (
             updated_line_objects + self.agent_objects + self.agent_name_objects + test
         )
