@@ -1,6 +1,22 @@
+map_file = "31x79-w5.map"
+txt1 = """
+Paths from solution with objective value 3093.0000
+                                           0         1         2         3         4         5         6         7         8         9        10        11        12        13        14        15        16        17        18        19        20        21        22        23        24        25        26        27        28        29        30        31        32        33        34        35        36        37        38        39        40        41        42        43        44        45        46        47        48        49        50        51        52        53        54        55        56        57        58        59        60        61        62        63        64        65        66        67        68        69        70        71        72        73        74        75        76        77        78        79        80        81        82        83        84        85        86        87        88        89        90        91        92        93        94        95        96        97        98        99       100       101       102       103       104       105       106       107       108       109       110       111       112       113       114       115       116       117       118       119       120       121       122       123       124       125       126       127       128       129       130       131       132       133       134       135       136       137       138       139       140       141       142       143       144       145       146       147       148       149       150       151       152       153       154       155       156       157       158       159       160       161       162       163       164       165       166       167       168       169       170       171       172       173       174       175       176       177       178       179       180       181       182       183       184       185       186       187       188       189       190       191       192       193       194       195       196       197       198       199       200       201       202       203       204       205       206       207       208       209       210       211       212       213       214       215       216       217       218       219       220       221       222       223       224       225       226       227       228       229       230       231       232       233       234       235       236       237       238       239       240       241       242       243       244       245       246       247       248       249       250       251       252       253       254       255       256       257       258       259       260       261       262       263
+    Agent  0, Val: 1.0000, Route:    100 (0)      1 (2)      2 (4)   100 (8)
+                            Path:     (67,7)    (68,7)    (69,7)    (70,7)    (71,7)    (72,7)    (73,7)    (74,7)    (75,7)
+"""
+# txt = '''
+# Paths from solution with objective value 3093.0000
+#                                             0         1         2         3         4         5         6         7         8         9        10        11        12        13        14        15        16        17        18        19        20        21        22        23        24        25        26        27        28        29        30        31        32        33        34        35        36        37        38        39        40        41        42        43        44        45        46        47        48        49        50        51        52        53        54        55        56        57        58        59        60        61        62        63        64        65        66        67        68        69        70        71        72        73        74        75        76        77        78        79        80        81        82        83        84        85        86        87        88        89        90        91        92        93        94        95        96        97        98        99       100       101       102       103       104       105       106       107       108       109       110       111       112       113       114       115       116       117       118       119       120       121       122       123       124       125       126       127       128       129       130       131       132       133       134       135       136       137       138       139       140       141       142       143       144       145       146       147       148       149       150       151       152       153       154       155       156       157       158       159       160       161       162       163       164       165       166       167       168       169       170       171       172       173       174       175       176       177       178       179       180       181       182       183       184       185       186       187       188       189       190       191       192       193       194       195       196       197       198       199       200       201       202       203       204       205       206       207       208       209       210       211       212       213       214       215       216       217       218       219       220       221       222       223       224       225       226       227       228       229       230       231       232       233       234       235       236       237       238       239       240       241       242       243       244       245       246       247       248       249       250       251       252       253       254       255       256       257       258       259       260       261       262       263
+#     Agent   0, Val: 1.0000, Route:    100 (0)   1 (20)   2 (82)   3 (82)   5 (85)  4 (103)  6 (119) 100 (126)
+#                              Path:      (4,8)     (4,7)     (4,6)     (4,5)     (4,4)     (4,3)     (4,2)     (4,1)     (4,2)     (4,1)     (4,2)     (4,3)     (4,4)     (5,4)     (6,4)     (7,4)     (8,4)     (9,4)    (10,4)    (11,4)    (11,4)    (12,4)    (12,5)    (12,6)    (12,7)    (13,7)    (14,7)    (15,7)    (16,7)    (17,7)    (18,7)    (19,7)    (20,7)    (21,7)    (22,7)    (23,7)    (24,7)    (25,7)    (26,7)    (26,8)    (26,9)   (26,10)   (26,11)   (26,12)   (26,13)   (26,14)   (26,15)   (26,16)   (26,17)   (26,18)   (26,19)   (26,20)   (26,21)   (26,22)   (27,22)   (28,22)   (29,22)   (30,22)   (31,22)   (32,22)   (33,22)   (34,22)   (35,22)   (36,22)   (37,22)   (38,22)   (39,22)   (40,22)   (41,22)   (42,22)   (43,22)   (44,22)   (45,22)   (46,22)   (47,22)   (47,23)   (47,24)   (47,25)   (48,25)   (49,25)   (50,25)   (51,25)   (52,25)   (51,25)   (50,25)   (49,25)   (50,25)   (51,25)   (52,25)   (53,25)   (54,25)   (54,26)   (54,27)   (54,28)   (55,28)   (56,28)   (57,28)   (58,28)   (59,28)   (60,28)   (61,28)   (62,28)   (63,28)   (64,28)   (65,28)   (66,28)   (67,28)   (68,28)   (69,28)   (70,28)   (71,28)   (72,28)   (73,28)   (74,28)   (75,28)   (75,29)   (76,29)   (77,29)   (78,29)   (79,29)   (79,28)   (78,28)   (77,28)   (76,28)   (75,28)   (74,28)   (73,28)
+#     Agent  1, Val: 1.0000, Route:    100 (0)  7(2) 8(4) 100 (8)
+#                             Path:     (67,7)    (68,7)    (69,7)    (70,7)    (71,7)    (72,7)    (73,7)    (74,7)    (75,7)
+# '''
+offset = 1
+prefix = "warehouse_optimal"
 # map_file = '31x79-w5.map'
 # txt = '''
-#
 # Paths from solution with objective value 2250.0000
 #                                             0         1         2         3         4         5         6         7         8         9        10        11        12        13        14        15        16        17        18        19        20        21        22        23        24        25        26        27        28        29        30        31        32        33        34        35        36        37        38        39        40        41        42        43        44        45        46        47        48        49        50        51        52        53        54        55        56        57        58        59        60        61        62        63        64        65        66        67        68        69        70        71        72        73        74        75        76        77        78        79        80        81        82        83        84        85        86        87        88        89        90        91        92        93        94        95        96        97        98        99       100       101       102       103       104       105       106       107       108       109       110       111       112       113       114       115       116       117       118       119       120       121       122       123       124       125       126       127       128       129       130       131       132       133       134       135       136       137       138       139       140       141       142       143       144       145       146       147       148       149       150       151       152       153       154       155       156       157       158       159       160       161       162       163       164       165       166       167       168       169       170       171       172       173       174       175       176       177       178       179       180       181       182       183       184       185       186       187       188       189       190       191       192       193       194       195       196       197       198       199       200       201       202       203       204       205       206       207       208       209       210       211       212       213       214       215       216       217       218       219       220       221       222       223       224       225       226       227       228       229       230       231       232       233       234       235       236       237       238       239       240       241       242       243       244       245       246       247       248       249       250       251       252       253       254       255       256       257       258       259       260
 #     Agent   0, Val: 1.0000, Route:     60 (0)    0 (19)   30 (26)   27 (54)  57 (132)  60 (142)
@@ -39,8 +55,8 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-map_file = '31x79-w5.map'
-txt = '''
+map_file = "31x79-w5.map"
+txt = """
 Paths from solution with objective value 3093.0000
                                             0         1         2         3         4         5         6         7         8         9        10        11        12        13        14        15        16        17        18        19        20        21        22        23        24        25        26        27        28        29        30        31        32        33        34        35        36        37        38        39        40        41        42        43        44        45        46        47        48        49        50        51        52        53        54        55        56        57        58        59        60        61        62        63        64        65        66        67        68        69        70        71        72        73        74        75        76        77        78        79        80        81        82        83        84        85        86        87        88        89        90        91        92        93        94        95        96        97        98        99       100       101       102       103       104       105       106       107       108       109       110       111       112       113       114       115       116       117       118       119       120       121       122       123       124       125       126       127       128       129       130       131       132       133       134       135       136       137       138       139       140       141       142       143       144       145       146       147       148       149       150       151       152       153       154       155       156       157       158       159       160       161       162       163       164       165       166       167       168       169       170       171       172       173       174       175       176       177       178       179       180       181       182       183       184       185       186       187       188       189       190       191       192       193       194       195       196       197       198       199       200       201       202       203       204       205       206       207       208       209       210       211       212       213       214       215       216       217       218       219       220       221       222       223       224       225       226       227       228       229       230       231       232       233       234       235       236       237       238       239       240       241       242       243       244       245       246       247       248       249       250       251       252       253       254       255       256       257       258       259       260       261       262       263
     Agent   0, Val: 1.0000, Route:    100 (0)   24 (20)   74 (82)   28 (82)   78 (85)  36 (103)  86 (119) 100 (126)
@@ -83,9 +99,9 @@ Paths from solution with objective value 3093.0000
                              Path:     (67,7)    (68,7)    (69,7)    (70,7)    (71,7)    (72,7)    (73,7)    (74,7)    (75,7)
     Agent  19, Val: 1.0000, Route:    100 (0)    2 (24)   52 (43)   46 (64)   96 (99)  49 (115)  99 (123)  45 (141)  95 (176) 100 (191)
                              Path:    (63,22)   (64,22)   (65,22)   (66,22)   (67,22)   (68,22)   (68,21)   (68,20)   (68,19)   (68,18)   (68,17)   (68,16)   (68,15)   (68,14)   (68,13)   (68,12)   (68,13)   (68,14)   (68,15)   (68,16)   (68,17)   (68,18)   (68,19)   (69,19)   (70,19)   (71,19)   (72,19)   (73,19)   (74,19)   (75,19)   (75,18)   (75,17)   (75,16)   (75,15)   (75,14)   (75,13)   (75,12)   (75,11)   (75,10)    (75,9)    (75,8)    (76,8)    (76,7)    (76,6)    (76,7)    (76,8)    (76,9)   (76,10)   (76,11)   (76,12)   (76,13)   (76,14)   (76,15)   (76,16)   (75,16)   (74,16)   (73,16)   (72,16)   (71,16)   (70,16)   (69,16)   (68,16)   (67,16)   (66,16)   (66,16)   (65,16)   (64,16)   (63,16)   (62,16)   (61,16)   (61,15)   (61,14)   (61,13)   (61,12)   (61,11)   (61,10)    (61,9)    (61,8)    (61,7)    (60,7)    (59,7)    (58,7)    (57,7)    (56,7)    (55,7)    (54,7)    (53,7)    (52,7)    (51,7)    (50,7)    (49,7)    (48,7)    (47,7)    (46,7)    (45,7)    (44,7)    (43,7)    (42,7)    (41,7)    (40,7)    (39,7)    (38,7)    (37,7)    (36,7)    (35,7)    (34,7)    (33,7)    (33,6)    (33,5)    (33,4)    (32,4)    (31,4)    (30,4)    (29,4)    (28,4)    (27,4)    (28,4)    (29,4)    (30,4)    (31,4)    (32,4)    (33,4)    (34,4)    (35,4)    (36,4)    (37,4)    (38,4)    (39,4)    (40,4)    (41,4)    (42,4)    (43,4)    (44,4)    (45,4)    (46,4)    (47,4)    (48,4)    (49,4)    (50,4)    (51,4)    (52,4)    (53,4)    (52,4)    (51,4)    (50,4)    (49,4)    (48,4)    (47,4)    (47,5)    (47,6)    (47,7)    (47,8)    (47,9)   (47,10)   (47,11)   (47,12)   (47,13)   (46,13)   (45,13)   (44,13)   (43,13)   (42,13)   (41,13)   (40,13)   (39,13)   (38,13)   (37,13)   (36,13)   (35,13)   (34,13)   (33,13)   (32,13)   (31,13)   (30,13)   (29,13)   (28,13)   (27,13)   (26,13)   (26,14)   (26,15)   (26,16)   (25,16)   (24,16)   (23,16)   (22,16)   (21,16)   (20,16)   (19,16)   (18,16)   (17,16)   (16,16)   (15,16)
-'''
+"""
 offset = 1
-prefix = 'warehouse_optimal'
+prefix = "warehouse_optimal"
 
 # ----------------------------------------------------------------------------------------------------------------------
 #
@@ -164,7 +180,7 @@ prefix = 'warehouse_optimal'
 # prefix = 'temp'
 
 # ----------------------------------------------------------------------------------------------------------------------
-
+import timeit
 from pprint import pprint
 import re
 import numpy as np
@@ -177,21 +193,21 @@ import subprocess
 from multiprocessing import Pool
 import os
 from glob import glob
+from matplotlib.animation import FuncAnimation
 
 COLORS = [
-    '#F85647', # red
-    '#FEDC2C', # yellow
-    '#50D546', # green
-    '#5CB4FF', # blue
-    '#C397FD', # purple
-    '#F494C4', # pink
-    '#57DBC2', # mint
-    '#FF9F2C', # orange
-    '#7FA4E9', # violet
+    "#F85647",  # red
+    "#FEDC2C",  # yellow
+    "#50D546",  # green
+    "#5CB4FF",  # blue
+    "#C397FD",  # purple
+    "#F494C4",  # pink
+    "#57DBC2",  # mint
+    "#FF9F2C",  # orange
+    "#7FA4E9",  # violet
     # '#F6968C', # salmon
-    '#B9DC67', # lime
-    '#EAAF89', # tan
-
+    "#B9DC67",  # lime
+    "#EAAF89",  # tan
     # '#00B0F0', # ProcessBlue
     # '#ED1B23', # Red
     # '#FFDF42', # Goldenrod
@@ -208,8 +224,8 @@ COLORS = [
     # '#0071BC', # RoyalBlue
     # '#DA9D76', # Tan
 ]
-OBSTACLE_COLOR = '#D9D9D9'
-BACKGROUND_COLOR = '#FAFAFA'
+OBSTACLE_COLOR = "#D9D9D9"
+BACKGROUND_COLOR = "#FAFAFA"
 AGENT_NUMBER_SIZE = 3
 AGENT_BORDER_WIDTH = 0.3
 TASK_NUMBER_SIZE = 1.6
@@ -218,27 +234,29 @@ TASK_ALPHA = 1.0
 PATH_WIDTH = 0.8
 PATH_ALPHA = 0.8
 TIME_RESOLUTION = 10
-DPI = 600
+DPI = 300
 VIDEO_FPS = 4 * TIME_RESOLUTION
 FIG_SIZE = 4
-OUTPUT_DIR = './'
+OUTPUT_DIR = "./"
 NUM_PROCESSES = 6
 
 SHOW_TIMESTEP = False
 SHOW_AGENT_NUMBER = True
 SHOW_REQUEST_NUMBER = True
 
+
 def escape_ansi(line):
-    ansi_escape = re.compile('(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
-    return ansi_escape.sub('', line)
+    ansi_escape = re.compile("(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]")
+    return ansi_escape.sub("", line)
+
 
 def read_map(map_file):
-    f = open("./SampleData/"+map_file, 'r')
+    f = open("./SampleData/" + map_file, "r")
     lines = f.read().splitlines()
     f.close()
 
     l = 0
-    while lines[l] != 'map':
+    while lines[l] != "map":
         l += 1
     l += 1
 
@@ -246,29 +264,30 @@ def read_map(map_file):
     y = 0
     for line in lines[l:]:
         row = []
-        for (x, c) in enumerate(line):
-            row.append(c == '.')
+        for x, c in enumerate(line):
+            row.append(c == ".")
         y += 1
         map.append(row)
 
     map2 = np.array(map).transpose()
     return map2
 
-def read_routes_and_paths(txt):
-    lines = escape_ansi(txt).split('\n')
 
-    routes = [line for line in lines if 'Route:' in line]
-    routes = [re.findall(r'(\d+) \((\d+)\)', route) for route in routes]
+def read_routes_and_paths(txt):
+    lines = escape_ansi(txt).split("\n")
+
+    routes = [line for line in lines if "Route:" in line]
+    routes = [re.findall(r"(\d+) \((\d+)\)", route) for route in routes]
     routes = [[(int(r), int(t)) for r, t in route] for route in routes]
 
-    paths = [line for line in lines if 'Path:' in line]
-    paths = [re.findall(r'\((\d+),(\d+)\)', path) for path in paths]
+    paths = [line for line in lines if "Path:" in line]
+    paths = [re.findall(r"\((\d+),(\d+)\)", path) for path in paths]
     paths = [[(int(x) - offset, int(y) - offset) for x, y in path] for path in paths]
 
     assert len(routes) == len(paths)
 
     # Post-process to remove paths going backwards and forwards
-    excluded_times = {(a,t) for a, route in enumerate(routes) for (_,t) in route}
+    excluded_times = {(a, t) for a, route in enumerate(routes) for (_, t) in route}
     makespan = max(route[-1][1] for route in routes)
     used_vertices = set()
     for a, path in enumerate(paths):
@@ -277,31 +296,38 @@ def read_routes_and_paths(txt):
             used_vertices.add((a, t, path[min(length - 1, t)]))
     for a, path in enumerate(paths):
         for t in range(len(path) - 2):
-            if (a, t+1) not in excluded_times:
-                if path[t] != path[t+1] and path[t] == path[t+2]:
-                    xxx = [(a2, t2, v2) for (a2, t2, v2) in used_vertices if (t2, v2) == (t+1, path[t])]
+            if (a, t + 1) not in excluded_times:
+                if path[t] != path[t + 1] and path[t] == path[t + 2]:
+                    xxx = [
+                        (a2, t2, v2)
+                        for (a2, t2, v2) in used_vertices
+                        if (t2, v2) == (t + 1, path[t])
+                    ]
                     if len(xxx) > 0:
-                        print(f'Not modifying agent {a} time {t + 1}')
+                        print(f"Not modifying agent {a} time {t + 1}")
                     else:
-                        path[t+1] = path[t]
-                        print(f'Modifying agent {a} time {t + 1}')
+                        path[t + 1] = path[t]
+                        print(f"Modifying agent {a} time {t + 1}")
 
     return routes, paths
 
+
 def get_tasks(routes, paths):
     tasks = {}
-    for a, (route, path) in enumerate(zip(routes, paths)):
-        for r, t in route[1:-1]:
-            tasks[r] = (t, path[t], a)
+    for agent_no, (route, path) in enumerate(zip(routes, paths)):
+        for r, t in route[1:-1]:  # uses route in between first and last items
+            tasks[r] = (t, path[t], agent_no)
     return tasks
 
-def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
 
+def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
+    print("____TIMESTEP____ " + str(t))
+    initial_dt = timeit.default_timer()
     num_tasks = len(tasks)
 
     # Don't show plots.
     plt.ioff()
-    matplotlib.use('Agg')
+    matplotlib.use("TkAgg")
 
     # Create empty plot.
     aspect = map_width / map_height
@@ -318,10 +344,10 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
     #     # tick.set_fontweight('bold')
     # for tick in ax.get_yticklabels():
     #     tick.set_fontname('Helvetica Neue')
-        # tick.set_fontweight('bold')
+    # tick.set_fontweight('bold')
 
     # Set background color
-    ax.set_facecolor('white')
+    ax.set_facecolor("white")
 
     # Set axis range.
     x_min = 0
@@ -334,22 +360,30 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
     plt.ylim(y_min, y_max)
 
     # Shift axis to the middle of each coordinate.
-    ax.xaxis.set(ticks=[i + 0.5 for i in range(0, x_max, x_step)], ticklabels=range(0, x_max, x_step))
-    ax.yaxis.set(ticks=[i + 0.5 for i in range(0, y_max, y_step)], ticklabels=range(0, y_max, y_step))
+    ax.xaxis.set(
+        ticks=[i + 0.5 for i in range(0, x_max, x_step)],
+        ticklabels=range(0, x_max, x_step),
+    )
+    ax.yaxis.set(
+        ticks=[i + 0.5 for i in range(0, y_max, y_step)],
+        ticklabels=range(0, y_max, y_step),
+    )
 
     # Hide major tick labels.
     # ax.set_xticklabels('')
     # ax.set_yticklabels('')
 
     # Hide ticks
-    ax.tick_params(axis='both',       # changes apply to both axes
-                   which='both',      # both major and minor ticks are affected
-                   left=False,        # ticks along the left edge are off
-                   right=False,       # ticks along the right edge are off
-                   top=False,         # ticks along the top edge are off
-                   bottom=False,      # ticks along the bottom edge are off
-                   labelleft=False,   # labels along the left edge are off
-                   labelbottom=False) # labels along the bottom edge are off
+    ax.tick_params(
+        axis="both",  # changes apply to both axes
+        which="both",  # both major and minor ticks are affected
+        left=False,  # ticks along the left edge are off
+        right=False,  # ticks along the right edge are off
+        top=False,  # ticks along the top edge are off
+        bottom=False,  # ticks along the bottom edge are off
+        labelleft=False,  # labels along the left edge are off
+        labelbottom=False,
+    )  # labels along the bottom edge are off
 
     # Customize minor tick labels.
     # ax.set_xticks([i + 0.5 for i in range(0, x_max, x_step)], minor=True)
@@ -370,8 +404,14 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
 
     # Draw timestep text.
     if t >= 0 and SHOW_TIMESTEP:
-        timestep_text = ax.text(88, -3.0, '', horizontalalignment='right')#, fontfamily='Helvetica Neue')
+        timestep_text = ax.text(
+            88, -3.0, "", horizontalalignment="right"
+        )  # , fontfamily='Helvetica Neue')
 
+    initial_time = timeit.default_timer() - initial_dt
+    print("INITIAL TIME: " + str(initial_time))
+
+    obstacles_s = timeit.default_timer()
     # Draw obstacles.
     for y in range(map_height):
         x_begin = 0
@@ -382,103 +422,141 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                     if map[x, y]:
                         x_end = x
                         break
-                ax.add_patch(Rectangle((x_begin, y), x_end - x_begin, 1, zorder=-2, facecolor=OBSTACLE_COLOR, edgecolor='none'))
+                ax.add_patch(
+                    Rectangle(
+                        (x_begin, y),
+                        x_end - x_begin,
+                        1,
+                        zorder=-2,
+                        facecolor=OBSTACLE_COLOR,
+                        edgecolor="none",
+                    )
+                )
                 x_begin = x_end + 1
             else:
                 x_begin += 1
+    obstacles_time = timeit.default_timer() - obstacles_s
+    print("OBSTACLES TIME: " + str(obstacles_time))
 
+    agent_s = timeit.default_timer()
     # Draw agents.
     agent_objects = []
     agent_name_objects = []
     for a, (route, path) in enumerate(zip(routes, paths)):
         x, y = (path[0][0] + 0.13, path[0][1] + 0.13)
-        object = ax.add_patch(Rectangle((x,y),
-                                        width=0.7,
-                                        height=0.7,
-                                        zorder=10000,
-                                        facecolor=COLORS[a % len(COLORS)],
-                                        edgecolor='black',
-                                        linewidth=AGENT_BORDER_WIDTH))
+        object = ax.add_patch(
+            Rectangle(
+                (x, y),
+                width=0.7,
+                height=0.7,
+                zorder=10000,
+                facecolor=COLORS[a % len(COLORS)],
+                edgecolor="black",
+                linewidth=AGENT_BORDER_WIDTH,
+            )
+        )
         agent_objects.append(object)
 
         if SHOW_AGENT_NUMBER:
             x, y = (path[0][0] + 0.49, path[0][1] + 0.53)
-            text = ax.text(x, y,
-                           f'{a}',
-                           color='black',
-                           zorder=10001,
-                           fontsize=AGENT_NUMBER_SIZE,
-                           horizontalalignment='center',
-                           verticalalignment='center')
-                        #    fontfamily='Helvetica Neue')
+            text = ax.text(
+                x,
+                y,
+                f"{a}",
+                color="black",
+                zorder=10001,
+                fontsize=AGENT_NUMBER_SIZE,
+                horizontalalignment="center",
+                verticalalignment="center",
+            )
+            #    fontfamily='Helvetica Neue')
             agent_name_objects.append(text)
 
+    agent_time = timeit.default_timer() - agent_s
+    print("agent TIME: " + str(agent_time))
+
+    task_s = timeit.default_timer()
     # Draw tasks.
     task_objects = []
-    for task, (completion_time, (x,y), agent) in tasks.items():
+    for task, (completion_time, (x, y), agent) in tasks.items():
         # if data['release_time'] <= t < data['completion_time']:
         if t < completion_time:
             if task < num_tasks / 2:
                 # Pickup
-                object = ax.add_patch(RegularPolygon((x + 0.5, y + 0.56),
-                                                     numVertices=3,
-                                                     radius=0.35,
-                                                     orientation=pi,
-                                                     zorder=task,
-                                                     facecolor=COLORS[agent % len(COLORS)] if t >= 0 else 'white',
-                                                     edgecolor='black',
-                                                     linewidth=TASK_BORDER_WIDTH,
-                                                     alpha=TASK_ALPHA))
+                object = ax.add_patch(
+                    RegularPolygon(
+                        (x + 0.5, y + 0.56),
+                        numVertices=3,
+                        radius=0.35,
+                        orientation=pi,
+                        zorder=task,
+                        facecolor=COLORS[agent % len(COLORS)] if t >= 0 else "white",
+                        edgecolor="black",
+                        linewidth=TASK_BORDER_WIDTH,
+                        alpha=TASK_ALPHA,
+                    )
+                )
                 task_objects.append(object)
 
                 if SHOW_REQUEST_NUMBER:
-                    label = f'{task}'
-                    object = ax.text(x + 0.49, y + 0.56,
-                                    label,
-                                    color='black',
-                                    zorder=task + 0.5,
-                                    fontsize=TASK_NUMBER_SIZE,
-                                    horizontalalignment='center',
-                                    verticalalignment='center')
-                                    # fontfamily='Helvetica Neue')
+                    label = f"{task}"
+                    object = ax.text(
+                        x + 0.49,
+                        y + 0.56,
+                        label,
+                        color="black",
+                        zorder=task + 0.5,
+                        fontsize=TASK_NUMBER_SIZE,
+                        horizontalalignment="center",
+                        verticalalignment="center",
+                    )
+                    # fontfamily='Helvetica Neue')
                     task_objects.append(object)
             else:
                 # Delivery
-                object = ax.add_patch(RegularPolygon((x + 0.5, y + 0.43),
-                                                     numVertices=3,
-                                                     radius=0.35,
-                                                     orientation=0,
-                                                     zorder=task,
-                                                     facecolor=COLORS[agent % len(COLORS)] if t >= 0 else 'white',
-                                                     edgecolor='black',
-                                                     linewidth=TASK_BORDER_WIDTH,
-                                                     alpha=TASK_ALPHA))
+                object = ax.add_patch(
+                    RegularPolygon(
+                        (x + 0.5, y + 0.43),
+                        numVertices=3,
+                        radius=0.35,
+                        orientation=0,
+                        zorder=task,
+                        facecolor=COLORS[agent % len(COLORS)] if t >= 0 else "white",
+                        edgecolor="black",
+                        linewidth=TASK_BORDER_WIDTH,
+                        alpha=TASK_ALPHA,
+                    )
+                )
                 task_objects.append(object)
 
                 if SHOW_REQUEST_NUMBER:
-                    label = f'{int(task - num_tasks / 2)}'
-                    object = ax.text(x + 0.49, y + 0.45,
-                                    label,
-                                    color='black',
-                                    zorder=task + 0.5,
-                                    fontsize=TASK_NUMBER_SIZE,
-                                    horizontalalignment='center',
-                                    verticalalignment='center')
-                                    # fontfamily='Helvetica Neue')
+                    label = f"{int(task - num_tasks / 2)}"
+                    object = ax.text(
+                        x + 0.49,
+                        y + 0.45,
+                        label,
+                        color="black",
+                        zorder=task + 0.5,
+                        fontsize=TASK_NUMBER_SIZE,
+                        horizontalalignment="center",
+                        verticalalignment="center",
+                    )
+                    # fontfamily='Helvetica Neue')
                     task_objects.append(object)
+    task_time = timeit.default_timer() - task_s
+    print("Task_Time:" + str(task_time))
 
+    path_s = timeit.default_timer()
     # Draw everything else.
     if t >= 0:
         for substep in range(TIME_RESOLUTION):
-
             # Draw timestep text.
             if SHOW_TIMESTEP:
-                timestep_text.set_text(f'Time {t + (substep / TIME_RESOLUTION):.1f}')
+                timestep_text.set_text(f"Time {t + (substep / TIME_RESOLUTION):.1f}")
 
             # Draw agents and paths.
             path_objects = []
             for a, (route, path) in enumerate(zip(routes, paths)):
-
                 # Get position.
                 agent_time = t + substep / TIME_RESOLUTION
                 index = floor(agent_time)
@@ -494,32 +572,55 @@ def draw_timestep(t, map, map_width, map_height, routes, paths, tasks):
                     agent_name_objects[a].set_position((x + 0.49, y + 0.53))
 
                 # Draw paths.
-                path_objects.append(ax.add_line(plt.Line2D([x+0.5] + [xx+0.5 for (xx,yy) in path[index+1:]],
-                                                        [y+0.5] + [yy+0.5 for (xx,yy) in path[index+1:]],
-                                                        color=COLORS[a % len(COLORS)],
-                                                        zorder=-1,
-                                                        linewidth=PATH_WIDTH,
-                                                        alpha=PATH_ALPHA)))
+                path_objects.append(
+                    ax.add_line(
+                        plt.Line2D(
+                            [x + 0.5] + [xx + 0.5 for (xx, yy) in path[index + 1 :]],
+                            [y + 0.5] + [yy + 0.5 for (xx, yy) in path[index + 1 :]],
+                            color=COLORS[a % len(COLORS)],
+                            zorder=-1,
+                            linewidth=PATH_WIDTH,
+                            alpha=PATH_ALPHA,
+                        )
+                    )
+                )
 
             # Save image.
-            fig.savefig(f'{OUTPUT_DIR}img/{prefix}_{t * TIME_RESOLUTION + substep:06d}.png', dpi=DPI, bbox_inches='tight', facecolor='white', transparent=False)
+            fig.savefig(
+                f"{OUTPUT_DIR}img/{prefix}_{t * TIME_RESOLUTION + substep:06d}.png",
+                dpi=DPI,
+                bbox_inches="tight",
+                facecolor="white",
+                transparent=False,
+            )
 
             # Delete path objects.
             for object in path_objects:
                 object.remove()
     else:
         # Save image.
-        fig.savefig(f'{OUTPUT_DIR}/{prefix}_initial.png', dpi=DPI, bbox_inches='tight', facecolor='white', transparent=False)
+        fig.savefig(
+            f"{OUTPUT_DIR}/{prefix}_initial.png",
+            dpi=DPI,
+            bbox_inches="tight",
+            facecolor="white",
+            transparent=False,
+        )
+    path_time = timeit.default_timer() - path_s
+    print("PATH_Time:" + str(path_time))
 
+    exit_s = timeit.default_timer()
     # Delete tasks.
     for object in task_objects:
         object.remove()
 
     # Close figure.
     plt.close()
+    exit_time = timeit.default_timer() - exit_s
+    print("EXIT: " + str(exit_time))
+
 
 def create_video(makespan):
-
     # image_paths = [f'{OUTPUT_DIR}/mapd_{t}_{substep}.png' for t in range(makespan) for substep in range(TIME_RESOLUTION)]
     # image_paths2 = []
     # for i, old_name in enumerate(image_paths):
@@ -529,13 +630,15 @@ def create_video(makespan):
     # image_paths = image_paths2
 
     # Delete existing video.
-    video_file = f'{OUTPUT_DIR}/{prefix}.mp4'
+    video_file = f"{OUTPUT_DIR}/{prefix}.mp4"
     if os.path.exists(video_file):
         os.remove(video_file)
 
     # Create video.
-    subprocess.run(f'ffmpeg -framerate {VIDEO_FPS} -pattern_type glob -i \'/tmp/{prefix}_0*.png\' -c:v libx264 -crf 18 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" {OUTPUT_DIR}/{video_file}',
-                   shell=True)
+    subprocess.run(
+        f"ffmpeg -framerate {VIDEO_FPS} -pattern_type glob -i 'img/{prefix}_%6d.png' -c:v libx264 -crf 18 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" {OUTPUT_DIR}/{video_file}",
+        shell=True,
+    )
 
     # process = (ffmpeg
     #            .input('pipe:', framerate=VIDEO_FPS, f='png_pipe')
@@ -549,36 +652,38 @@ def create_video(makespan):
     # process.stdin.close()
     # process.wait()
 
-#     # Get paths to the images.
-#     image_paths = []
-#     for t in range(makespan):
-#         for substep in range(TIME_RESOLUTION):
-#             image_paths.append(f'{OUTPUT_DIR}/mapd_{t}_{substep}.png')
-#
-#     # Determine the video dimensions.
-#     frame = cv2.imread(image_paths[0])
-#     height, width, layers = frame.shape
-#
-#     # Assemble frames into video.
-#     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-#     video = cv2.VideoWriter(video_path, fourcc, VIDEO_FPS, (width, height))
-#     for image_path in image_paths:
-#         video.write(cv2.imread(image_path))
-#     cv2.destroyAllWindows()
-#     video.release()
+    #     # Get paths to the images.
+    #     image_paths = []
+    #     for t in range(makespan):
+    #         for substep in range(TIME_RESOLUTION):
+    #             image_paths.append(f'{OUTPUT_DIR}/mapd_{t}_{substep}.png')
+    #
+    #     # Determine the video dimensions.
+    #     frame = cv2.imread(image_paths[0])
+    #     height, width, layers = frame.shape
+    #
+    #     # Assemble frames into video.
+    #     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    #     video = cv2.VideoWriter(video_path, fourcc, VIDEO_FPS, (width, height))
+    #     for image_path in image_paths:
+    #         video.write(cv2.imread(image_path))
+    #     cv2.destroyAllWindows()
+    #     video.release()
 
     # Delete images.
     for i in range(makespan * TIME_RESOLUTION):
-        os.remove(f'/tmp/{prefix}_{i:06d}.png')
+        os.remove(f"./img/{prefix}_{i:06d}.png")
+
 
 class LambdaFunction(object):
     def __init__(self, inputs):
         self.inputs = inputs
+
     def __call__(self, t):
         draw_timestep(t, *self.inputs)
 
-if __name__ == '__main__':
 
+if __name__ == "__main__":
     map = read_map(map_file)
     map_width = map.shape[0]
     map_height = map.shape[1]
@@ -586,9 +691,9 @@ if __name__ == '__main__':
     routes, paths = read_routes_and_paths(txt)
     makespan = max(len(path) for path in paths)
     tasks = get_tasks(routes, paths)
-    print(f'Agents: {len(routes)}')
-    print(f'Pickup-delivery pairs: {int(len(tasks) / 2)}')
-    print(f'Makespan: {makespan}')
+    print(f"Agents: {len(routes)}")
+    print(f"Pickup-delivery pairs: {int(len(tasks) / 2)}")
+    print(f"Makespan: {makespan}")
 
     # Create output directory.
     if not os.path.exists(OUTPUT_DIR):
@@ -598,14 +703,15 @@ if __name__ == '__main__':
     draw_timestep(-1, map, map_width, map_height, routes, paths, tasks)
 
     # 1 thread
-    # for t in range(makespan):
-    #     LambdaFunction((map, map_width, map_height, routes, paths, tasks))(t)
-
+    for t in range(makespan):
+        LambdaFunction((map, map_width, map_height, routes, paths, tasks))(t)
+    # animation = FuncAnimation(fig,)
     # Multi-thread
-    with Pool(processes=NUM_PROCESSES) as pool:
-        pool.map(LambdaFunction((map, map_width, map_height, routes, paths, tasks)), range(makespan))
-        pool.close()
-        pool.join()
+    # with Pool(processes=NUM_PROCESSES) as pool:
+    #     pool.map(LambdaFunction((map, map_width, map_height, routes, paths, tasks)), range(makespan))
+    #     pool.close()
+    #     pool.join()
 
-    create_video(makespan)
-    print('')
+    # create_video(makespan)
+    print("")
+    print("test commit")
