@@ -12,7 +12,7 @@ class Map:
 
     def read_map(self, file_path):
         # Read from file
-        file = open("./SampleData/" + file_path, "r")
+        file = open("./map_files/" + file_path, "r")
         lines = file.read().splitlines()
         file.close()
 

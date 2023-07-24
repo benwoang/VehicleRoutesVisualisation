@@ -6,7 +6,7 @@ from collections import deque
 class Solution:
     def __init__(self, file_path=None) -> None:
         # Initialise Variables from Solution File
-        solution_array = self.load_solution_file("./SampleData/" + file_path)
+        solution_array = self.load_solution_file("./solution_files/" + file_path)
         map_file_path = solution_array[0]
         solution_string = solution_array[1]
         self.offset = int(solution_array[2])
@@ -18,11 +18,11 @@ class Solution:
         self.tasks = self.get_tasks()
 
     def load_solution_file(self, file_path):
+        # Read text files and apply string processing
         with open(file_path) as f:
             file_content = f.read()
 
         chunks = re.findall(r"^.+=[^=]+\n", file_content, flags=re.MULTILINE)
-        # chunks = [chunk.replace("\n", "") for chunk in chunks]
         chunks = [chunk[:-1] for chunk in chunks if chunk[3:] != "'''"]
         chunks = [chunk.split(" = ", 1) for chunk in chunks]
         chunks = [chunk[1].replace("'", "") for chunk in chunks]
@@ -71,45 +71,14 @@ class Solution:
         return routes, paths
 
     def get_tasks(self):
-        # tasks = deque([])
         tasks = []
-        self.tasks_dict = {}
         for agent_no, (route, path) in enumerate(zip(self.routes, self.paths)):
             # Both Routes and Paths are lined up for each agent
             ## LIST with TUPLES
             for route_number, time_int in route[1:-1]:
                 tasks.append((time_int, route_number, path[time_int], agent_no))
 
-        tasks.sort(key=lambda task: task[0])  # , reverse=True)  # Sort by time
-
-        # tasks = {}
-        # # for loop uses route in between first and last items
-        # for route_number, time_int in route[1:-1]:
-        #     ## SETS - sort by route_number
-        #     # this also sorts the tasks into time slots
-        #     if time_int not in tasks:
-        #         tasks[time_int] = [(route_number, path[time_int], agent_no)]
-        #     else:
-        #         tasks[time_int].append((route_number, path[time_int], agent_no))
-
-        ## SETS - sort by time
-        # for agent_no, (route, path) in enumerate(zip(self.routes, self.paths)):
-        #     for route_number, time_int in route[1:-1]:
-        #         # this also sorts the tasks into time slots
-        #         if time_int not in tasks:
-        #             tasks[time_int] = [(route_number, path[time_int], agent_no)]
-        #         else:
-        #             tasks[time_int].append((route_number, path[time_int], agent_no))
-
-        ##DEQUES
-        # tasks.append(
-        #     (
-        #         route_number,
-        #         time_int,
-        #         path[time_int],
-        #         agent_no,
-        #     )
-        # )
+        tasks.sort(key=lambda task: task[0])  # Sort by time
         # route and task number are synonomous
         return tasks
 

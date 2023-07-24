@@ -358,7 +358,7 @@ class SolutionVisualiser(FigureCanvas):
         elif x_time < 0.0004:
             time.sleep(1.5 * (0.0004 - x_time))
 
-        # time.sleep(2 ** (t * 0.0002) - 1)
+        time.sleep(2 ** (t * 0.0002) - 1)
         return (
             self.agent_objects
             + self.agent_name_objects
@@ -404,9 +404,7 @@ COLORS = [
 if __name__ == "__main__":
     ## Generating Animation
     agent_s = timeit.default_timer()
-    # solution = SolutionVisualiser("solution.txt")
     solution = SolutionVisualiser("solution.txt")
-    # solution = SolutionVisualiser("solution_short_long.txt")
     agent_time = timeit.default_timer() - agent_s  # THis only mesaures update speed
     print("Animation Creation Time: ")
     print(agent_time)
