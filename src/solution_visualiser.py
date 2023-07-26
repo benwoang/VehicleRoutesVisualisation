@@ -1,7 +1,7 @@
 import matplotlib
 from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, FFMpegWriter
 from matplotlib.patches import Rectangle, RegularPolygon
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from functools import partial
@@ -14,7 +14,7 @@ import time
 import timeit
 
 
-class SolutionVisualiser(FigureCanvas):
+class SolutionVisualiser(FigureCanvas, FuncAnimation):
     OBSTACLE_COLOR = "#D9D9D9"
     BACKGROUND_COLOR = "#FAFAFA"
     AGENT_NUMBER_SIZE = 6
@@ -50,8 +50,9 @@ class SolutionVisualiser(FigureCanvas):
         self.fig = Figure(figsize=(self.FIG_SIZE * aspect, self.FIG_SIZE))
 
         FigureCanvas.__init__(self, self.fig)
-        self.animation = FuncAnimation(
-            self.fig,
+        self.animation = FuncAnimation.__init__(
+            self,
+            fig=self.fig,
             func=self.update,
             init_func=self.init,
             frames=self.time_generator(0),
@@ -59,6 +60,7 @@ class SolutionVisualiser(FigureCanvas):
             blit=True,
             cache_frame_data=False,
         )
+        print("HI")
 
     def setup_plot(self):
         self.fig.patch.set_facecolor(self.BACKGROUND_COLOR)
@@ -97,6 +99,7 @@ class SolutionVisualiser(FigureCanvas):
             ticks=[i + 0.5 for i in range(0, y_max, y_step)],
             ticklabels=range(0, y_max, y_step),
         )
+        # self.ax.grid()
 
         # title_text = self.ax.text(
         #     -11.5,
@@ -126,15 +129,29 @@ class SolutionVisualiser(FigureCanvas):
         # Reverse vertical axis.
         self.ax.invert_yaxis()
 
+    # def time_generator(self, t_start):
+    #     # t is in seconds wrt the solver data
+    #     return [
+    #         time / self.TIME_RESOLUTION
+    #         for time in range(
+    #             t_start * self.TIME_RESOLUTION,
+    #             (self.soln.makespan * self.TIME_RESOLUTION) + 1,
+    #         )
+    #     ]
+
     def time_generator(self, t_start):
+        # while True:
+        #     yield t_start + 0.2
         # t is in seconds wrt the solver data
-        return [
-            time / self.TIME_RESOLUTION
-            for time in range(
-                t_start * self.TIME_RESOLUTION,
-                (self.soln.makespan * self.TIME_RESOLUTION) + 1,
-            )
-        ]
+        # return [
+        #     time / self.TIME_RESOLUTION
+        for time in range(
+            t_start * self.TIME_RESOLUTION,
+            (self.soln.makespan * self.TIME_RESOLUTION) + 1,
+        ):
+            yield time / self.TIME_RESOLUTION
+
+    # ]
 
     def setup_artists(self):
         # Build Obstacles
@@ -292,8 +309,26 @@ class SolutionVisualiser(FigureCanvas):
                 alpha=self.PATH_ALPHA,
             )
         )
+        # self.fig.canvas.draw_idle()
 
     def update(self, t=0):
+        # if t == 5:
+        # print("HI")
+        # self.time_generator(7.4)
+        # self.update(7.4)
+        # self.animation.pause()
+        # self.animation._stop()
+        # self.animation = FuncAnimation(
+        #     self.fig,
+        #     func=self.update,
+        #     init_func=self.init,
+        #     frames=self.time_generator(10),
+        #     interval=1 if len(self.soln.routes) > 5 else 25,
+        #     blit=True,
+        #     cache_frame_data=False,
+        # )
+        # self.animation.resume()
+
         x_start_time = timeit.default_timer()
         # Draw Paths
         rounded_time = floor(t)
@@ -349,16 +384,16 @@ class SolutionVisualiser(FigureCanvas):
                 j -= 1
 
         x_time = timeit.default_timer() - x_start_time
-        if x_time < 0.0001:
-            time.sleep(16 * (0.0003 - x_time))
-        elif x_time < 0.0002:
-            time.sleep(8 * (0.0003 - x_time))
-        elif x_time < 0.0003:
-            time.sleep(2 * (0.0003 - x_time))
-        elif x_time < 0.0004:
-            time.sleep(1.5 * (0.0004 - x_time))
+        # if x_time < 0.0001:
+        #     time.sleep(16 * (0.0003 - x_time))
+        # elif x_time < 0.0002:
+        #     time.sleep(8 * (0.0003 - x_time))
+        # elif x_time < 0.0003:
+        #     time.sleep(2 * (0.0003 - x_time))
+        # elif x_time < 0.0004:
+        #     time.sleep(1.5 * (0.0004 - x_time))
 
-        time.sleep(2 ** (t * 0.0002) - 1)
+        # time.sleep(2 ** (t * 0.0002) - 1)
         return (
             self.agent_objects
             + self.agent_name_objects
@@ -369,6 +404,10 @@ class SolutionVisualiser(FigureCanvas):
     def init(self):
         self.setup_plot()
         return self.setup_artists()
+
+    def save_to_mp4(self):
+        writer = FFMpegWriter(fps=15, metadata=dict(artist="Me"), bitrate=1800)
+        self.animation.save("movie.mp4", writer=writer)
 
 
 COLORS = [
