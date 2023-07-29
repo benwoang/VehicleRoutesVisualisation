@@ -4,9 +4,8 @@ from matplotlib.lines import Line2D
 from matplotlib.animation import FuncAnimation, FFMpegWriter
 from matplotlib.patches import Rectangle, RegularPolygon
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
-from functools import partial
 
-from solution import Solution
+from solution_output import SolutionOutput
 from math import floor
 from cmath import pi
 
@@ -14,7 +13,7 @@ import time
 import timeit
 
 
-class SolutionVisualiser(FigureCanvas, FuncAnimation):
+class SolutionVisualiser(FuncAnimation, FigureCanvas):
     OBSTACLE_COLOR = "#D9D9D9"
     BACKGROUND_COLOR = "#FAFAFA"
     AGENT_NUMBER_SIZE = 6
@@ -30,8 +29,8 @@ class SolutionVisualiser(FigureCanvas, FuncAnimation):
 
     task_time_sum = 0
 
-    def __init__(self, solution_file_path) -> None:
-        self.soln = Solution(solution_file_path)
+    def __init__(self, solution_file_path, *args, **kwargs) -> None:
+        self.soln = SolutionOutput(solution_file_path)
         self.map_height = self.soln.map.map_height
         self.map_width = self.soln.map.map_width
 
@@ -49,7 +48,7 @@ class SolutionVisualiser(FigureCanvas, FuncAnimation):
         aspect = self.map_width / self.map_height
         self.fig = Figure(figsize=(self.FIG_SIZE * aspect, self.FIG_SIZE))
 
-        FigureCanvas.__init__(self, self.fig)
+        FigureCanvas.__init__(self, self.fig, *args, **kwargs)
         self.animation = FuncAnimation.__init__(
             self,
             fig=self.fig,
@@ -59,7 +58,10 @@ class SolutionVisualiser(FigureCanvas, FuncAnimation):
             interval=1 if len(self.soln.routes) > 5 else 25,
             blit=True,
             cache_frame_data=False,
+            *args,
+            **kwargs,
         )
+
         print("HI")
 
     def setup_plot(self):

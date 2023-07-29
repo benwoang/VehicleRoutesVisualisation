@@ -49,7 +49,7 @@ class StackedWidget(QWidget):
     def create_map_page(self):
         map_page = QWidget()
         layout = QVBoxLayout(map_page)
-        self.fig_can = MapVisualiser("31x79-w5.map")
+        self.fig_can = MapVisualiser("31x79-w5.map", self)
         layout.addWidget(self.fig_can)
         self.button = QPushButton("Print", self)
         self.button.clicked.connect(self.switch_layout)

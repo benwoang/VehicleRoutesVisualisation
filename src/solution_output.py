@@ -3,7 +3,7 @@ from map import Map
 from collections import deque
 
 
-class Solution:
+class SolutionOutput:
     def __init__(self, file_path=None) -> None:
         # Initialise Variables from Solution File
         solution_array = self.load_solution_file("./solution_files/" + file_path)
@@ -88,4 +88,4 @@ class Solution:
 
 
 if __name__ == "__main__":
-    soln = Solution("solution.txt")
+    soln = SolutionOutput("solution.txt")
