@@ -136,6 +136,7 @@ class MapVisualiser(FigureCanvas):
         self.fig.canvas.mpl_connect("axes_leave_event", self.leave_axes)
         self.fig.canvas.mpl_connect("button_press_event", self.on_press)
         self.fig.canvas.mpl_connect("motion_notify_event", self.motion_notify)
+        self.fig.canvas.mpl_connect("pick_event", self.pick_event)
 
     def enter_axes(self, event):
         print("Axis Entered", event.canvas.figure)
@@ -169,6 +170,9 @@ class MapVisualiser(FigureCanvas):
             #     round(event.xdata - 0.5) if event.xdata != None else "Invalid x",
             #     round(event.ydata - 0.5) if event.ydata != None else "Invalid y",
             # )
+
+    def pick_event(self, event):
+        pass
 
     def __add_object(self, event):
         pass
