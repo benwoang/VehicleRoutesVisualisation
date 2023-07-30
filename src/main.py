@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow, QHBoxLayout
 from solution_visualiser import SolutionVisualiser
 
 
@@ -8,7 +8,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self._main = QWidget()
         self.setCentralWidget(self._main)
-        layout = QVBoxLayout(self._main)
+        layout = QHBoxLayout(self._main)
         self.fig_can = SolutionVisualiser("solution_simple.txt")
         layout.addWidget(self.fig_can)
 

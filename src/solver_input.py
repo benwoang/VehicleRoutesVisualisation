@@ -1,3 +1,6 @@
+from map import Map
+
+
 class SolverInput:
     # Format
     # Agent
@@ -9,13 +12,14 @@ class SolverInput:
     # 1	(39	10	24	18)	(154	196	177	219)
     # Task number, pickup x y, pickup time window (I forgot to explain to you time window, just put 0, 300), delivery xy, delivery time window
     def __init__(self, map_string=None) -> None:
-        self.tasks = []
-        self.agents = []
-        if map != None:
-            self.map_string = map
+        self.task_objects = []  # Contains task
+        self.agent_objects = []  # Contains tuple of agent and its text
+        self.map = None
+        if map_string != None:
+            self.map = Map(map_string)
 
-    def change_map(self):
-        pass
+    def change_map(self, map_file_string):
+        self.map = Map(map_file_string)
 
     def add_new_agent(self):
         pass

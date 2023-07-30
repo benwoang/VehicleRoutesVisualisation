@@ -1,4 +1,3 @@
-from map import Map
 import matplotlib
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
@@ -13,34 +12,29 @@ class MapVisualiser(QWidget):
     BACKGROUND_COLOR = "#FAFAFA"
     OBSTACLE_COLOR = "#D9D9D9"
 
-    def __init__(self, map_file_path, parent_widget) -> None:
+    def __init__(self, parent_widget) -> None:
         # Connect Map to Parent Widget
         self.parent_widget = parent_widget
-
-        # Retrieve Map Details from file
-        self.map = Map(map_file_path)
-        self.map_height = self.map.map_height
-        self.map_width = self.map.map_width
-
-        # Create Sovler Input File
-        self.solver_input = SolverInput()
-
-        # Flags
-        self.inside_axes = False
 
         # Setting up Backend
         matplotlib.use("QTAgg")
 
-        # Initialise Map
+        # Initialise Map Figure
         self.fig = Figure(figsize=(100, 100), layout="constrained")
         self.canvas = FigureCanvas(self.fig)
-        self.setup_map()
-        self.setup_all_event_handlers()
+
+        # Create Sovler Input File
+        # self.solver_input = SolverInput()
+        self.solver_input = SolverInput("31x79-w5.map")
+        if self.solver_input != None:  # TODO: change to parent_widget.value !=None
+            self.setup_map()
 
         super().__init__()
         layout = QVBoxLayout(self)
         layout.addWidget(self.canvas)
 
+        # Flags
+        self.inside_axes = False
         # Intialise Modes
         self.edit_agent_mode = False
         self.add_agent_mode = False
@@ -66,8 +60,8 @@ class MapVisualiser(QWidget):
         # Set axis range.
         x_min = 0
         y_min = 0
-        x_max = self.map_width
-        y_max = self.map_height
+        x_max = self.solver_input.map.map_width
+        y_max = self.solver_input.map.map_height
         # x_step = 5 if x_max <= 50 else 10
         # y_step = 5 if y_max <= 50 else 10
 
@@ -97,31 +91,20 @@ class MapVisualiser(QWidget):
         # Reverse vertical axis.
         self.ax.invert_yaxis()
 
-        # Only put tick labels for every 2 or 5 labels
-        # def func(x, pos):
-        #     if not x % 5:
-        #         return "{:g}".format(x)
-        #     else:
-        #         return ""
-
-        # self.ax.xaxis.set_major_formatter(mticker.FuncFormatter(func))
-        # self.fig.setp(self.ax.axes.get_xticklabels(), visible=False)
-        # self.fig.setp(self.ax.axes.get_xticklabels()[::5], visible=True)
-
         # Make make top have ticks and labels for x acis
         self.ax.xaxis.set_tick_params(
             labeltop=True, labelbottom=False, top=True, bottom=False
         )
-        # self.ax.xaxis.set_major_locator(mticker.MaxNLocator())
         self.ax.grid(zorder=2)
-        # self.ax.xaxis.set_major_locator(mticker.MultipleLocator(5))
-        for y in range(self.map_height):
+
+        # Create Obstacles
+        for y in range(self.solver_input.map.map_height):
             x_begin = 0
-            x_end = self.map_width
-            while x_begin < self.map_width:
-                if not self.map.map_content[x_begin, y]:
-                    for x in range(x_begin + 1, self.map_width):
-                        if self.map.map_content[x, y]:
+            x_end = self.solver_input.map.map_width
+            while x_begin < self.solver_input.map.map_width:
+                if not self.solver_input.map.map_content[x_begin, y]:
+                    for x in range(x_begin + 1, self.solver_input.map.map_width):
+                        if self.solver_input.map.map_content[x, y]:
                             x_end = x
                             break
                     self.ax.add_patch(
@@ -137,8 +120,10 @@ class MapVisualiser(QWidget):
                     x_begin = x_end + 1
                 else:
                     x_begin += 1
+        self.setup_all_event_handlers()
 
     def setup_all_event_handlers(self):
+        # Connect all map handlers
         self.fig.canvas.mpl_connect("axes_enter_event", self.enter_axes)
         self.fig.canvas.mpl_connect("axes_leave_event", self.leave_axes)
         self.fig.canvas.mpl_connect("button_press_event", self.on_press)
@@ -196,11 +181,6 @@ class MapVisualiser(QWidget):
                 round(event.xdata - 0.5) if event.xdata != None else "Invalid x",
                 round(event.ydata - 0.5) if event.ydata != None else "Invalid y",
             )
-            # print(
-            #     "Mouse Movement:",
-            #     round(event.xdata - 0.5) if event.xdata != None else "Invalid x",
-            #     round(event.ydata - 0.5) if event.ydata != None else "Invalid y",
-            # )
 
     def pick_event(self, event):
         print("Hi")

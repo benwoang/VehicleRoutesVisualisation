@@ -81,7 +81,7 @@ class StackedWidget(QWidget):
         )
         layout.addWidget(header_text)
 
-        self.fig_can = MapVisualiser("31x79-w5.map", self)
+        self.fig_can = MapVisualiser(self)
         layout.addWidget(self.fig_can)
 
         # self.button = QPushButton("Print", self)
