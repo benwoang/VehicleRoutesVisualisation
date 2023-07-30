@@ -33,3 +33,6 @@ class Map:
 
         map_final = np.array(map).transpose()
         return map_final
+
+    def is_obstacle(self, x, y):
+        return self.map_content[x][y]

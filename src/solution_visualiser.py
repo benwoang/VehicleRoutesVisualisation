@@ -46,16 +46,18 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
 
         # Create empty plot.
         aspect = self.map_width / self.map_height
-        self.fig = Figure(figsize=(self.FIG_SIZE * aspect, self.FIG_SIZE))
+        self.fig = Figure(
+            figsize=(self.FIG_SIZE * aspect, self.FIG_SIZE), layout="constrained"
+        )
 
         FigureCanvas.__init__(self, self.fig, *args, **kwargs)
         self.animation = FuncAnimation.__init__(
             self,
             fig=self.fig,
-            func=self.update,
+            func=self.update_func,
             init_func=self.init,
             frames=self.time_generator(0),
-            interval=1 if len(self.soln.routes) > 5 else 25,
+            interval=0 if len(self.soln.routes) > 5 else 25,
             blit=True,
             cache_frame_data=False,
             *args,
@@ -72,7 +74,7 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
         # self.ax.set_axisbelow(True)
 
         # Hide outside map.
-        self.fig.tight_layout(pad=1.0)
+        # self.fig.tight_layout(pad=1.0)
 
         # Set background color
         self.ax.set_facecolor("white")
@@ -313,7 +315,7 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
         )
         # self.fig.canvas.draw_idle()
 
-    def update(self, t=0):
+    def update_func(self, t=0):
         # if t == 5:
         # print("HI")
         # self.time_generator(7.4)
@@ -330,8 +332,6 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
         #     cache_frame_data=False,
         # )
         # self.animation.resume()
-
-        x_start_time = timeit.default_timer()
         # Draw Paths
         rounded_time = floor(t)
         offset_time = t - rounded_time  # / self.TIME_RESOLUTION
@@ -385,17 +385,6 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
                 self.output_tasks.append(self.task_objects[j][2])
                 j -= 1
 
-        x_time = timeit.default_timer() - x_start_time
-        # if x_time < 0.0001:
-        #     time.sleep(16 * (0.0003 - x_time))
-        # elif x_time < 0.0002:
-        #     time.sleep(8 * (0.0003 - x_time))
-        # elif x_time < 0.0003:
-        #     time.sleep(2 * (0.0003 - x_time))
-        # elif x_time < 0.0004:
-        #     time.sleep(1.5 * (0.0004 - x_time))
-
-        # time.sleep(2 ** (t * 0.0002) - 1)
         return (
             self.agent_objects
             + self.agent_name_objects
@@ -410,6 +399,15 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
     def save_to_mp4(self):
         writer = FFMpegWriter(fps=15, metadata=dict(artist="Me"), bitrate=1800)
         self.animation.save("movie.mp4", writer=writer)
+
+    def _draw_next_frame(self, framedata, blit):
+        min_frame_draw_time = 0.04  # 25FPS
+        # Extends the origial FuncAnimation draw_next_frame function and sleeps it if is took short
+        draw_frame_start = timeit.default_timer()
+        super(SolutionVisualiser, self)._draw_next_frame(framedata, blit)
+        draw_frame_time = timeit.default_timer() - draw_frame_start
+        if draw_frame_time < min_frame_draw_time:
+            time.sleep(min_frame_draw_time - draw_frame_time)
 
 
 COLORS = [

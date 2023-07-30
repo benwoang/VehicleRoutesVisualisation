@@ -2,12 +2,14 @@ from map import Map
 import matplotlib
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+from PyQt6.QtWidgets import QWidget, QVBoxLayout
 from matplotlib.patches import Rectangle
-import matplotlib.ticker as mticker
-from solution_input import SolutionInput
+
+from solver_input import SolverInput
+from solution_visualiser import COLORS
 
 
-class MapVisualiser(FigureCanvas):
+class MapVisualiser(QWidget):
     BACKGROUND_COLOR = "#FAFAFA"
     OBSTACLE_COLOR = "#D9D9D9"
 
@@ -20,8 +22,8 @@ class MapVisualiser(FigureCanvas):
         self.map_height = self.map.map_height
         self.map_width = self.map.map_width
 
-        # Create Solution FIle
-        # self.solution
+        # Create Sovler Input File
+        self.solver_input = SolverInput()
 
         # Flags
         self.inside_axes = False
@@ -31,16 +33,21 @@ class MapVisualiser(FigureCanvas):
 
         # Initialise Map
         self.fig = Figure(figsize=(100, 100), layout="constrained")
-        FigureCanvas.__init__(self, self.fig)
+        self.canvas = FigureCanvas(self.fig)
         self.setup_map()
         self.setup_all_event_handlers()
+
+        super().__init__()
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.canvas)
 
         # Intialise Modes
         self.edit_agent_mode = False
         self.add_agent_mode = False
+        self.edit_task_mode = False
 
         # Draw
-        self.draw()
+        self.canvas.draw()
 
     def setup_map(self):
         self.fig.patch.set_facecolor(self.BACKGROUND_COLOR)
@@ -151,15 +158,39 @@ class MapVisualiser(FigureCanvas):
     def on_press(self, event):
         # Check if the Press is inside the Axis
         if self.inside_axes == True:
-            print(
-                "Click Registered:", round(event.xdata - 0.5), round(event.ydata - 0.5)
-            )
+            x_display = round(event.xdata - 0.5)
+            y_display = round(event.ydata - 0.5)
+            print("Click Registered:", x_display, y_display)
             # Re offset the x and y axis
+            object = self.ax.add_patch(
+                Rectangle(
+                    (x_display + 0.13, y_display + 0.13),
+                    width=0.7,
+                    height=0.7,
+                    zorder=10000,
+                    facecolor=COLORS[2 % len(COLORS)],
+                    edgecolor="black",
+                    linewidth=0.3,
+                    picker=True,
+                )
+            )
+            text = self.ax.text(
+                x_display + 0.49,
+                y_display + 0.53,
+                "0",
+                color="black",
+                zorder=10001,
+                fontsize=6,
+                horizontalalignment="center",
+                verticalalignment="center",
+                picker=True,
+            )
 
             # if self.
+            self.canvas.draw()
 
     def motion_notify(self, event):
-        if self.inside_axes == True:
+        if self.inside_axes == True and event.dblclick == True:
             print(
                 "Mouse Movement:",
                 round(event.xdata - 0.5) if event.xdata != None else "Invalid x",
@@ -172,7 +203,7 @@ class MapVisualiser(FigureCanvas):
             # )
 
     def pick_event(self, event):
-        pass
+        print("Hi")
 
     def __add_object(self, event):
         pass

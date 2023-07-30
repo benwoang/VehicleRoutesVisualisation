@@ -1,4 +1,4 @@
-class SolutionInput:
+class SolverInput:
     # Format
     # Agent
     # 0	31x79-w5.map	79	31	41	18	71	0	0
@@ -13,8 +13,9 @@ class SolutionInput:
         self.agents = []
         if map != None:
             self.map_string = map
-        else:
-            self.map_string = ""
+
+    def change_map(self):
+        pass
 
     def add_new_agent(self):
         pass
