@@ -57,7 +57,7 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
             func=self.update_func,
             init_func=self.init,
             frames=self.time_generator(0),
-            interval=0 if len(self.soln.routes) > 5 else 25,
+            interval=0,
             blit=True,
             cache_frame_data=False,
             *args,
@@ -401,7 +401,7 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
         self.animation.save("movie.mp4", writer=writer)
 
     def _draw_next_frame(self, framedata, blit):
-        min_frame_draw_time = 0.04  # 25FPS
+        min_frame_draw_time = 0.03  # 25FPS
         # Extends the origial FuncAnimation draw_next_frame function and sleeps it if is took short
         draw_frame_start = timeit.default_timer()
         super(SolutionVisualiser, self)._draw_next_frame(framedata, blit)
@@ -443,7 +443,7 @@ COLORS = [
 if __name__ == "__main__":
     ## Generating Animation
     agent_s = timeit.default_timer()
-    solution = SolutionVisualiser("solution.txt")
+    solution = SolutionVisualiser("solution_many_short.txt")
     agent_time = timeit.default_timer() - agent_s  # THis only mesaures update speed
     print("Animation Creation Time: ")
     print(agent_time)

@@ -9,7 +9,7 @@ class MainWindow(QMainWindow):
         self._main = QWidget()
         self.setCentralWidget(self._main)
         layout = QHBoxLayout(self._main)
-        self.fig_can = SolutionVisualiser("solution_simple.txt")
+        self.fig_can = SolutionVisualiser("solution.txt")
         layout.addWidget(self.fig_can)
 
 
