@@ -63,8 +63,6 @@ class MapVisualiser(QWidget):
         y_min = 0
         x_max = self.solver_input.map.map_width
         y_max = self.solver_input.map.map_height
-        # x_step = 5 if x_max <= 50 else 10
-        # y_step = 5 if y_max <= 50 else 10
 
         # if you want to see 1 by 1 grid use these two steps
         x_step = 1
@@ -145,11 +143,11 @@ class MapVisualiser(QWidget):
         # Check if the Press is inside the Axis
         print("DoubleClick: " + str(event.dblclick))
         if self.inside_axes == True and not event.dblclick:
+            # Re offset the x and y axis
             x_display = round(event.xdata - 0.5)
             y_display = round(event.ydata - 0.5)
             print("Click Registered:", x_display, y_display)
             if self.add_agent_mode:
-                # Re offset the x and y axis
                 try:
                     new_agent, new_agent_text = self.solver_input.add_new_agent(
                         x_display, y_display
@@ -159,25 +157,14 @@ class MapVisualiser(QWidget):
                 else:
                     self.ax.add_patch(new_agent)
                     self.ax.add_artist(new_agent_text)
-                # text = self.ax.text(
-                #     x_display + 0.49,
-                #     y_display + 0.53,
-                #     "0",
-                #     color="black",
-                #     zorder=10001,
-                #     fontsize=6,
-                #     horizontalalignment="center",
-                #     verticalalignment="center",
-                #     picker=True,
-                # )
 
             elif self.add_task_mode:
                 try:
-                    new_task, new_task_text = self.solver_input.add_task(
+                    new_task, new_task_text = self.solver_input.add_new_task(
                         x_display, y_display
                     )
                 except TypeError:
-                    print("Is Obstacle, cannot add agent")
+                    print("Is Obstacle, cannot add task")
                 else:
                     self.ax.add_patch(new_task)
                     self.ax.add_artist(new_task_text)
@@ -192,7 +179,7 @@ class MapVisualiser(QWidget):
             )
 
     def pick_event(self, event):
-        print("Hi")
+        print("Picked Event")
 
     def select_mode(self, mode_in, object_in):
         self.reset_modes()

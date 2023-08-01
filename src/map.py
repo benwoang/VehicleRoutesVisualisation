@@ -34,5 +34,5 @@ class Map:
         map_final = np.array(map).transpose()
         return map_final
 
-    def is_obstacle(self, x, y):
+    def is_obstacle(self, x: int, y: int):
         return not self.map_content[x][y]

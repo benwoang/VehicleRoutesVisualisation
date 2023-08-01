@@ -66,7 +66,7 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
             **kwargs,
         )
 
-        print("HI")
+        print("Solution Visualiser Initialised")
 
     def setup_plot(self):
         self.fig.patch.set_facecolor(self.BACKGROUND_COLOR)
@@ -320,7 +320,6 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
 
     def update_func(self, t=0):
         # if t == 5:
-        # print("HI")
         # self.time_generator(7.4)
         # self.update(7.4)
         # self.animation.pause()

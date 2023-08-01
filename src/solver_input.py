@@ -26,13 +26,13 @@ class SolverInput:
     def change_map(self, map_file_string):
         self.map = Map(map_file_string)
 
-    def add_new_agent(self, x_exact, y_exact):
+    def add_new_agent(self, x_int, y_int):
         if (
-            self.map.is_obstacle(x_exact, y_exact) == False
-            and self.check_occupied(x_exact, y_exact) == False
+            self.map.is_obstacle(x_int, y_int) == False
+            and self.check_occupied(x_int, y_int) == False
         ):
             agent = Rectangle(
-                (x_exact + 0.13, y_exact + 0.13),
+                (x_int + 0.13, y_int + 0.13),
                 width=0.7,
                 height=0.7,
                 zorder=10000,
@@ -43,8 +43,8 @@ class SolverInput:
             )
 
             agent_text = Text(
-                x_exact + 0.49,
-                y_exact + 0.53,
+                x_int + 0.49,
+                y_int + 0.53,
                 f"{len(self.agent_objects)}",
                 color="black",
                 zorder=10001,
@@ -66,13 +66,22 @@ class SolverInput:
         for item, text in self.agent_objects + self.task_objects:
             if item.contains_point([x, y]):
                 occupied = True
-            elif item.get_x() - 0.13 == x and item.get_y() - 0.13 == y:
+            elif (
+                type(item) == Rectangle
+                and round(item.get_x() - 0.13) == x
+                and round(item.get_y() - 0.13) == y
+            ):
                 occupied = True
-            elif item.get_x() - 0.5 == x and item.get_y() - 0.56 == y:
+            elif (
+                type(item) == RegularPolygon
+                and round(item.xy[0] - 0.5) == x
+                and round(item.xy[1] - 0.56) == y
+            ):
                 occupied = True
+        print("Occupied: " + str(occupied))
         return occupied
 
-    def add_task(self, x_exact, y_exact):
+    def add_new_task(self, x_exact, y_exact):
         if (
             self.map.is_obstacle(x_exact, y_exact) == False
             and self.check_occupied(x_exact, y_exact) == False
