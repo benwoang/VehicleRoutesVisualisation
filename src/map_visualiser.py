@@ -39,6 +39,7 @@ class MapVisualiser(QWidget):
         self.edit_agent_mode = False
         self.add_agent_mode = False
         self.edit_task_mode = False
+        self.add_task_mode = False
 
         # Draw
         self.canvas.draw()
@@ -52,7 +53,7 @@ class MapVisualiser(QWidget):
         self.ax.set_axisbelow(True)
 
         # Hide outside map.
-        # self.fig.tight_layout(pad=3.0, w_pad=2.0)
+        # self.fig.tight_layout(w_pad=10.0)
 
         # Set background color
         self.ax.set_facecolor("white")
@@ -82,7 +83,7 @@ class MapVisualiser(QWidget):
             for l_index in range(0, len(xticklabels)):
                 if not l_index % 5 == 0:
                     xticklabels[l_index] = ""
-        self.ax.set_xticklabels(xticklabels, rotation=45)
+        self.ax.set_xticklabels(xticklabels)  # , rotation=45)
 
         self.ax.yaxis.set(
             ticks=[i + 0.5 for i in range(0, y_max, y_step)],
@@ -142,36 +143,44 @@ class MapVisualiser(QWidget):
 
     def on_press(self, event):
         # Check if the Press is inside the Axis
-        if self.inside_axes == True:
+        print("DoubleClick: " + str(event.dblclick))
+        if self.inside_axes == True and not event.dblclick:
             x_display = round(event.xdata - 0.5)
             y_display = round(event.ydata - 0.5)
             print("Click Registered:", x_display, y_display)
-            # Re offset the x and y axis
-            object = self.ax.add_patch(
-                Rectangle(
-                    (x_display + 0.13, y_display + 0.13),
-                    width=0.7,
-                    height=0.7,
-                    zorder=10000,
-                    facecolor=COLORS[2 % len(COLORS)],
-                    edgecolor="black",
-                    linewidth=0.3,
-                    picker=True,
-                )
-            )
-            text = self.ax.text(
-                x_display + 0.49,
-                y_display + 0.53,
-                "0",
-                color="black",
-                zorder=10001,
-                fontsize=6,
-                horizontalalignment="center",
-                verticalalignment="center",
-                picker=True,
-            )
+            if self.add_agent_mode:
+                # Re offset the x and y axis
+                try:
+                    new_agent, new_agent_text = self.solver_input.add_new_agent(
+                        x_display, y_display
+                    )
+                except TypeError:
+                    print("Is Obstacle, cannot add agent")
+                else:
+                    self.ax.add_patch(new_agent)
+                    self.ax.add_artist(new_agent_text)
+                # text = self.ax.text(
+                #     x_display + 0.49,
+                #     y_display + 0.53,
+                #     "0",
+                #     color="black",
+                #     zorder=10001,
+                #     fontsize=6,
+                #     horizontalalignment="center",
+                #     verticalalignment="center",
+                #     picker=True,
+                # )
 
-            # if self.
+            elif self.add_task_mode:
+                try:
+                    new_task, new_task_text = self.solver_input.add_task(
+                        x_display, y_display
+                    )
+                except TypeError:
+                    print("Is Obstacle, cannot add agent")
+                else:
+                    self.ax.add_patch(new_task)
+                    self.ax.add_artist(new_task_text)
             self.canvas.draw()
 
     def motion_notify(self, event):
@@ -185,5 +194,22 @@ class MapVisualiser(QWidget):
     def pick_event(self, event):
         print("Hi")
 
-    def __add_object(self, event):
-        pass
+    def select_mode(self, mode_in, object_in):
+        self.reset_modes()
+        if object_in == "agents":
+            if mode_in == "add":
+                print("Add Agent On")
+                self.add_agent_mode = True
+            elif mode_in == "edit":
+                self.edit_agent_mode = True
+        elif object_in == "tasks":
+            if mode_in == "add":
+                self.add_task_mode = True
+            elif mode_in == "edit":
+                self.edit_agent_mode = True
+
+    def reset_modes(self):
+        self.add_agent_mode = False
+        self.edit_agent_mode = False
+        self.add_task_mode = False
+        self.edit_agent_mode = False

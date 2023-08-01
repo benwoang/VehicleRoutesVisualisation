@@ -12,6 +12,8 @@ from cmath import pi
 import time
 import timeit
 
+from matplotlib.backends.backend_qt import TimerQT
+
 
 class SolutionVisualiser(FuncAnimation, FigureCanvas):
     OBSTACLE_COLOR = "#D9D9D9"
@@ -50,7 +52,7 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
             figsize=(self.FIG_SIZE * aspect, self.FIG_SIZE), layout="constrained"
         )
 
-        FigureCanvas.__init__(self, self.fig, *args, **kwargs)
+        self.canvas = FigureCanvas.__init__(self, self.fig, *args, **kwargs)
         self.animation = FuncAnimation.__init__(
             self,
             fig=self.fig,
@@ -132,6 +134,7 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
 
         # Reverse vertical axis.
         self.ax.invert_yaxis()
+        self.ax.set_aspect("equal")
 
     # def time_generator(self, t_start):
     #     # t is in seconds wrt the solver data
@@ -401,7 +404,7 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
         self.animation.save("movie.mp4", writer=writer)
 
     def _draw_next_frame(self, framedata, blit):
-        min_frame_draw_time = 0.03  # 25FPS
+        min_frame_draw_time = 0.04  # 25FPS
         # Extends the origial FuncAnimation draw_next_frame function and sleeps it if is took short
         draw_frame_start = timeit.default_timer()
         super(SolutionVisualiser, self)._draw_next_frame(framedata, blit)

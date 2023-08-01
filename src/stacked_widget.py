@@ -8,6 +8,8 @@ from PyQt6.QtWidgets import (
     QStackedWidget,
     QPushButton,
     QLabel,
+    QFrame,
+    QGridLayout,
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QFontDatabase
@@ -43,6 +45,7 @@ class StackedWidget(QWidget):
                 padding-bottom:2px;
                 min-width: 15em;
                 max-width:20em;
+                background-position: bottom right;
                 border-radius:3px;
             }
             QPushButton[flat="true"]:pressed{
@@ -58,22 +61,23 @@ class StackedWidget(QWidget):
         self.stackedWidget.addWidget(self.create_solution_page())
         # layout = QVBoxLayout()
         # self.fig_can = MapVisualiser("31x79-w5.map")
-        self.button = QPushButton("switch", self, flat=True)
-        self.button.clicked.connect(self.switch_layout)
-        self.base_layout.addWidget(self.button)
+        # self.button = QPushButton("Solve", self, flat=True)
+        # self.button.clicked.connect(self.switch_layout)
+        # self.base_layout.addWidget(self.button)
 
         # layout.addWidget(self.button)
         self.setLayout(self.base_layout)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
 
-    def create_map_page(self):
-        map_page = QWidget()
-        layout = QVBoxLayout(map_page)
+    def create_solution_page(self):
+        solution_page = QWidget()
+        layout = QVBoxLayout(solution_page)
 
-        header_text = QLabel("Solver - Input")
+        # Heading
+        header_text = QLabel("Solver - Output")
         header_text.setStyleSheet(
             """
-            QLabel {  color : #0F2D48; font: bold 36px; }
+            QLabel {  color : #0F2D48; font: bold 36px; max-height:56px;}
             """
         )
         header_text.setAlignment(
@@ -81,21 +85,79 @@ class StackedWidget(QWidget):
         )
         layout.addWidget(header_text)
 
-        self.fig_can = MapVisualiser(self)
+        # Animation
+        self.fig_can = SolutionVisualiser("solution.txt")
         layout.addWidget(self.fig_can)
+        return solution_page
 
-        # self.button = QPushButton("Print", self)
-        # self.button.clicked.connect(self.switch_layout)
-        # layout.addWidget(self.button)
+    def create_map_page(self):
+        self.map_fig_can = MapVisualiser(self)
+        map_page = QWidget()
+        layout = QVBoxLayout(map_page)
+
+        ## Heading
+        header_text = QLabel("Solver - Input")
+        header_text.setStyleSheet(
+            """
+            QLabel {  color : #0F2D48; font: bold 36px; max-height:56px;}
+            """
+        )
+        header_text.setAlignment(
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        layout.addWidget(header_text)
+
+        ## Mode Control Panel
+        mode_control_widget = QWidget()
+        mode_control_layout = QGridLayout()
+        mode_control_widget.setLayout(mode_control_layout)
+
+        agent_header = QLabel("Agents")
+        mode_control_layout.addWidget(
+            agent_header, 0, 0, 1, 5, Qt.AlignmentFlag.AlignCenter
+        )
+        agent_add_button = QPushButton("Add Agents", flat=True)
+        agent_add_button.clicked.connect(
+            lambda: self.map_fig_can.select_mode("add", "agents")
+        )
+        # agent_delete_button = QPushButton(
+        #     "Delete All Tasks", self.fig_can.select_mode("edit", "tasks"), flat=True
+        # )
+        # mode_control_layout.addWidget(
+        #     task_delete_button, 2, 6, 1, 3, Qt.AlignmentFlag.AlignCenter
+        # )
+        mode_control_layout.addWidget(
+            agent_add_button, 1, 1, 1, 3, Qt.AlignmentFlag.AlignCenter
+        )
+
+        tasks_header = QLabel("Tasks")
+        mode_control_layout.addWidget(
+            tasks_header, 0, 5, 1, 5, Qt.AlignmentFlag.AlignCenter
+        )
+        task_add_button = QPushButton("Add Tasks", flat=True)
+        task_add_button.clicked.connect(
+            lambda: self.map_fig_can.select_mode("add", "tasks")
+        )
+        mode_control_layout.addWidget(
+            task_add_button, 1, 6, 1, 3, Qt.AlignmentFlag.AlignCenter
+        )
+        # task_delete_button = QPushButton(
+        #     "Delete All Tasks", self.fig_can.select_mode("edit", "tasks"), flat=True
+        # )
+        # mode_control_layout.addWidget(
+        #     task_delete_button, 2, 6, 1, 3, Qt.AlignmentFlag.AlignCenter
+        # )
+        layout.addWidget(mode_control_widget)
+
+        ## Mapping
+
+        layout.addWidget(self.map_fig_can)
+        ## Button
+        self.button = QPushButton("Solve", self, flat=True)
+        self.button.clicked.connect(self.switch_layout)
+        layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
 
         return map_page
-
-    def create_solution_page(self):
-        solution_page = QWidget()
-        layout = QVBoxLayout(solution_page)
-        label = QLabel("My text")
-        layout.addWidget(label)
-        return solution_page
 
     def switch_layout(self):
         if self.stackedWidget.currentIndex() == 0:

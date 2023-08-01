@@ -35,4 +35,4 @@ class Map:
         return map_final
 
     def is_obstacle(self, x, y):
-        return self.map_content[x][y]
+        return not self.map_content[x][y]
