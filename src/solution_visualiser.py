@@ -17,7 +17,7 @@ from matplotlib.backends.backend_qt import TimerQT
 
 class SolutionVisualiser(FuncAnimation, FigureCanvas):
     OBSTACLE_COLOR = "#D9D9D9"
-    BACKGROUND_COLOR = "#FAFAFA"
+    BACKGROUND_COLOR = "#FFFFFF"
     AGENT_NUMBER_SIZE = 6
     AGENT_BORDER_WIDTH = 0.3
     TASK_NUMBER_SIZE = 5

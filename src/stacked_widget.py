@@ -24,7 +24,7 @@ class StackedWidget(QWidget):
         self.setStyleSheet(
             """
             QWidget{
-                background-color: #E8EDF0;}
+                background-color: white}
             QPushButton[flat="true"]{
                 background-color: #D9D9D9;
                 padding-top:2px;
@@ -50,6 +50,9 @@ class StackedWidget(QWidget):
     def create_solution_page(self):
         # Create Solver Input File
         self.map_fig_can.solution()
+
+        # TODO: EDDIE INSERT CALL TO SOLVER
+
         # Create output Page
         solution_page = QWidget()
         layout = QVBoxLayout(solution_page)
@@ -67,7 +70,7 @@ class StackedWidget(QWidget):
         layout.addWidget(header_text)
 
         # Animation
-        self.fig_can = SolutionVisualiser("solution.txt")
+        self.fig_can = SolutionVisualiser("solution.txt")  # TODO: SOLVER OUTPUT INSERT
         layout.addWidget(self.fig_can)
 
         self.stackedWidget.addWidget(solution_page)

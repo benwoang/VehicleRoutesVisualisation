@@ -9,7 +9,7 @@ from solution_visualiser import COLORS
 
 
 class MapVisualiser(QWidget):
-    BACKGROUND_COLOR = "#FAFAFA"
+    BACKGROUND_COLOR = "#FFFFFF"
     OBSTACLE_COLOR = "#D9D9D9"
 
     def __init__(self, parent_widget) -> None:
@@ -92,10 +92,21 @@ class MapVisualiser(QWidget):
         self.ax.invert_yaxis()
 
         # Make make top have ticks and labels for x acis
-        self.ax.xaxis.set_tick_params(
-            labeltop=True, labelbottom=False, top=True, bottom=False
+        # self.ax.xaxis.set_tick_params(
+        #     labeltop=True, labelbottom=False, top=True, bottom=False
+        # )
+        # self.ax.grid(zorder=2)
+
+        self.ax.tick_params(
+            axis="both",  # changes apply to both axes
+            which="both",  # both major and minor ticks are affected
+            left=False,  # ticks along the left edge are off
+            right=False,  # ticks along the right edge are off
+            top=False,  # ticks along the top edge are off
+            bottom=False,  # ticks along the bottom edge are off
+            labelleft=False,  # labels along the left edge are off
+            labelbottom=False,
         )
-        self.ax.grid(zorder=2)
 
         # Create Obstacles
         for y in range(self.solver_input.map.map_height):
