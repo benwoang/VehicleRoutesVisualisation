@@ -137,41 +137,39 @@ class SolverInput:
         self.agent_objects = []
 
     def generate_text_file(self):
-        f_a = open("solver_input_agents.txt", "w")
-        a_count = 0
-        string = ""
-        for agent, task in self.agent_objects:
-            if a_count % 2 == 1:
-                string += str(round(agent.get_x() - 0.13)) + " "
-                string += str(round(agent.get_y() - 0.13)) + " "
-                string += "\n"
+        f = open("demo.scen", "w")
+        f.write('version 2\n')
+        time_horizon = 300
+        f.write(f'time horizon {time_horizon}\n')
+
+        for a, (agent, task) in enumerate(self.agent_objects):
+            if a % 2 == 1:
+                f.write(f'{round(agent.get_x() - 0.13):5d}')
+                f.write(f'{round(agent.get_y() - 0.13):5d}')
+                f.write('\n')
 
             else:
-                string += str(a_count // 2) + " "
-                string += self.map_string + " "
-                string += str(self.map.map_width) + " "
-                string += str(self.map.map_height) + " "
-                string += str(round(agent.get_x() - 0.13)) + " "
-                string += str(round(agent.get_y() - 0.13)) + " "
-            a_count += 1
-        f_a.write(string)
-        f_a.close()
-        f_t = open("solver_input_tasks.txt", "w")
-        t_count = 0
-        string = ""
-        for task, task2 in self.task_objects:
-            if t_count % 2 == 1:
-                string += str(round(task.xy[0] - 0.5)) + " "
-                string += str(round(task.xy[1] - 0.56)) + " "
-                string += "0 300 "
-                string += "\n"
+                f.write(f'{a // 2:5d}')
+                f.write(f'{self.map_string:>20s}')
+                f.write(f'{self.map.map_width:5d}')
+                f.write(f'{self.map.map_height:5d}')
+                f.write(f'{round(agent.get_x() - 0.13):5d}')
+                f.write(f'{round(agent.get_y() - 0.13):5d}')
+
+        f.write('requests\n')
+        for t, (task, task2) in enumerate(self.task_objects):
+            if t % 2 == 1:
+                f.write(f'{round(task.xy[0] - 0.5):5d}')
+                f.write(f'{round(task.xy[1] - 0.56):5d}')
+                f.write(f'{0:5d}')
+                f.write(f'{time_horizon:5d}')
+                f.write(f'{0:5d}')
+                f.write(f'{time_horizon:5d}')
+                f.write('\n')
 
             else:
-                string += str(t_count // 2) + " "
-                string += str(round(task.xy[0] - 0.5)) + " "
-                string += str(round(task.xy[1] - 0.56)) + " "
-                string += "0 300 "
-            t_count += 1
+                f.write(f'{t // 2:5d}')
+                f.write(f'{round(task.xy[0] - 0.5):5d}')
+                f.write(f'{round(task.xy[1] - 0.56):5d}')
 
-        f_t.write(string)
-        f_t.close()
+        f.close()
