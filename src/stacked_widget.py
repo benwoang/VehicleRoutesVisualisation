@@ -33,9 +33,10 @@ class StackedWidget(QWidget):
                 max-width:20em;
                 background-position: bottom right;
                 border-radius:3px;
+                font-size: 16px
             }
             QPushButton[flat="true"]:pressed{
-                background-color: #332F2E;
+                background-color: #808080;
             }
         """
         )
@@ -44,10 +45,7 @@ class StackedWidget(QWidget):
         self.stackedWidget = QStackedWidget()
         self.base_layout.addWidget(self.stackedWidget)
         self.stackedWidget.addWidget(self.create_map_page())
-        self.stackedWidget.addWidget(self.create_solution_page())
-
         self.setLayout(self.base_layout)
-        self.stackedWidget.setCurrentIndex(0)
 
     def create_solution_page(self):
         solution_page = QWidget()
@@ -68,7 +66,9 @@ class StackedWidget(QWidget):
         # Animation
         self.fig_can = SolutionVisualiser("solution.txt")
         layout.addWidget(self.fig_can)
-        return solution_page
+
+        self.stackedWidget.addWidget(solution_page)
+        self.stackedWidget.setCurrentIndex(1)
 
     def create_map_page(self):
         self.map_fig_can = MapVisualiser(self)
@@ -92,28 +92,40 @@ class StackedWidget(QWidget):
         mode_control_layout = QGridLayout()
         mode_control_widget.setLayout(mode_control_layout)
 
+        # Agent Header
         agent_header = QLabel("Agents")
         mode_control_layout.addWidget(
             agent_header, 0, 0, 1, 5, Qt.AlignmentFlag.AlignCenter
         )
+
+        # Agent Add Button
         agent_add_button = QPushButton("Add Agents", flat=True)
         agent_add_button.clicked.connect(
             lambda: self.map_fig_can.select_mode("add", "agents")
         )
-        # agent_delete_button = QPushButton(
-        #     "Delete All Tasks", self.fig_can.select_mode("edit", "tasks"), flat=True
-        # )
-        # mode_control_layout.addWidget(
-        #     task_delete_button, 2, 6, 1, 3, Qt.AlignmentFlag.AlignCenter
-        # )
         mode_control_layout.addWidget(
             agent_add_button, 1, 1, 1, 3, Qt.AlignmentFlag.AlignCenter
         )
 
+        # Agent Delete All Button
+        agent_delete_button = QPushButton(
+            "Delete All Agents",
+            flat=True,
+        )
+        agent_delete_button.clicked.connect(
+            lambda: self.map_fig_can.select_mode("delete", "agents")
+        )
+        mode_control_layout.addWidget(
+            agent_delete_button, 2, 1, 1, 3, Qt.AlignmentFlag.AlignCenter
+        )
+
+        # Task Header
         tasks_header = QLabel("Tasks")
         mode_control_layout.addWidget(
             tasks_header, 0, 5, 1, 5, Qt.AlignmentFlag.AlignCenter
         )
+
+        # Task Add Button
         task_add_button = QPushButton("Add Tasks", flat=True)
         task_add_button.clicked.connect(
             lambda: self.map_fig_can.select_mode("add", "tasks")
@@ -121,20 +133,26 @@ class StackedWidget(QWidget):
         mode_control_layout.addWidget(
             task_add_button, 1, 6, 1, 3, Qt.AlignmentFlag.AlignCenter
         )
-        # task_delete_button = QPushButton(
-        #     "Delete All Tasks", self.fig_can.select_mode("edit", "tasks"), flat=True
-        # )
-        # mode_control_layout.addWidget(
-        #     task_delete_button, 2, 6, 1, 3, Qt.AlignmentFlag.AlignCenter
-        # )
+
+        # Task Delete All Button
+        task_delete_button = QPushButton(
+            "Delete All Tasks",
+            flat=True,
+        )
+        task_delete_button.clicked.connect(
+            lambda: self.map_fig_can.select_mode("delete", "tasks")
+        )
+        mode_control_layout.addWidget(
+            task_delete_button, 2, 6, 1, 3, Qt.AlignmentFlag.AlignCenter
+        )
         layout.addWidget(mode_control_widget)
 
         ## Mapping
-
         layout.addWidget(self.map_fig_can)
+
         ## Button
         self.button = QPushButton("Solve", self, flat=True)
-        self.button.clicked.connect(self.switch_layout)
+        self.button.clicked.connect(self.create_solution_page)
         layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
 
         return map_page
