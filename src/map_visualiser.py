@@ -208,3 +208,6 @@ class MapVisualiser(QWidget):
         self.edit_agent_mode = False
         self.add_task_mode = False
         self.edit_agent_mode = False
+
+    def solution(self):
+        self.solver_input.generate_text_file()

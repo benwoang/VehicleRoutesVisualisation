@@ -28,6 +28,7 @@ class SolverInput:
         self.task_objects = []  # Contains task
         self.agent_objects = []  # Contains tuple of agent and its text
         self.map = None
+        self.map_string = map_string  # TODO: Fix this
         if map_string != None:
             self.map = Map(map_string)
 
@@ -136,4 +137,41 @@ class SolverInput:
         self.agent_objects = []
 
     def generate_text_file(self):
-        pass
+        f_a = open("solver_input_agents.txt", "w")
+        a_count = 0
+        string = ""
+        for agent, task in self.agent_objects:
+            if a_count % 2 == 1:
+                string += str(round(agent.get_x() - 0.13)) + " "
+                string += str(round(agent.get_y() - 0.13)) + " "
+                string += "\n"
+
+            else:
+                string += str(a_count) + " "
+                string += self.map_string + " "
+                string += str(self.map.map_width) + " "
+                string += str(self.map.map_height) + " "
+                string += str(round(agent.get_x() - 0.13)) + " "
+                string += str(round(agent.get_y() - 0.13)) + " "
+            a_count += 1
+        f_a.write(string)
+        f_a.close()
+        f_t = open("solver_input_tasks.txt", "w")
+        t_count = 0
+        string = ""
+        for task, task2 in self.task_objects:
+            if t_count % 2 == 1:
+                string += str(round(task.xy[0] - 0.5)) + " "
+                string += str(round(task.xy[1] - 0.56)) + " "
+                string += "0 300 "
+                string += "\n"
+
+            else:
+                string += str(t_count) + " "
+                string += str(round(task.xy[0] - 0.5)) + " "
+                string += str(round(task.xy[1] - 0.56)) + " "
+                string += "0 300 "
+            t_count += 1
+
+        f_t.write(string)
+        f_t.close()

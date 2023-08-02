@@ -48,6 +48,9 @@ class StackedWidget(QWidget):
         self.setLayout(self.base_layout)
 
     def create_solution_page(self):
+        # Create Solver Input File
+        self.map_fig_can.solution()
+        # Create output Page
         solution_page = QWidget()
         layout = QVBoxLayout(solution_page)
 
