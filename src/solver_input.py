@@ -147,7 +147,7 @@ class SolverInput:
                 string += "\n"
 
             else:
-                string += str(a_count) + " "
+                string += str(a_count // 2) + " "
                 string += self.map_string + " "
                 string += str(self.map.map_width) + " "
                 string += str(self.map.map_height) + " "
@@ -167,7 +167,7 @@ class SolverInput:
                 string += "\n"
 
             else:
-                string += str(t_count) + " "
+                string += str(t_count // 2) + " "
                 string += str(round(task.xy[0] - 0.5)) + " "
                 string += str(round(task.xy[1] - 0.56)) + " "
                 string += "0 300 "
