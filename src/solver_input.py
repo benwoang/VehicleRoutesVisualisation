@@ -56,7 +56,7 @@ class SolverInput:
             agent_text = Text(
                 x_int + 0.49,
                 y_int + 0.53,
-                f"{len(self.agent_objects)}",
+                f"{len(self.agent_objects)//2 if len(self.agent_objects)%2==0 else (len(self.agent_objects)-1)//2}",
                 color="black",
                 zorder=10001,
                 fontsize=6,
@@ -111,7 +111,7 @@ class SolverInput:
             task_text = Text(
                 x_exact + 0.49,
                 y_exact + 0.56,
-                f"{len(self.task_objects)}",
+                f"{len(self.task_objects)//2 if len(self.task_objects)%2==0 else (len(self.task_objects)-1)//2}",
                 color="black",
                 zorder=10001,
                 fontsize=6,

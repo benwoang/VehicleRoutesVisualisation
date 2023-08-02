@@ -48,8 +48,8 @@ class SolutionVisualiser(FuncAnimation, FigureCanvas):
 
         # Create empty plot.
         aspect = self.map_width / self.map_height
-        self.fig = Figure(figsize=(400, 400), layout="constrained")
-        self.fig.tight_layout()
+        self.fig = Figure(figsize=(60, 20), layout="constrained")
+        # self.fig.tight_layout()
 
         self.canvas = FigureCanvas.__init__(self, self.fig, *args, **kwargs)
         self.animation = FuncAnimation.__init__(

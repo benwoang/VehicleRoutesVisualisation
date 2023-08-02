@@ -214,23 +214,10 @@ class StackedWidget(QWidget):
         player_layout.addWidget(self.pause_button)
         layout.addWidget(player)
 
-        # JUnk spacer
-        button_wid = QWidget()
-        junk_layout = QHBoxLayout()
-        button_wid.setLayout(junk_layout)
-
-        junk1 = QPushButton("JUnk1")
-        junk1.setVisible(False)
-        junk_layout.addWidget(junk1)
-        layout.addWidget(button_wid)
-
         # Spacer
-        vertical_spacer = QSpacerItem(
-            50, 50, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-        )
-        layout.addItem(vertical_spacer)
-        # Animation
+        layout.addSpacing(50)
 
+        # Animation
         layout.addWidget(self.fig_can)
 
         ##BUttons

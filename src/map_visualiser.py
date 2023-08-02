@@ -20,9 +20,9 @@ class MapVisualiser(QWidget):
         matplotlib.use("QTAgg")
 
         # Initialise Map Figure
-        self.fig = Figure(figsize=(400, 400), layout="constrained")
+        self.fig = Figure(figsize=(60, 20), layout="constrained")
         self.canvas = FigureCanvas(self.fig)
-        self.fig.tight_layout()
+        # self.fig.tight_layout()
 
         # Create Sovler Input File
         # self.solver_input = SolverInput()
