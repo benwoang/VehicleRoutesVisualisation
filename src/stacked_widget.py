@@ -50,77 +50,10 @@ class StackedWidget(QWidget):
         self.stackedWidget.addWidget(self.create_map_page())
         self.setLayout(self.base_layout)
 
-    def create_solution_page(self):
-        print("Solution Page Count: " + str(self.stackedWidget.count()))
-        self.button_exist.setVisible(True)
-        if self.stackedWidget.count() > 1:
-            # if both are in remove map which is the last one and recreate it
-            self.fig_can.close_event()
-            self.stackedWidget.removeWidget(self.solution_page)
-        # Create Solver Input File
-        self.map_fig_can.solution()
-
-        # TODO: EDDIE INSERT CALL TO SOLVER
-
-        # Create output Page
-        self.solution_page = QWidget()
-        layout = QVBoxLayout(self.solution_page)
-
-        # Heading
-        header_text = QLabel("Solver - Output")
-        header_text.setStyleSheet(
-            """
-            QLabel {  color : #0F2D48; font: bold 36px; max-height:56px;}
-            """
-        )
-        header_text.setAlignment(
-            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-        )
-        layout.addWidget(header_text)
-
-        # Player
-        player = QWidget()
-        player_layout = QHBoxLayout()
-        player.setLayout(player_layout)
-
-        self.fig_can = SolutionVisualiser("solution.txt")  # TODO: SOLVER OUTPUT INSERT
-
-        ## Buttons
-        self.play_button = QPushButton("Play", self, flat=True)
-        self.play_button.clicked.connect(self.fig_can.resume)
-        self.play_button.setIcon(
-            self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPlay"))
-        )
-        player_layout.addWidget(self.play_button)
-        self.pause_button = QPushButton("Pause", self, flat=True)
-        self.pause_button.clicked.connect(self.fig_can.pause)
-        self.pause_button.setIcon(
-            self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPause"))
-        )
-        player_layout.addWidget(self.pause_button)
-        layout.addWidget(player)
-
-        # Spacer
-        vertical_spacer = QSpacerItem(
-            50, 50, QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum
-        )
-        layout.addItem(vertical_spacer)
-        # Animation
-
-        layout.addWidget(self.fig_can)
-
-        ##BUttons
-        self.button = QPushButton("Return", self, flat=True)
-        self.button.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
-        layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
-
-        self.stackedWidget.addWidget(self.solution_page)
-        self.stackedWidget.setCurrentIndex(1)
-
     def create_map_page(self):
         self.map_fig_can = MapVisualiser(self)
-        map_page = QWidget()
-        layout = QVBoxLayout(map_page)
+        self.map_page = QWidget()
+        layout = QVBoxLayout(self.map_page)
 
         ## Heading
         header_text = QLabel("Solver - Input")
@@ -208,18 +141,105 @@ class StackedWidget(QWidget):
         layout.addWidget(self.map_fig_can)
 
         ## Button
+        map_choice = QWidget()
+        map_choice_layout = QGridLayout()
+        map_choice.setLayout(map_choice_layout)
+
         print("Map Page Stacked Widget COunt: " + str(self.stackedWidget.count()))
 
         self.button_exist = QPushButton("Existing Solution", self, flat=True)
         self.button_exist.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(1))
         self.button_exist.setVisible(False)  # Hide until a solution is made
-        layout.addWidget(self.button_exist, alignment=Qt.AlignmentFlag.AlignRight)
+        map_choice_layout.addWidget(
+            self.button_exist, 0, 3, 1, 1  # , alignment=Qt.AlignmentFlag.AlignRight
+        )
 
-        self.button = QPushButton("Solve", self, flat=True)
-        self.button.clicked.connect(self.create_solution_page)
+        self.button_solve = QPushButton("Solve", self, flat=True)
+        self.button_solve.clicked.connect(self.create_solution_page)
+        map_choice_layout.addWidget(
+            self.button_solve, 0, 4, 1, 1  # , alignment=Qt.AlignmentFlag.AlignRight
+        )
+        layout.addWidget(map_choice)
+
+        return self.map_page
+
+    def create_solution_page(self):
+        print("Solution Page Count: " + str(self.stackedWidget.count()))
+        self.button_exist.setVisible(True)
+        if self.stackedWidget.count() > 1:
+            # if both are in remove map which is the last one and recreate it
+            self.fig_can.close_event()
+            self.stackedWidget.removeWidget(self.solution_page)
+        # Create Solver Input File
+        self.map_fig_can.solution()
+
+        # TODO: EDDIE INSERT CALL TO SOLVER
+
+        # Create output Page
+        self.solution_page = QWidget()
+        layout = QVBoxLayout(self.solution_page)
+
+        # Heading
+        header_text = QLabel("Solver - Output")
+        header_text.setStyleSheet(
+            """
+            QLabel {  color : #0F2D48; font: bold 36px; max-height:56px;}
+            """
+        )
+        header_text.setAlignment(
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        layout.addWidget(header_text)
+
+        # Player
+        player = QWidget()
+        player_layout = QHBoxLayout()
+        player.setLayout(player_layout)
+
+        self.fig_can = SolutionVisualiser("solution.txt")  # TODO: SOLVER OUTPUT INSERT
+        self.fig_can.resize(self.map_page.width(), self.map_page.height())
+
+        ## Buttons
+        self.play_button = QPushButton("Play", self, flat=True)
+        self.play_button.clicked.connect(self.fig_can.resume)
+        self.play_button.setIcon(
+            self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPlay"))
+        )
+        player_layout.addWidget(self.play_button)
+        self.pause_button = QPushButton("Pause", self, flat=True)
+        self.pause_button.clicked.connect(self.fig_can.pause)
+        self.pause_button.setIcon(
+            self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPause"))
+        )
+        player_layout.addWidget(self.pause_button)
+        layout.addWidget(player)
+
+        # JUnk spacer
+        button_wid = QWidget()
+        junk_layout = QHBoxLayout()
+        button_wid.setLayout(junk_layout)
+
+        junk1 = QPushButton("JUnk1")
+        junk1.setVisible(False)
+        junk_layout.addWidget(junk1)
+        layout.addWidget(button_wid)
+
+        # Spacer
+        vertical_spacer = QSpacerItem(
+            50, 50, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
+        layout.addItem(vertical_spacer)
+        # Animation
+
+        layout.addWidget(self.fig_can)
+
+        ##BUttons
+        self.button = QPushButton("Return", self, flat=True)
+        self.button.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
         layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
 
-        return map_page
+        self.stackedWidget.addWidget(self.solution_page)
+        self.stackedWidget.setCurrentIndex(1)
 
 
 if __name__ == "__main__":
