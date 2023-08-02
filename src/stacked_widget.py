@@ -10,6 +10,8 @@ from PyQt6.QtWidgets import (
     QLabel,
     QFrame,
     QGridLayout,
+    QSpacerItem,
+    QSizePolicy,
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QFontDatabase
@@ -48,14 +50,20 @@ class StackedWidget(QWidget):
         self.setLayout(self.base_layout)
 
     def create_solution_page(self):
+        print("Solution Page Count: " + str(self.stackedWidget.count()))
+        self.button_exist.setVisible(True)
+        if self.stackedWidget.count() > 1:
+            # if both are in remove map which is the last one and recreate it
+            self.fig_can.close_event()
+            self.stackedWidget.removeWidget(self.solution_page)
         # Create Solver Input File
         self.map_fig_can.solution()
 
         # TODO: EDDIE INSERT CALL TO SOLVER
 
         # Create output Page
-        solution_page = QWidget()
-        layout = QVBoxLayout(solution_page)
+        self.solution_page = QWidget()
+        layout = QVBoxLayout(self.solution_page)
 
         # Heading
         header_text = QLabel("Solver - Output")
@@ -69,11 +77,19 @@ class StackedWidget(QWidget):
         )
         layout.addWidget(header_text)
 
+        vertical_spacer = QSpacerItem(
+            50, 50, QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum
+        )
+        layout.addItem(vertical_spacer)
         # Animation
         self.fig_can = SolutionVisualiser("solution.txt")  # TODO: SOLVER OUTPUT INSERT
         layout.addWidget(self.fig_can)
+        ## Button
+        self.button = QPushButton("Return", self, flat=True)
+        self.button.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
+        layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
 
-        self.stackedWidget.addWidget(solution_page)
+        self.stackedWidget.addWidget(self.solution_page)
         self.stackedWidget.setCurrentIndex(1)
 
     def create_map_page(self):
@@ -167,6 +183,13 @@ class StackedWidget(QWidget):
         layout.addWidget(self.map_fig_can)
 
         ## Button
+        print("Map Page Stacked Widget COunt: " + str(self.stackedWidget.count()))
+
+        self.button_exist = QPushButton("Existing Solution", self, flat=True)
+        self.button_exist.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(1))
+        self.button_exist.setVisible(False)  # Hide until a solution is made
+        layout.addWidget(self.button_exist, alignment=Qt.AlignmentFlag.AlignRight)
+
         self.button = QPushButton("Solve", self, flat=True)
         self.button.clicked.connect(self.create_solution_page)
         layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
