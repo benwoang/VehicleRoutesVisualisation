@@ -36,13 +36,14 @@ class MapVisualiser(QWidget):
         # Flags
         self.inside_axes = False
         # Intialise Modes
-        self.edit_agent_mode = False
+        self.delete_agent_mode = False
         self.add_agent_mode = False
-        self.edit_task_mode = False
+        self.delete_task_mode = False
         self.add_task_mode = False
 
         # Draw
-        self.canvas.draw()
+        self.canvas.draw_idle()
+        self.canvas.flush_events()
 
     def setup_map(self):
         self.fig.patch.set_facecolor(self.BACKGROUND_COLOR)
@@ -168,7 +169,8 @@ class MapVisualiser(QWidget):
                 else:
                     self.ax.add_patch(new_task)
                     self.ax.add_artist(new_task_text)
-            self.canvas.draw()
+            self.canvas.draw_idle()
+            self.canvas.flush_events()
 
     def motion_notify(self, event):
         if self.inside_axes == True and event.dblclick == True:
@@ -187,13 +189,19 @@ class MapVisualiser(QWidget):
             if mode_in == "add":
                 print("Add Agent On")
                 self.add_agent_mode = True
-            elif mode_in == "edit":
-                self.edit_agent_mode = True
         elif object_in == "tasks":
             if mode_in == "add":
                 self.add_task_mode = True
-            elif mode_in == "edit":
-                self.edit_agent_mode = True
+
+    def delete_tasks_from_map(self):
+        self.solver_input.delete_tasks()
+        self.canvas.draw_idle()
+        self.canvas.flush_events()
+
+    def delete_agents_from_map(self):
+        self.solver_input.delete_agents()
+        self.canvas.draw_idle()
+        self.canvas.flush_events()
 
     def reset_modes(self):
         self.add_agent_mode = False

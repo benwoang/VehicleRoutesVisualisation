@@ -94,6 +94,11 @@ class StackedWidget(QWidget):
 
         # Agent Header
         agent_header = QLabel("Agents")
+        agent_header.setStyleSheet(
+            """
+            QLabel {  color : #0F2D48; font: bold 24px; max-height:56px;}
+            """
+        )
         mode_control_layout.addWidget(
             agent_header, 0, 0, 1, 5, Qt.AlignmentFlag.AlignCenter
         )
@@ -113,7 +118,7 @@ class StackedWidget(QWidget):
             flat=True,
         )
         agent_delete_button.clicked.connect(
-            lambda: self.map_fig_can.select_mode("delete", "agents")
+            lambda: self.map_fig_can.delete_agents_from_map()
         )
         mode_control_layout.addWidget(
             agent_delete_button, 2, 1, 1, 3, Qt.AlignmentFlag.AlignCenter
@@ -121,6 +126,11 @@ class StackedWidget(QWidget):
 
         # Task Header
         tasks_header = QLabel("Tasks")
+        tasks_header.setStyleSheet(
+            """
+            QLabel {  color : #0F2D48; font: bold 24px; max-height:56px;}
+            """
+        )
         mode_control_layout.addWidget(
             tasks_header, 0, 5, 1, 5, Qt.AlignmentFlag.AlignCenter
         )
@@ -140,7 +150,7 @@ class StackedWidget(QWidget):
             flat=True,
         )
         task_delete_button.clicked.connect(
-            lambda: self.map_fig_can.select_mode("delete", "tasks")
+            lambda: self.map_fig_can.delete_tasks_from_map()
         )
         mode_control_layout.addWidget(
             task_delete_button, 2, 6, 1, 3, Qt.AlignmentFlag.AlignCenter
@@ -157,15 +167,10 @@ class StackedWidget(QWidget):
 
         return map_page
 
-    def switch_layout(self):
-        if self.stackedWidget.currentIndex() == 0:
-            self.stackedWidget.setCurrentIndex(1)
-        else:
-            self.stackedWidget.setCurrentIndex(0)
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = StackedWidget()
+    window.showMaximized()
     window.show()
     app.exec()

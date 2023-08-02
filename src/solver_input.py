@@ -7,6 +7,14 @@ from cmath import pi
 
 
 class SolverInput:
+    AGENT_COLOURS = [
+        "#F85647",  # red
+        "#50D546",  # green
+    ]
+    TASK_COLOURS = [
+        "#FEDC2C",  # yellow
+        "#5CB4FF",  # blue
+    ]
     # Format
     # Agent
     # 0	31x79-w5.map	79	31	41	18	71	0	0
@@ -36,7 +44,9 @@ class SolverInput:
                 width=0.7,
                 height=0.7,
                 zorder=10000,
-                facecolor=COLORS[len(self.agent_objects) % len(COLORS)],
+                facecolor=self.AGENT_COLOURS[
+                    len(self.agent_objects) % len(self.AGENT_COLOURS)
+                ],
                 edgecolor="black",
                 linewidth=0.3,
                 picker=True,
@@ -57,9 +67,6 @@ class SolverInput:
             return agent, agent_text
         else:
             return None
-
-    def remove_agent(self):
-        pass
 
     def check_occupied(self, x, y):
         occupied = False
@@ -92,7 +99,9 @@ class SolverInput:
                 radius=0.5,
                 orientation=pi,
                 zorder=10000,
-                facecolor=COLORS[len(self.task_objects) % len(COLORS)],
+                facecolor=self.TASK_COLOURS[
+                    len(self.task_objects) % len(self.TASK_COLOURS)
+                ],
                 edgecolor="black",
                 linewidth=0.3,
                 picker=True,
@@ -114,8 +123,17 @@ class SolverInput:
         else:
             return None
 
-    def remove_task(self):
-        pass
+    def delete_tasks(self):
+        for item, task in self.task_objects:
+            item.remove()
+            task.remove()
+        self.task_objects = []
+
+    def delete_agents(self):
+        for agent, task in self.agent_objects:
+            agent.remove()
+            task.remove()
+        self.agent_objects = []
 
     def generate_text_file(self):
         pass
