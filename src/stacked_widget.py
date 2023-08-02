@@ -12,6 +12,7 @@ from PyQt6.QtWidgets import (
     QGridLayout,
     QSpacerItem,
     QSizePolicy,
+    QStyle,
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QFontDatabase
@@ -77,14 +78,38 @@ class StackedWidget(QWidget):
         )
         layout.addWidget(header_text)
 
+        # Player
+        player = QWidget()
+        player_layout = QHBoxLayout()
+        player.setLayout(player_layout)
+
+        self.fig_can = SolutionVisualiser("solution.txt")  # TODO: SOLVER OUTPUT INSERT
+
+        ## Buttons
+        self.play_button = QPushButton("Play", self, flat=True)
+        self.play_button.clicked.connect(self.fig_can.resume)
+        self.play_button.setIcon(
+            self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPlay"))
+        )
+        player_layout.addWidget(self.play_button)
+        self.pause_button = QPushButton("Pause", self, flat=True)
+        self.pause_button.clicked.connect(self.fig_can.pause)
+        self.pause_button.setIcon(
+            self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPause"))
+        )
+        player_layout.addWidget(self.pause_button)
+        layout.addWidget(player)
+
+        # Spacer
         vertical_spacer = QSpacerItem(
             50, 50, QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum
         )
         layout.addItem(vertical_spacer)
         # Animation
-        self.fig_can = SolutionVisualiser("solution.txt")  # TODO: SOLVER OUTPUT INSERT
+
         layout.addWidget(self.fig_can)
-        ## Button
+
+        ##BUttons
         self.button = QPushButton("Return", self, flat=True)
         self.button.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
         layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
