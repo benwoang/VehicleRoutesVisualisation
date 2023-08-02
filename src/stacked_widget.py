@@ -14,11 +14,13 @@ from PyQt6.QtWidgets import (
     QSizePolicy,
     QStyle,
 )
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QFontDatabase
+from PyQt6.QtCore import Qt, QThread, pyqtSignal, QObject
+from PyQt6.QtGui import QFont, QFontDatabase, QMovie
 
 from solution_visualiser import SolutionVisualiser
 from map_visualiser import MapVisualiser
+
+import time
 
 
 class StackedWidget(QWidget):
@@ -173,7 +175,13 @@ class StackedWidget(QWidget):
         # Create Solver Input File
         self.map_fig_can.solution()
 
+        # TODO: Add Loading Page Here
+        self.stackedWidget.addWidget(self.create_loading_page())
+        self.thread = QThread()
+
         # TODO: EDDIE INSERT CALL TO SOLVER
+
+        # TODO: Remove Loading PAger here
 
         # Create output Page
         self.solution_page = QWidget()
@@ -227,6 +235,33 @@ class StackedWidget(QWidget):
 
         self.stackedWidget.addWidget(self.solution_page)
         self.stackedWidget.setCurrentIndex(1)
+
+    def create_loading_page(self):
+        self.loading = QWidget()
+        loading_layout = QVBoxLayout()
+        self.loading.setLayout(loading_layout)
+        gif_wid = QLabel()
+        loading_gif = QMovie("../graphics/loading.gif")
+        gif_wid.setMovie(loading_gif)
+        loading_layout.addWidget(gif_wid)
+        loading_gif.start()
+        loading_text = QLabel("Solving...")
+        loading_layout.addWidget(loading_text)
+        return self.loading
+
+
+class Worker(QObject):
+    finished = pyqtSignal()
+    progress = pyqtSignal(int)
+
+    # TODO: PUT EDDIE CODE HERE IN run()
+
+    def run(self):
+        """Long-running task."""
+        for i in range(5):
+            # sleep(1)
+            self.progress.emit(i + 1)
+        self.finished.emit()
 
 
 if __name__ == "__main__":
