@@ -13,8 +13,9 @@ from PyQt6.QtWidgets import (
     QSpacerItem,
     QSizePolicy,
     QStyle,
+    QGraphicsOpacityEffect,
 )
-from PyQt6.QtCore import Qt, QThread, pyqtSignal, QObject
+from PyQt6.QtCore import Qt, QThread, pyqtSignal, QObject, QSize, QTimer
 from PyQt6.QtGui import QFont, QFontDatabase, QMovie
 
 from solution_visualiser import SolutionVisualiser
@@ -29,7 +30,8 @@ class StackedWidget(QWidget):
         self.setStyleSheet(
             """
             QWidget{
-                background-color: white}
+                background-color: white;
+            }
             QPushButton[flat="true"]{
                 background-color: #D9D9D9;
                 padding-top:2px;
@@ -176,8 +178,10 @@ class StackedWidget(QWidget):
         self.map_fig_can.solution()
 
         # TODO: Add Loading Page Here
-        self.stackedWidget.addWidget(self.create_loading_page())
-        self.thread = QThread()
+        # self.stackedWidget.addWidget(self.create_loading_page())
+        # self.stackedWidget.setCurrentIndex(1)
+        self.create_loading_page()
+        # self.thread = QThread()
 
         # TODO: EDDIE INSERT CALL TO SOLVER
 
@@ -238,16 +242,68 @@ class StackedWidget(QWidget):
 
     def create_loading_page(self):
         self.loading = QWidget()
+        self.loading.setMinimumSize(self.screen().size())
+        # self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        # self.loading.setSizePolicy(
+        #     QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        # )
+        self.loading.setStyleSheet("background-color:#80808080;")  # Opacity
+        # self.loading.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        # self.loading.setAttribute(Qt.WidgetAttribute.WA_NoSystemBackground)
+        # self.loading.setGraphicsEffect(QGraphicsOpacityEffect(opacity=0.5))
+        # self.loading.setWindowOpacity(0.4)
         loading_layout = QVBoxLayout()
+        loading_layout.setContentsMargins(0, 0, 0, 0)
+        loading_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.loading.setLayout(loading_layout)
-        gif_wid = QLabel()
-        loading_gif = QMovie("../graphics/loading.gif")
-        gif_wid.setMovie(loading_gif)
-        loading_layout.addWidget(gif_wid)
+        gif_label = QLabel()
+        loading_gif = QMovie("./graphics/loading.gif")
+        loading_gif.setScaledSize(
+            QSize(80, 80)
+        )  # No need for setMaximumsize or set scaled contents
+        gif_label.setMovie(loading_gif)
         loading_gif.start()
-        loading_text = QLabel("Solving...")
-        loading_layout.addWidget(loading_text)
-        return self.loading
+        gif_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        # gif_label.setGraphicsEffect(QGraphicsOpacityEffect(opacity=1))
+        gif_label.setStyleSheet("background-color:transparent")
+        loading_layout.addWidget(gif_label)
+
+        # Solving Label
+        self.loading_text = QLabel("Solving...")
+        self.loading_text.setStyleSheet("font-size: 20pt;background-color:transparent;")
+        self.loading_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.loading_text.setGraphicsEffect(QGraphicsOpacityEffect(opacity=1))
+        loading_layout.addWidget(self.loading_text)
+
+        # Timer Label
+        self.timer_label = QLabel()
+        self.current_time = 0
+        self.timer = QTimer()
+        self.timer.start(100)  # 100ms
+        self.timer.timeout.connect(self.timer_update)
+        self.timer_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.timer_label.setStyleSheet("background-color:transparent;")
+        # self.timer_label.setGraphicsEffect(QGraphicsOpacityEffect(opacity=1))
+        loading_layout.addWidget(self.timer_label)
+        self.base_layout.addChildWidget(self.loading)
+
+        # self.loading.show()
+        # self.loading.activateWindow()
+        # self.loading.raise_()
+        # return self.loading
+
+    def timer_update(self):
+        self.current_time = round(self.current_time + 0.1, 1)
+        # if self.current_time % 1 == 0:
+        #     # Make sure only update every whole second
+        #     if self.current_time % 3 == 0:
+        #         self.loading_text.setText("Solving.  ")
+        #     elif self.current_time % 3 == 1:
+        #         self.loading_text.setText("Solving.. ")
+        #     elif self.current_time % 3 == 2:
+        #         self.loading_text.setText("Solving...")
+        self.timer_label.setText("Time Elapsed: " + str(self.current_time))
 
 
 class Worker(QObject):
