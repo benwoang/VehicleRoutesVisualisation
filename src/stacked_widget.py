@@ -208,18 +208,18 @@ class StackedWidget(QWidget):
         self.fig_can.resize(self.map_page.width(), self.map_page.height())
 
         ## Buttons
-        self.play_button = QPushButton("Play", self, flat=True)
-        self.play_button.clicked.connect(self.fig_can.resume)
-        self.play_button.setIcon(
-            self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPlay"))
-        )
-        player_layout.addWidget(self.play_button)
-        self.pause_button = QPushButton("Pause", self, flat=True)
-        self.pause_button.clicked.connect(self.fig_can.pause)
-        self.pause_button.setIcon(
-            self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPause"))
-        )
-        player_layout.addWidget(self.pause_button)
+        # self.play_button = QPushButton("Play", self, flat=True)
+        # self.play_button.clicked.connect(self.fig_can.resume)
+        # self.play_button.setIcon(
+        #     self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPlay"))
+        # )
+        # player_layout.addWidget(self.play_button)
+        # self.pause_button = QPushButton("Pause", self, flat=True)
+        # self.pause_button.clicked.connect(self.fig_can.pause)
+        # self.pause_button.setIcon(
+        #     self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPause"))
+        # )
+        # player_layout.addWidget(self.pause_button)
         layout.addWidget(player)
 
         # Spacer
