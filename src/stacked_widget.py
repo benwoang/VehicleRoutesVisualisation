@@ -58,7 +58,7 @@ class StackedWidget(QWidget):
         layout = QVBoxLayout(self.map_page)
 
         ## Heading
-        header_text = QLabel("Solver - Input")
+        header_text = QLabel("Multi-Robot Pickup and Delivery")
         header_text.setStyleSheet(
             """
             QLabel {  color : #0F2D48; font: bold 36px; max-height:56px;}
@@ -75,7 +75,7 @@ class StackedWidget(QWidget):
         mode_control_widget.setLayout(mode_control_layout)
 
         # Agent Header
-        agent_header = QLabel("Agents")
+        agent_header = QLabel("Robots")
         agent_header.setStyleSheet(
             """
             QLabel {  color : #0F2D48; font: bold 24px; max-height:56px;}
@@ -86,7 +86,7 @@ class StackedWidget(QWidget):
         )
 
         # Agent Add Button
-        agent_add_button = QPushButton("Add Agents", flat=True)
+        agent_add_button = QPushButton("Add Robots", flat=True)
         agent_add_button.clicked.connect(
             lambda: self.map_fig_can.select_mode("add", "agents")
         )
@@ -96,7 +96,7 @@ class StackedWidget(QWidget):
 
         # Agent Delete All Button
         agent_delete_button = QPushButton(
-            "Delete All Agents",
+            "Delete All Robots",
             flat=True,
         )
         agent_delete_button.clicked.connect(
@@ -149,14 +149,14 @@ class StackedWidget(QWidget):
 
         print("Map Page Stacked Widget COunt: " + str(self.stackedWidget.count()))
 
-        self.button_exist = QPushButton("Existing Solution", self, flat=True)
+        self.button_exist = QPushButton("Show Previous Paths", self, flat=True)
         self.button_exist.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(1))
         self.button_exist.setVisible(False)  # Hide until a solution is made
         map_choice_layout.addWidget(
             self.button_exist, 0, 3, 1, 1  # , alignment=Qt.AlignmentFlag.AlignRight
         )
 
-        self.button_solve = QPushButton("Solve", self, flat=True)
+        self.button_solve = QPushButton("Calculate New Paths", self, flat=True)
         self.button_solve.clicked.connect(self.create_solution_page)
         map_choice_layout.addWidget(
             self.button_solve, 0, 4, 1, 1  # , alignment=Qt.AlignmentFlag.AlignRight
@@ -188,7 +188,7 @@ class StackedWidget(QWidget):
         layout = QVBoxLayout(self.solution_page)
 
         # Heading
-        header_text = QLabel("Solver - Output")
+        header_text = QLabel("Multi-Robot Pickup and Delivery")
         header_text.setStyleSheet(
             """
             QLabel {  color : #0F2D48; font: bold 36px; max-height:56px;}
@@ -229,7 +229,7 @@ class StackedWidget(QWidget):
         layout.addWidget(self.fig_can)
 
         ##BUttons
-        self.button = QPushButton("Return", self, flat=True)
+        self.button = QPushButton("Back", self, flat=True)
         self.button.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
         layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
 
