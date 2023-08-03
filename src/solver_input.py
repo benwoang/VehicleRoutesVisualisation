@@ -120,7 +120,7 @@ class SolverInput:
             and self.check_occupied(x_exact, y_exact) == False
         ):
             task = RegularPolygon(
-                (x_exact + 0.5, y_exact + 0.56),
+                (x_exact + 0.5, y_exact + (0.56 if len(self.task_objects) % 2 == 0 else 0.43)),
                 numVertices=3,
                 radius=0.5,
                 orientation=pi if len(self.task_objects) % 2 == 0 else 0.0,
