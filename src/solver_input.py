@@ -96,7 +96,7 @@ class SolverInput:
                 height=0.7,
                 zorder=10000,
                 facecolor=self.AGENT_COLOURS[
-                    (len(self.agent_objects)//2) % len(self.AGENT_COLOURS)
+                    len(self.agent_objects) % len(self.AGENT_COLOURS)
                 ],
                 edgecolor="black",
                 linewidth=0.3,
@@ -106,7 +106,7 @@ class SolverInput:
             agent_text = Text(
                 x_int + 0.49,
                 y_int + 0.53,
-                f"{len(self.agent_objects)//2 if len(self.agent_objects)%2==0 else (len(self.agent_objects)-1)//2}",
+                f"{len(self.agent_objects)}",
                 color="black",
                 zorder=10001,
                 fontsize=6,
@@ -193,18 +193,15 @@ class SolverInput:
         f.write(f'time horizon {time_horizon}\n')
 
         for a, (agent, task) in enumerate(self.agent_objects):
-            if a % 2 == 1:
-                f.write(f'{round(agent.get_x() - 0.13):5d}')
-                f.write(f'{round(agent.get_y() - 0.13):5d}')
-                f.write('\n')
-
-            else:
-                f.write(f'{a // 2:5d}')
-                f.write(f'{self.map_string:>20s}')
-                f.write(f'{self.map.map_width:5d}')
-                f.write(f'{self.map.map_height:5d}')
-                f.write(f'{round(agent.get_x() - 0.13):5d}')
-                f.write(f'{round(agent.get_y() - 0.13):5d}')
+            f.write(f'{a:5d}')
+            f.write(f'{self.map_string:>20s}')
+            f.write(f'{self.map.map_width:5d}')
+            f.write(f'{self.map.map_height:5d}')
+            f.write(f'{round(agent.get_x() - 0.13):5d}')
+            f.write(f'{round(agent.get_y() - 0.13):5d}')
+            f.write(f'{round(agent.get_x() - 0.13):5d}')
+            f.write(f'{round(agent.get_y() - 0.13):5d}')
+            f.write('\n')
 
         f.write('requests\n')
         for t, (task, task2) in enumerate(self.task_objects):
