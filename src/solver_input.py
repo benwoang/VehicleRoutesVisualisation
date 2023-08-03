@@ -8,12 +8,37 @@ from cmath import pi
 
 class SolverInput:
     AGENT_COLOURS = [
-        "#F85647",  # red
-        "#50D546",  # green
+        # "#000000",  # black
+        "#ffffff",  # white
     ]
     TASK_COLOURS = [
+        "#F85647",  # red
         "#FEDC2C",  # yellow
+        "#50D546",  # green
         "#5CB4FF",  # blue
+        "#C397FD",  # purple
+        "#F494C4",  # pink
+        "#57DBC2",  # mint
+        "#FF9F2C",  # orange
+        "#7FA4E9",  # violet
+        # '#F6968C', # salmon
+        "#B9DC67",  # lime
+        "#EAAF89",  # tan
+        # '#00B0F0', # ProcessBlue
+        # '#ED1B23', # Red
+        # '#FFDF42', # Goldenrod
+        # '#00A64F', # Green
+        # '#7977B8', # Periwinkle
+        # '#F7921D', # BurntOrange
+        # '#00B3B8', # BlueGreen
+        # '#F69289', # Salmon
+        "#C6DC67",  # SpringGreen
+        "#F49EC4",  # Lavender
+        "#EC008C",  # Magenta
+        "#008B72",  # PineGreen
+        "#99479B",  # Purple
+        "#0071BC",  # RoyalBlue
+        "#DA9D76",  # Tan
     ]
     # Format
     # Agent
@@ -56,7 +81,7 @@ class SolverInput:
             agent_text = Text(
                 x_int + 0.49,
                 y_int + 0.53,
-                f"{len(self.agent_objects)//2 if len(self.agent_objects)%2==0 else (len(self.agent_objects)-1)//2}",
+                f"{len(self.agent_objects)}",
                 color="black",
                 zorder=10001,
                 fontsize=6,
@@ -95,13 +120,13 @@ class SolverInput:
             and self.check_occupied(x_exact, y_exact) == False
         ):
             task = RegularPolygon(
-                (x_exact + 0.5, y_exact + 0.56),
+                (x_exact + 0.5, y_exact + (0.56 if len(self.task_objects) % 2 == 0 else 0.43)),
                 numVertices=3,
                 radius=0.5,
-                orientation=pi,
+                orientation=pi if len(self.task_objects) % 2 == 0 else 0.0,
                 zorder=10000,
                 facecolor=self.TASK_COLOURS[
-                    len(self.task_objects) % len(self.TASK_COLOURS)
+                    (len(self.task_objects)//2) % len(self.TASK_COLOURS)
                 ],
                 edgecolor="black",
                 linewidth=0.3,
@@ -137,41 +162,36 @@ class SolverInput:
         self.agent_objects = []
 
     def generate_text_file(self):
-        f_a = open("solver_input_agents.txt", "w")
-        a_count = 0
-        string = ""
-        for agent, task in self.agent_objects:
-            if a_count % 2 == 1:
-                string += str(round(agent.get_x() - 0.13)) + " "
-                string += str(round(agent.get_y() - 0.13)) + " "
-                string += "\n"
+        f = open("demo.scen", "w")
+        f.write('version 2\n')
+        time_horizon = 300
+        f.write(f'time horizon {time_horizon}\n')
+
+        for a, (agent, task) in enumerate(self.agent_objects):
+            f.write(f'{a:5d}')
+            f.write(f'{self.map_string:>20s}')
+            f.write(f'{self.map.map_width:5d}')
+            f.write(f'{self.map.map_height:5d}')
+            f.write(f'{round(agent.get_x() - 0.13):5d}')
+            f.write(f'{round(agent.get_y() - 0.13):5d}')
+            f.write(f'{round(agent.get_x() - 0.13):5d}')
+            f.write(f'{round(agent.get_y() - 0.13):5d}')
+            f.write('\n')
+
+        f.write('requests\n')
+        for t, (task, task2) in enumerate(self.task_objects):
+            if t % 2 == 1:
+                f.write(f'{round(task.xy[0] - 0.5):5d}')
+                f.write(f'{round(task.xy[1] - 0.56):5d}')
+                f.write(f'{0:5d}')
+                f.write(f'{time_horizon:5d}')
+                f.write(f'{0:5d}')
+                f.write(f'{time_horizon:5d}')
+                f.write('\n')
 
             else:
-                string += str(a_count // 2) + " "
-                string += self.map_string + " "
-                string += str(self.map.map_width) + " "
-                string += str(self.map.map_height) + " "
-                string += str(round(agent.get_x() - 0.13)) + " "
-                string += str(round(agent.get_y() - 0.13)) + " "
-            a_count += 1
-        f_a.write(string)
-        f_a.close()
-        f_t = open("solver_input_tasks.txt", "w")
-        t_count = 0
-        string = ""
-        for task, task2 in self.task_objects:
-            if t_count % 2 == 1:
-                string += str(round(task.xy[0] - 0.5)) + " "
-                string += str(round(task.xy[1] - 0.56)) + " "
-                string += "0 300 "
-                string += "\n"
+                f.write(f'{t // 2:5d}')
+                f.write(f'{round(task.xy[0] - 0.5):5d}')
+                f.write(f'{round(task.xy[1] - 0.56):5d}')
 
-            else:
-                string += str(t_count // 2) + " "
-                string += str(round(task.xy[0] - 0.5)) + " "
-                string += str(round(task.xy[1] - 0.56)) + " "
-                string += "0 300 "
-            t_count += 1
-
-        f_t.write(string)
-        f_t.close()
+        f.close()
