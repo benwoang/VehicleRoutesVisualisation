@@ -8,33 +8,8 @@ from cmath import pi
 
 class SolverInput:
     AGENT_COLOURS = [
-        "#F85647",  # red
-        "#FEDC2C",  # yellow
-        "#50D546",  # green
-        "#5CB4FF",  # blue
-        "#C397FD",  # purple
-        "#F494C4",  # pink
-        "#57DBC2",  # mint
-        "#FF9F2C",  # orange
-        "#7FA4E9",  # violet
-        # '#F6968C', # salmon
-        "#B9DC67",  # lime
-        "#EAAF89",  # tan
-        # '#00B0F0', # ProcessBlue
-        # '#ED1B23', # Red
-        # '#FFDF42', # Goldenrod
-        # '#00A64F', # Green
-        # '#7977B8', # Periwinkle
-        # '#F7921D', # BurntOrange
-        # '#00B3B8', # BlueGreen
-        # '#F69289', # Salmon
-        "#C6DC67",  # SpringGreen
-        "#F49EC4",  # Lavender
-        "#EC008C",  # Magenta
-        "#008B72",  # PineGreen
-        "#99479B",  # Purple
-        "#0071BC",  # RoyalBlue
-        "#DA9D76",  # Tan
+        # "#000000",  # black
+        "#ffffff",  # white
     ]
     TASK_COLOURS = [
         "#F85647",  # red
