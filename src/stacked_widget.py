@@ -14,6 +14,9 @@ from PyQt6.QtWidgets import (
     QSizePolicy,
     QStyle,
     QGraphicsOpacityEffect,
+    QDialog,
+    QDialogButtonBox,
+    QMessageBox,
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QObject, QSize, QTimer
 from PyQt6.QtGui import QFont, QFontDatabase, QMovie
@@ -168,6 +171,7 @@ class StackedWidget(QWidget):
         return self.map_page
 
     def create_solution_page(self):
+        # self.create_error_message("Can't do that", "Add 1 or more items")
         print("Solution Page Count: " + str(self.stackedWidget.count()))
         self.button_exist.setVisible(True)
         if self.stackedWidget.count() > 1:
@@ -180,7 +184,7 @@ class StackedWidget(QWidget):
         # TODO: Add Loading Page Here
         # self.stackedWidget.addWidget(self.create_loading_page())
         # self.stackedWidget.setCurrentIndex(1)
-        self.create_loading_page()
+        # self.create_loading_page()
         # self.thread = QThread()
 
         # TODO: EDDIE INSERT CALL TO SOLVER
@@ -305,6 +309,18 @@ class StackedWidget(QWidget):
         #         self.loading_text.setText("Solving...")
         self.timer_label.setText("Time Elapsed: " + str(self.current_time))
 
+    def create_error_message(self, message_title_text, message_infomative_text):
+        self.error_dialog = QMessageBox(self)
+        self.error_dialog.setIcon(QMessageBox.Icon.Warning)
+        self.error_dialog.setWindowTitle("Warning")
+        self.error_dialog.setText(message_title_text)
+        self.error_dialog.setInformativeText(message_infomative_text)
+        # self.message_label = QLabel(message_text)
+        # self.error_dialog.layout().addWidget(self.message_label)
+        # self.buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
+        # self.error_dialog.layout().addWidget(self.buttonBox)
+        self.error_dialog.exec()
+
 
 class Worker(QObject):
     finished = pyqtSignal()
@@ -323,6 +339,7 @@ class Worker(QObject):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = StackedWidget()
+    window.setWindowTitle("Multi-Robot Path Finding - Pickup and Delivery")
     window.showMaximized()
     window.show()
     app.exec()
