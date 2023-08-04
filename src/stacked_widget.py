@@ -171,78 +171,92 @@ class StackedWidget(QWidget):
         return self.map_page
 
     def create_solution_page(self):
-        # self.create_error_message("Can't do that", "Add 1 or more items")
-        print("Solution Page Count: " + str(self.stackedWidget.count()))
-        self.button_exist.setVisible(True)
-        if self.stackedWidget.count() > 1:
-            # if both are in remove map which is the last one and recreate it
-            self.fig_can.close_event()
-            self.stackedWidget.removeWidget(self.solution_page)
-        # Create Solver Input File
-        self.map_fig_can.solution()
-
-        # TODO: Add Loading Page Here
-        # self.stackedWidget.addWidget(self.create_loading_page())
-        # self.stackedWidget.setCurrentIndex(1)
         # self.create_loading_page()
-        # self.thread = QThread()
+        try:
+            if not self.map_fig_can.check_objects_exists():
+                raise AssertionError("There must be atleast 1 Task and 1 Agent.")
+            elif not self.map_fig_can.check_tasks_even():
+                raise AssertionError(
+                    "There is an odd amount of Tasks, please add one more."
+                )
 
-        # TODO: EDDIE INSERT CALL TO SOLVER
+        except AssertionError as e:
+            self.create_error_message(str(e))
+        else:
+            # self.create_error_message("Can't do that", "Add 1 or more items")
+            print("Solution Page Count: " + str(self.stackedWidget.count()))
+            self.button_exist.setVisible(True)
+            if self.stackedWidget.count() > 1:
+                # if both are in remove map which is the last one and recreate it
+                self.fig_can.close_event()
+                self.stackedWidget.removeWidget(self.solution_page)
+            # Create Solver Input File
+            self.map_fig_can.solution()
 
-        # TODO: Remove Loading PAger here
+            # TODO: Add Loading Page Here
+            # self.stackedWidget.addWidget(self.create_loading_page())
+            # self.stackedWidget.setCurrentIndex(1)
+            # self.create_loading_page()
+            # self.thread = QThread()
 
-        # Create output Page
-        self.solution_page = QWidget()
-        layout = QVBoxLayout(self.solution_page)
+            # TODO: EDDIE INSERT CALL TO SOLVER
 
-        # Heading
-        header_text = QLabel("Multi-Robot Pickup and Delivery")
-        header_text.setStyleSheet(
-            """
-            QLabel {  color : #0F2D48; font: bold 36px; max-height:56px;}
-            """
-        )
-        header_text.setAlignment(
-            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-        )
-        layout.addWidget(header_text)
+            # TODO: Remove Loading PAger here
 
-        # Player
-        player = QWidget()
-        player_layout = QHBoxLayout()
-        player.setLayout(player_layout)
+            # Create output Page
+            self.solution_page = QWidget()
+            layout = QVBoxLayout(self.solution_page)
 
-        self.fig_can = SolutionVisualiser("solution.txt")  # TODO: SOLVER OUTPUT INSERT
-        self.fig_can.resize(self.map_page.width(), self.map_page.height())
+            # Heading
+            header_text = QLabel("Multi-Robot Pickup and Delivery")
+            header_text.setStyleSheet(
+                """
+                QLabel {  color : #0F2D48; font: bold 36px; max-height:56px;}
+                """
+            )
+            header_text.setAlignment(
+                Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+            )
+            layout.addWidget(header_text)
 
-        ## Buttons
-        # self.play_button = QPushButton("Play", self, flat=True)
-        # self.play_button.clicked.connect(self.fig_can.resume)
-        # self.play_button.setIcon(
-        #     self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPlay"))
-        # )
-        # player_layout.addWidget(self.play_button)
-        # self.pause_button = QPushButton("Pause", self, flat=True)
-        # self.pause_button.clicked.connect(self.fig_can.pause)
-        # self.pause_button.setIcon(
-        #     self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPause"))
-        # )
-        # player_layout.addWidget(self.pause_button)
-        layout.addWidget(player)
+            # Player
+            player = QWidget()
+            player_layout = QHBoxLayout()
+            player.setLayout(player_layout)
 
-        # Spacer
-        layout.addSpacing(50)
+            self.fig_can = SolutionVisualiser(
+                "solution.txt"
+            )  # TODO: SOLVER OUTPUT INSERT
+            self.fig_can.resize(self.map_page.width(), self.map_page.height())
 
-        # Animation
-        layout.addWidget(self.fig_can)
+            ## Buttons
+            # self.play_button = QPushButton("Play", self, flat=True)
+            # self.play_button.clicked.connect(self.fig_can.resume)
+            # self.play_button.setIcon(
+            #     self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPlay"))
+            # )
+            # player_layout.addWidget(self.play_button)
+            # self.pause_button = QPushButton("Pause", self, flat=True)
+            # self.pause_button.clicked.connect(self.fig_can.pause)
+            # self.pause_button.setIcon(
+            #     self.style().standardIcon(getattr(QStyle.StandardPixmap, "SP_MediaPause"))
+            # )
+            # player_layout.addWidget(self.pause_button)
+            layout.addWidget(player)
 
-        ##BUttons
-        self.button = QPushButton("Back", self, flat=True)
-        self.button.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
-        layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
+            # Spacer
+            layout.addSpacing(50)
 
-        self.stackedWidget.addWidget(self.solution_page)
-        self.stackedWidget.setCurrentIndex(1)
+            # Animation
+            layout.addWidget(self.fig_can)
+
+            ##BUttons
+            self.button = QPushButton("Back", self, flat=True)
+            self.button.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
+            layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignCenter)
+
+            self.stackedWidget.addWidget(self.solution_page)
+            self.stackedWidget.setCurrentIndex(1)
 
     def create_loading_page(self):
         self.loading = QWidget()
@@ -309,16 +323,49 @@ class StackedWidget(QWidget):
         #         self.loading_text.setText("Solving...")
         self.timer_label.setText("Time Elapsed: " + str(self.current_time))
 
-    def create_error_message(self, message_title_text, message_infomative_text):
+    def create_error_message(self, message_title_text):  # , message_infomative_text):
+        # QMessageBox Implementation
         self.error_dialog = QMessageBox(self)
+        self.error_dialog.setSizePolicy(
+            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum
+        )
+
         self.error_dialog.setIcon(QMessageBox.Icon.Warning)
         self.error_dialog.setWindowTitle("Warning")
+        font = QFont()
+        font.setBold(True)
+        self.error_dialog.setFont(font)
         self.error_dialog.setText(message_title_text)
-        self.error_dialog.setInformativeText(message_infomative_text)
-        # self.message_label = QLabel(message_text)
-        # self.error_dialog.layout().addWidget(self.message_label)
-        # self.buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
-        # self.error_dialog.layout().addWidget(self.buttonBox)
+
+        # QDialogBox Implementation
+        # self.error_dialog = QDialog(self)
+        # self.error_dialog.setStyleSheet(
+        #     """          QWidget{
+        #         background-color: white;
+        #         }
+        #         QDialogButtonBox{
+        #         background-color: #D9D9D9;
+        #         padding-top:2px;
+        #         padding-bottom:2px;
+        #         min-width: 5em;
+        #         max-width:5em;
+        #         border-radius:3px;
+        #         font-size: 16px
+        #     }
+        #     QDialogButtonBox:pressed{
+        #         background-color: #808080;
+        #     }
+        #     """
+        # )
+        # error_dialog_layout = QGridLayout()
+        # self.error_dialog.setLayout(error_dialog_layout)
+        # # self.error_dialog.setInformativeText(message_infomative_text)
+        # self.message_label = QLabel(message_title_text)
+        # error_dialog_layout.addWidget(self.message_label)
+        # self.button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
+
+        # self.button_box.accepted.connect(self.error_dialog.close)
+        # error_dialog_layout.addWidget(self.button_box)
         self.error_dialog.exec()
 
 

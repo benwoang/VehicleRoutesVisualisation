@@ -11,6 +11,8 @@ from solution_visualiser import COLORS
 class MapVisualiser(QWidget):
     BACKGROUND_COLOR = "#FFFFFF"
     OBSTACLE_COLOR = "#D9D9D9"
+    MAX_AGENTS = 5
+    MAX_TASKS = 10
 
     def __init__(self, parent_widget) -> None:
         # Connect Map to Parent Widget
@@ -162,22 +164,38 @@ class MapVisualiser(QWidget):
             print("Click Registered:", x_display, y_display)
             if self.add_agent_mode:
                 try:
+                    if len(self.solver_input.agent_objects) + 1 > self.MAX_AGENTS:
+                        raise AssertionError(
+                            "Cannot add any more Robots, the maximum number of Robots is "
+                            + str(self.MAX_AGENTS)
+                        )
                     new_agent, new_agent_text = self.solver_input.add_new_agent(
                         x_display, y_display
                     )
                 except TypeError:
                     print("Is Obstacle, cannot add agent")
+                except AssertionError as e:
+                    # print(e.message)
+                    self.parent_widget.create_error_message(str(e))
                 else:
                     self.ax.add_patch(new_agent)
                     self.ax.add_artist(new_agent_text)
 
             elif self.add_task_mode:
                 try:
+                    if len(self.solver_input.task_objects) + 1 > self.MAX_TASKS:
+                        raise AssertionError(
+                            "Cannot add any more Tasks, the maximum number of Tasks is "
+                            + str(self.MAX_TASKS)
+                        )
                     new_task, new_task_text = self.solver_input.add_new_task(
                         x_display, y_display
                     )
                 except TypeError:
                     print("Is Obstacle, cannot add task")
+                except AssertionError as e:
+                    # print(e.message)
+                    self.parent_widget.create_error_message(str(e))
                 else:
                     self.ax.add_patch(new_task)
                     self.ax.add_artist(new_task_text)
@@ -223,3 +241,12 @@ class MapVisualiser(QWidget):
 
     def solution(self):
         self.solver_input.generate_text_file()
+
+    def check_tasks_even(self):
+        return len(self.solver_input.task_objects) % 2 == 0
+
+    def check_objects_exists(self):
+        return (
+            len(self.solver_input.task_objects) > 0
+            and len(self.solver_input.agent_objects) > 0
+        )

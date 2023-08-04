@@ -40,15 +40,7 @@ class SolverInput:
         "#0071BC",  # RoyalBlue
         "#DA9D76",  # Tan
     ]
-    # Format
-    # Agent
-    # 0	31x79-w5.map	79	31	41	18	71	0	0
-    # Agent number, map file, map width, map height, x y of start position, x y of end position, dummy number
 
-    # Tasks
-    # 0	24	15	28	12	19	37	26	44
-    # 1	(39	10	24	18)	(154	196	177	219)
-    # Task number, pickup x y, pickup time window (I forgot to explain to you time window, just put 0, 300), delivery xy, delivery time window
     def __init__(self, map_string=None) -> None:
         self.task_objects = []  # Contains task
         self.agent_objects = []  # Contains tuple of agent and its text
@@ -120,13 +112,16 @@ class SolverInput:
             and self.check_occupied(x_exact, y_exact) == False
         ):
             task = RegularPolygon(
-                (x_exact + 0.5, y_exact + (0.56 if len(self.task_objects) % 2 == 0 else 0.43)),
+                (
+                    x_exact + 0.5,
+                    y_exact + (0.56 if len(self.task_objects) % 2 == 0 else 0.43),
+                ),
                 numVertices=3,
                 radius=0.5,
                 orientation=pi if len(self.task_objects) % 2 == 0 else 0.0,
                 zorder=10000,
                 facecolor=self.TASK_COLOURS[
-                    (len(self.task_objects)//2) % len(self.TASK_COLOURS)
+                    (len(self.task_objects) // 2) % len(self.TASK_COLOURS)
                 ],
                 edgecolor="black",
                 linewidth=0.3,
@@ -163,35 +158,35 @@ class SolverInput:
 
     def generate_text_file(self):
         f = open("demo.scen", "w")
-        f.write('version 2\n')
+        f.write("version 2\n")
         time_horizon = 300
-        f.write(f'time horizon {time_horizon}\n')
+        f.write(f"time horizon {time_horizon}\n")
 
         for a, (agent, task) in enumerate(self.agent_objects):
-            f.write(f'{a:5d}')
-            f.write(f'{self.map_string:>20s}')
-            f.write(f'{self.map.map_width:5d}')
-            f.write(f'{self.map.map_height:5d}')
-            f.write(f'{round(agent.get_x() - 0.13):5d}')
-            f.write(f'{round(agent.get_y() - 0.13):5d}')
-            f.write(f'{round(agent.get_x() - 0.13):5d}')
-            f.write(f'{round(agent.get_y() - 0.13):5d}')
-            f.write('\n')
+            f.write(f"{a:5d}")
+            f.write(f"{self.map_string:>20s}")
+            f.write(f"{self.map.map_width:5d}")
+            f.write(f"{self.map.map_height:5d}")
+            f.write(f"{round(agent.get_x() - 0.13):5d}")
+            f.write(f"{round(agent.get_y() - 0.13):5d}")
+            f.write(f"{round(agent.get_x() - 0.13):5d}")
+            f.write(f"{round(agent.get_y() - 0.13):5d}")
+            f.write("\n")
 
-        f.write('requests\n')
+        f.write("requests\n")
         for t, (task, task2) in enumerate(self.task_objects):
             if t % 2 == 1:
-                f.write(f'{round(task.xy[0] - 0.5):5d}')
-                f.write(f'{round(task.xy[1] - 0.56):5d}')
-                f.write(f'{0:5d}')
-                f.write(f'{time_horizon:5d}')
-                f.write(f'{0:5d}')
-                f.write(f'{time_horizon:5d}')
-                f.write('\n')
+                f.write(f"{round(task.xy[0] - 0.5):5d}")
+                f.write(f"{round(task.xy[1] - 0.56):5d}")
+                f.write(f"{0:5d}")
+                f.write(f"{time_horizon:5d}")
+                f.write(f"{0:5d}")
+                f.write(f"{time_horizon:5d}")
+                f.write("\n")
 
             else:
-                f.write(f'{t // 2:5d}')
-                f.write(f'{round(task.xy[0] - 0.5):5d}')
-                f.write(f'{round(task.xy[1] - 0.56):5d}')
+                f.write(f"{t // 2:5d}")
+                f.write(f"{round(task.xy[0] - 0.5):5d}")
+                f.write(f"{round(task.xy[1] - 0.56):5d}")
 
         f.close()
